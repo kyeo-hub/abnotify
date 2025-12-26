@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Base iOS blue -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#007AFF" />
+        </shape>
+    </item>
+    <!-- Radial light from top center for subtle depth -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="180dp"
+                android:centerX="0.5"
+                android:centerY="0.0"
+                android:startColor="#4DA3FF"
+                android:endColor="#007AFF" />
+        </shape>
+    </item>
+</layer-list>
