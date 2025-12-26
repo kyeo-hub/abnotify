@@ -5,5 +5,4 @@
     android:accessibilityFlags="flagDefault|flagIncludeNotImportantViews"
     android:canRetrieveWindowContent="false"
     android:notificationTimeout="100"
-    android:settingsActivity="com.trah.accnotify.ui.SettingsActivity"
     android:description="@string/accessibility_description" />

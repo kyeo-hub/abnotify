@@ -13,7 +13,7 @@ class BootReceiver : BroadcastReceiver() {
             // Only start if device is registered
             try {
                 val app = AccnotifyApp.getInstance()
-                if (app?.keyManager?.isRegistered != true) {
+                if (app.keyManager.isRegistered != true) {
                     return
                 }
             } catch (e: Exception) {

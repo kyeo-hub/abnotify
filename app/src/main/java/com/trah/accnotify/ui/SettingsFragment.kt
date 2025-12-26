@@ -42,6 +42,7 @@ class SettingsFragment : Fragment() {
         setupServerList()
         setupActions()
         setupForegroundNotificationSwitch()
+        setupKeepAliveSettings()
         setupVersionInfo()
     }
 
@@ -286,6 +287,61 @@ class SettingsFragment : Fragment() {
                 }
             )
         }
+    }
+
+    private fun setupKeepAliveSettings() {
+        val helper = com.trah.accnotify.util.KeepAliveHelper
+        val context = requireContext()
+
+        binding.root.findViewById<TextView>(R.id.btnKeepAliveStatus).setOnClickListener {
+            showKeepAliveStatusDialog()
+        }
+
+        binding.root.findViewById<TextView>(R.id.btnBatteryOptimization).setOnClickListener {
+            helper.requestIgnoreBatteryOptimization(context)
+        }
+
+        binding.root.findViewById<TextView>(R.id.btnAutoStart).setOnClickListener {
+            helper.openAutoStartSettings(context)
+        }
+
+        binding.root.findViewById<TextView>(R.id.btnAccessibility).setOnClickListener {
+            helper.openAccessibilitySettings(context)
+        }
+
+        binding.root.findViewById<TextView>(R.id.btnBackgroundSettings).setOnClickListener {
+            helper.openBackgroundSettings(context)
+        }
+
+        binding.root.findViewById<TextView>(R.id.btnNotificationPermission).setOnClickListener {
+            helper.openNotificationSettings(context)
+        }
+
+        binding.root.findViewById<TextView>(R.id.btnExactAlarm).setOnClickListener {
+            helper.requestExactAlarmPermission(context)
+        }
+
+        binding.root.findViewById<TextView>(R.id.btnAppSettings).setOnClickListener {
+            helper.openAppSettings(context)
+        }
+    }
+
+    private fun showKeepAliveStatusDialog() {
+        val context = requireContext()
+        val helper = com.trah.accnotify.util.KeepAliveHelper
+
+        val summary = helper.getStatusSummary(context)
+        val actions = helper.getRecommendedActions()
+
+        val message = StringBuilder(summary)
+        message.append("\n建议操作:\n")
+        actions.forEach { message.append("• $it\n") }
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("保活状态及建议")
+            .setMessage(message.toString())
+            .setPositiveButton("确定", null)
+            .show()
     }
 
     private fun showCleanDialog(

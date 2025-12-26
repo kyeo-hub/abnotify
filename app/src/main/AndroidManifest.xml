@@ -38,18 +38,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Settings Activity -->
-        <activity
-            android:name=".ui.SettingsActivity"
-            android:exported="false"
-            android:parentActivityName=".ui.MainActivity" />
-
-        <!-- History Activity -->
-        <activity
-            android:name=".ui.HistoryActivity"
-            android:exported="false"
-            android:parentActivityName=".ui.MainActivity" />
-
         <!-- Tutorial Activity -->
         <activity
             android:name=".ui.TutorialActivity"
