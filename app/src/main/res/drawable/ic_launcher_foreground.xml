@@ -17,23 +17,26 @@
         android:scaleY="2.5">
 
         <!-- 白色主体像素块 (White Body Blocks) -->
-        <!-- 已修正：X轴整体减2以居中 (中心点从14移至12) -->
+        <!-- 结构调整以配合中心黄色块: 
+             Top(14,2), Neck(12,6), 
+             LeftWing(6,10), RightWing(14,10), 
+             LowerBody(8,14) 
+        -->
         <path
             android:fillColor="#FFFFFF"
             android:pathData="
-                M12,2 h4 v4 h-4 z 
-                M8,6 h4 v4 h-4 z 
-                M4,10 h4 v4 h-4 z 
-                M12,10 h4 v4 h-4 z 
-                M16,10 h4 v4 h-4 z 
-                M10,14 h4 v4 h-4 z" />
+                M14,2 h4 v4 h-4 z 
+                M12,6 h4 v4 h-4 z 
+                M6,10 h4 v4 h-4 z 
+                M14,10 h4 v4 h-4 z 
+                M8,14 h4 v4 h-4 z" />
 
         <!-- 金色能量像素块 (Yellow Energy Blocks) -->
-        <!-- 已修正：X轴整体减2以居中 -->
+        <!-- Core(10,10) - 绝对居中, Tail(6,18) -->
         <path
             android:fillColor="#FFC107"
             android:pathData="
-                M8,10 h4 v4 h-4 z 
+                M10,10 h4 v4 h-4 z 
                 M6,18 h4 v4 h-4 z" />
 
     </group>
