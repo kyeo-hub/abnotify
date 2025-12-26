@@ -40,30 +40,30 @@ func DefaultConfig() *Config {
 func LoadFromEnv() *Config {
 	cfg := DefaultConfig()
 
-	if host := os.Getenv("LSPNOTIFY_HOST"); host != "" {
+	if host := os.Getenv("ACCNOTIFY_HOST"); host != "" {
 		cfg.Host = host
 	}
 
-	if port := os.Getenv("LSPNOTIFY_PORT"); port != "" {
+	if port := os.Getenv("ACCNOTIFY_PORT"); port != "" {
 		if p, err := strconv.Atoi(port); err == nil {
 			cfg.Port = p
 		}
 	}
 
-	if dbPath := os.Getenv("LSPNOTIFY_DB_PATH"); dbPath != "" {
+	if dbPath := os.Getenv("ACCNOTIFY_DB_PATH"); dbPath != "" {
 		cfg.DBPath = dbPath
 	}
 
-	if pingInterval := os.Getenv("LSPNOTIFY_WS_PING_INTERVAL"); pingInterval != "" {
+	if pingInterval := os.Getenv("ACCNOTIFY_WS_PING_INTERVAL"); pingInterval != "" {
 		if p, err := strconv.Atoi(pingInterval); err == nil {
 			cfg.WSPingInterval = p
 		}
 	}
 
-	if os.Getenv("LSPNOTIFY_ENABLE_HTTPS") == "true" {
+	if os.Getenv("ACCNOTIFY_ENABLE_HTTPS") == "true" {
 		cfg.EnableHTTPS = true
-		cfg.CertFile = os.Getenv("LSPNOTIFY_CERT_FILE")
-		cfg.KeyFile = os.Getenv("LSPNOTIFY_KEY_FILE")
+		cfg.CertFile = os.Getenv("ACCNOTIFY_CERT_FILE")
+		cfg.KeyFile = os.Getenv("ACCNOTIFY_KEY_FILE")
 	}
 
 	return cfg

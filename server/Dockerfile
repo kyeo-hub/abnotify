@@ -33,9 +33,9 @@ COPY --from=builder /app/accnotify-server .
 EXPOSE 8080
 
 # Environment variables
-ENV LSPNOTIFY_HOST=0.0.0.0
-ENV LSPNOTIFY_PORT=8080
-ENV LSPNOTIFY_DB_PATH=/app/data/accnotify.db
+ENV ACCNOTIFY_HOST=0.0.0.0
+ENV ACCNOTIFY_PORT=8080
+ENV ACCNOTIFY_DB_PATH=/app/data/accnotify.db
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
