@@ -29,6 +29,9 @@
 
 # Markwon
 -keep class io.noties.markwon.** { *; }
+-dontwarn org.commonmark.ext.gfm.strikethrough.Strikethrough
+-dontwarn org.commonmark.ext.gfm.strikethrough.**
+-dontwarn org.commonmark.**
 
 # Lottie
 -keep class com.airbnb.lottie.** { *; }
