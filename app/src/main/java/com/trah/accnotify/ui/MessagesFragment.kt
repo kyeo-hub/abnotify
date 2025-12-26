@@ -29,6 +29,9 @@ class MessagesFragment : Fragment() {
     private var _binding: FragmentMessagesBinding? = null
     private val binding get() = _binding!!
     private lateinit var adapter: MessageAdapter
+    
+    // 待显示的消息ID（从通知点击进入时使用）
+    private var pendingMessageId: String? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentMessagesBinding.inflate(inflater, container, false)
@@ -48,6 +51,20 @@ class MessagesFragment : Fragment() {
     }
 
     private var allMessages: List<Message> = emptyList()
+    
+    /**
+     * 通过消息ID显示消息详情（从通知点击调用）
+     */
+    fun showMessageById(messageId: String) {
+        // 如果消息列表已加载，直接查找并显示
+        val message = allMessages.find { it.messageId == messageId }
+        if (message != null) {
+            showMessageDetailDialog(message)
+        } else {
+            // 消息列表还未加载，保存ID等待加载后显示
+            pendingMessageId = messageId
+        }
+    }
 
     private fun setupUI() {
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
@@ -96,6 +113,15 @@ class MessagesFragment : Fragment() {
                     
                     allMessages = messages
                     filterMessages(binding.etSearch.text?.toString() ?: "")
+                    
+                    // 检查是否有待显示的消息
+                    pendingMessageId?.let { msgId ->
+                        val message = messages.find { it.messageId == msgId }
+                        if (message != null) {
+                            pendingMessageId = null
+                            showMessageDetailDialog(message)
+                        }
+                    }
                 }
         }
     }

@@ -51,6 +51,35 @@ class MainActivity : AppCompatActivity() {
 
         setupNavigation()
         checkNotificationPermission()
+        
+        // 处理通知点击的 intent
+        handleNotificationIntent(intent)
+    }
+    
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        intent?.let { handleNotificationIntent(it) }
+    }
+    
+    private fun handleNotificationIntent(intent: Intent) {
+        val openMessages = intent.getBooleanExtra("open_messages", false)
+        val messageId = intent.getStringExtra("message_id")
+        
+        if (openMessages) {
+            // 切换到消息页面
+            binding.bottomNavigation.post {
+                binding.bottomNavigation.selectedItemId = R.id.nav_messages
+            }
+            
+            // 如果有 messageId，让 MessagesFragment 显示该消息的详情
+            if (!messageId.isNullOrEmpty()) {
+                messagesFragment.showMessageById(messageId)
+            }
+            
+            // 清除 intent extras 防止重复处理
+            intent.removeExtra("open_messages")
+            intent.removeExtra("message_id")
+        }
     }
 
 
