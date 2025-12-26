@@ -103,12 +103,28 @@ class MainActivity : AppCompatActivity() {
         val keyManager = app.keyManager
         val serverUrl = keyManager.serverUrl.trimEnd('/')
 
-        val deviceKey = keyManager.getDeviceKey() ?: return
-        val publicKey = keyManager.exportPublicKeyPEM() ?: ""
+        val deviceKey = keyManager.getDeviceKey()
+        if (deviceKey == null) {
+            Toast.makeText(this, "设备密钥未初始化，请重启应用", Toast.LENGTH_SHORT).show()
+            return
+        }
+        
+        val publicKey = keyManager.exportPublicKeyPEM()
+        if (publicKey == null) {
+            Toast.makeText(this, "加密密钥未初始化，请重启应用", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        // 显示加载提示
+        Toast.makeText(this, "正在注册...", Toast.LENGTH_SHORT).show()
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val client = OkHttpClient()
+                val client = OkHttpClient.Builder()
+                    .connectTimeout(10, java.util.concurrent.TimeUnit.SECONDS)
+                    .readTimeout(10, java.util.concurrent.TimeUnit.SECONDS)
+                    .build()
+                    
                 val requestBody = mapOf(
                     "device_key" to deviceKey,
                     "public_key" to publicKey,
@@ -129,12 +145,21 @@ class MainActivity : AppCompatActivity() {
                         Toast.makeText(this@MainActivity, "注册成功！", Toast.LENGTH_SHORT).show()
                         restartWebSocketService()
                     } else {
-                        Toast.makeText(this@MainActivity, "注册失败: ${response.code}", Toast.LENGTH_SHORT).show()
+                        val errorBody = response.body?.string() ?: "未知错误"
+                        Toast.makeText(this@MainActivity, "注册失败: ${response.code} - $errorBody", Toast.LENGTH_LONG).show()
                     }
+                }
+            } catch (e: java.net.UnknownHostException) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@MainActivity, "无法连接服务器，请检查网络或服务器地址", Toast.LENGTH_LONG).show()
+                }
+            } catch (e: java.net.SocketTimeoutException) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@MainActivity, "连接超时，请检查网络", Toast.LENGTH_LONG).show()
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@MainActivity, "网络错误: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "注册错误: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
