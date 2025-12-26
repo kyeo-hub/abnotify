@@ -7,11 +7,11 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 	"github.com/accnotify/server/crypto"
 	"github.com/accnotify/server/model"
 	"github.com/accnotify/server/storage"
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 )
 
 // WebhookHandler handles webhook requests from various services
@@ -64,14 +64,99 @@ func (h *WebhookHandler) HandleGenericWebhook(c *gin.Context) {
 	// Try to parse as JSON
 	var jsonData map[string]interface{}
 	if err := json.Unmarshal(body, &jsonData); err == nil {
-		// Format JSON for display
-		formatted, _ := json.MarshalIndent(jsonData, "", "  ")
-		h.sendWebhookMessage(deviceKey, device, "Webhook", string(formatted), c)
+		// 智能解析 JSON 内容，提取有意义的标题和正文
+		title, parsedBody := h.parseGenericJSON(jsonData)
+		h.sendWebhookMessage(deviceKey, device, title, parsedBody, c)
 		return
 	}
 
 	// If not JSON, send as plain text
 	h.sendWebhookMessage(deviceKey, device, "Webhook", string(body), c)
+}
+
+// parseGenericJSON attempts to extract meaningful title and body from generic JSON
+func (h *WebhookHandler) parseGenericJSON(data map[string]interface{}) (title string, body string) {
+	// 尝试提取标题 - 按优先级检查常见字段
+	titleFields := []string{
+		"title", "Title", "TITLE",
+		"subject", "Subject", "SUBJECT",
+		"name", "Name", "NAME",
+		"event", "Event", "EVENT",
+		"event_type", "eventType", "EventType",
+		"action", "Action", "ACTION",
+		"type", "Type", "TYPE",
+		"alert_name", "alertName", "AlertName",
+	}
+
+	for _, field := range titleFields {
+		if val, ok := data[field]; ok {
+			if strVal, ok := val.(string); ok && strVal != "" {
+				title = strVal
+				break
+			}
+		}
+	}
+
+	// 尝试提取正文 - 按优先级检查常见字段
+	bodyFields := []string{
+		"body", "Body", "BODY",
+		"message", "Message", "MESSAGE",
+		"content", "Content", "CONTENT",
+		"text", "Text", "TEXT",
+		"description", "Description", "DESCRIPTION",
+		"summary", "Summary", "SUMMARY",
+		"details", "Details", "DETAILS",
+		"data", "Data", "DATA",
+		"payload", "Payload", "PAYLOAD",
+	}
+
+	var extractedBody string
+	for _, field := range bodyFields {
+		if val, ok := data[field]; ok {
+			switch v := val.(type) {
+			case string:
+				if v != "" {
+					extractedBody = v
+					break
+				}
+			case map[string]interface{}:
+				// 嵌套对象，格式化为 JSON
+				formatted, _ := json.MarshalIndent(v, "", "  ")
+				extractedBody = string(formatted)
+				break
+			}
+		}
+		if extractedBody != "" {
+			break
+		}
+	}
+
+	// 如果没有找到正文，使用格式化的完整 JSON
+	if extractedBody == "" {
+		formatted, _ := json.MarshalIndent(data, "", "  ")
+		extractedBody = string(formatted)
+	}
+
+	// 如果没有找到标题，使用默认值
+	if title == "" {
+		title = "Webhook"
+	} else {
+		title = "Webhook: " + title
+	}
+
+	// 构建最终消息体
+	// 如果提取了特定字段，同时附上完整 JSON 供参考
+	if extractedBody != "" {
+		formatted, _ := json.MarshalIndent(data, "", "  ")
+		fullJSON := string(formatted)
+		if extractedBody != fullJSON {
+			body = fmt.Sprintf("%s\n\n--- 完整数据 ---\n%s", extractedBody, fullJSON)
+		} else {
+			body = extractedBody
+		}
+	}
+
+	return title, body
 }
 
 // HandleGitHubWebhook handles POST /webhook/:device_key/github
