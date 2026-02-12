@@ -1,4 +1,4 @@
-module github.com/accnotify/server
+module github.com/abnotify/server
 
 go 1.21
 

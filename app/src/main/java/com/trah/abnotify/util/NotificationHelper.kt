@@ -1,4 +1,4 @@
-package com.trah.accnotify.util
+package com.trah.abnotify.util
 
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -6,9 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.core.app.NotificationCompat
-import com.trah.accnotify.AccnotifyApp
-import com.trah.accnotify.R
-import com.trah.accnotify.ui.MainActivity
+import com.trah.abnotify.AbnotifyApp
+import com.trah.abnotify.R
+import com.trah.abnotify.ui.MainActivity
 import java.util.concurrent.atomic.AtomicInteger
 
 object NotificationHelper {
@@ -23,10 +23,10 @@ object NotificationHelper {
         group: String? = null,
         url: String? = null
     ) {
-        val notificationManager = AccnotifyApp.getInstance().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager = AbnotifyApp.getInstance().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val notificationId = notificationIdCounter.getAndIncrement()
 
-        // 处理消息体 - 简化 JSON 显示
+        // 处理消息�?- 简�?JSON 显示
         val displayBody = formatBodyForNotification(body)
 
         // Content intent - open app to view full message
@@ -42,7 +42,7 @@ object NotificationHelper {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        // URL 打开动作（如果有）
+        // URL 打开动作（如果有�?
         val urlIntent = if (!url.isNullOrEmpty()) {
             PendingIntent.getActivity(
                 context,
@@ -53,9 +53,9 @@ object NotificationHelper {
         } else null
 
         // Use group parameter if provided, otherwise use messageId as group key
-        val groupKey = group ?: "accnotify_$messageId"
+        val groupKey = group ?: "abnotify_$messageId"
 
-        val builder = NotificationCompat.Builder(context, AccnotifyApp.CHANNEL_MESSAGES)
+        val builder = NotificationCompat.Builder(context, AbnotifyApp.CHANNEL_MESSAGES)
             .setSmallIcon(R.drawable.ic_notification)
             .setContentTitle(title)
             .setContentText(displayBody)
@@ -84,12 +84,12 @@ object NotificationHelper {
 
     /**
      * 格式化消息体用于通知显示
-     * 对于长 JSON 数据进行简化处理
+     * 对于�?JSON 数据进行简化处�?
      */
     private fun formatBodyForNotification(body: String): String {
         val trimmed = body.trim()
         
-        // 检查是否包含 "--- 完整数据 ---" 分隔符，只显示摘要部分
+        // 检查是否包�?"--- 完整数据 ---" 分隔符，只显示摘要部�?
         val separatorIndex = trimmed.indexOf("--- 完整数据 ---")
         if (separatorIndex > 0) {
             return trimmed.substring(0, separatorIndex).trim() + "\n(点击查看完整数据)"
@@ -98,12 +98,12 @@ object NotificationHelper {
         // 检查是否是 JSON 格式
         if ((trimmed.startsWith("{") && trimmed.endsWith("}")) ||
             (trimmed.startsWith("[") && trimmed.endsWith("]"))) {
-            // JSON 数据 - 尝试提取关键信息或简化显示
+            // JSON 数据 - 尝试提取关键信息或简化显�?
             return try {
                 val gson = com.google.gson.Gson()
                 val json = gson.fromJson(trimmed, com.google.gson.JsonObject::class.java)
                 
-                // 尝试提取常见的消息字段
+                // 尝试提取常见的消息字�?
                 val messageField = json.get("message")?.asString
                     ?: json.get("text")?.asString
                     ?: json.get("content")?.asString
@@ -120,7 +120,7 @@ object NotificationHelper {
                     }
                 }
             } catch (e: Exception) {
-                // JSON 解析失败，直接显示
+                // JSON 解析失败，直接显�?
                 if (trimmed.length > 300) {
                     trimmed.take(300) + "...\n(点击查看完整内容)"
                 } else {
@@ -129,7 +129,7 @@ object NotificationHelper {
             }
         }
         
-        // 非 JSON 数据
+        // �?JSON 数据
         return if (body.length > 500) {
             body.take(500) + "...\n(点击查看完整内容)"
         } else {

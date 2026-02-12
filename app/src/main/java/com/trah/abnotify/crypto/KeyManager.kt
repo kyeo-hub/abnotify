@@ -1,4 +1,4 @@
-package com.trah.accnotify.crypto
+package com.trah.abnotify.crypto
 
 import android.content.Context
 import android.security.keystore.KeyGenParameterSpec
@@ -194,8 +194,8 @@ class KeyManager(private val context: Context) {
 
     companion object {
         private const val ANDROID_KEYSTORE = "AndroidKeyStore"
-        private const val RSA_KEY_ALIAS = "accnotify_rsa_key"
-        private const val PREFS_NAME = "accnotify_secure_prefs"
+        private const val RSA_KEY_ALIAS = "abnotify_rsa_key"
+        private const val PREFS_NAME = "abnotify_secure_prefs"
         private const val PREF_DEVICE_KEY = "device_key"
         private const val PREF_SERVER_URL = "server_url"
         private const val PREF_SERVER_LIST = "server_list"

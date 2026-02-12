@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/accnotify/server/crypto"
-	"github.com/accnotify/server/model"
-	"github.com/accnotify/server/storage"
+	"github.com/abnotify/server/crypto"
+	"github.com/abnotify/server/model"
+	"github.com/abnotify/server/storage"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )

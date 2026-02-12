@@ -17,5 +17,5 @@ dependencyResolutionManagement {
 
 
 
-rootProject.name = "Accnotify"
+rootProject.name = "Abnotify"
 include(":app")

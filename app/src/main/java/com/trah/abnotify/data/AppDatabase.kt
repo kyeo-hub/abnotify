@@ -1,4 +1,4 @@
-package com.trah.accnotify.data
+package com.trah.abnotify.data
 
 import android.content.Context
 import androidx.room.Database
@@ -17,7 +17,7 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun messageDao(): MessageDao
 
     companion object {
-        private const val DATABASE_NAME = "accnotify.db"
+        private const val DATABASE_NAME = "abnotify.db"
 
         @Volatile
         private var instance: AppDatabase? = null

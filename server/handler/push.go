@@ -7,9 +7,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/accnotify/server/crypto"
-	"github.com/accnotify/server/model"
-	"github.com/accnotify/server/storage"
+	"github.com/abnotify/server/crypto"
+	"github.com/abnotify/server/model"
+	"github.com/abnotify/server/storage"
 )
 
 // PushHandler handles push notification requests
@@ -151,7 +151,7 @@ func (h *PushHandler) HandleSimplePush(c *gin.Context) {
 	// If only one param, treat it as body
 	if body == "" {
 		body = title
-		title = "Accnotify"
+		title = "abnotify"
 	}
 
 	// Convert to POST request

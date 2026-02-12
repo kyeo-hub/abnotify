@@ -1,4 +1,4 @@
-package com.trah.accnotify.service
+package com.trah.abnotify.service
 
 import android.accessibilityservice.AccessibilityService
 import android.content.Intent
@@ -6,7 +6,7 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
-import com.trah.accnotify.AccnotifyApp
+import com.trah.abnotify.AbnotifyApp
 
 /**
  * Minimal Accessibility Service for Background Persistence.

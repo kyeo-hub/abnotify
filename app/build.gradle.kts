@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.trah.accnotify"
+    namespace = "com.trah.abnotify"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.trah.accnotify"
+        applicationId = "com.trah.abnotify"
         minSdk = 26
         targetSdk = 34
         versionCode = 2

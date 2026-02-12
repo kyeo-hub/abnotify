@@ -1,4 +1,4 @@
-package com.trah.accnotify.ui
+package com.trah.abnotify.ui
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -15,11 +15,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.materialswitch.MaterialSwitch
-import com.trah.accnotify.AccnotifyApp
-import com.trah.accnotify.BuildConfig
-import com.trah.accnotify.R
-import com.trah.accnotify.databinding.FragmentSettingsBinding
-import com.trah.accnotify.databinding.ItemServerBinding
+import com.trah.abnotify.AbnotifyApp
+import com.trah.abnotify.BuildConfig
+import com.trah.abnotify.R
+import com.trah.abnotify.databinding.FragmentSettingsBinding
+import com.trah.abnotify.databinding.ItemServerBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,7 +30,7 @@ class SettingsFragment : Fragment() {
 
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
-    private val app by lazy { AccnotifyApp.getInstance() }
+    private val app by lazy { AbnotifyApp.getInstance() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentSettingsBinding.inflate(inflater, container, false)
@@ -59,7 +59,7 @@ class SettingsFragment : Fragment() {
     private fun checkForUpdate() {
         binding.btnCheckUpdate.isEnabled = false
         val originalText = binding.tvVersion.text
-        binding.tvVersion.text = "正在检查更新..."
+        binding.tvVersion.text = "正在检查更�?.."
 
         lifecycleScope.launch {
             try {
@@ -72,24 +72,24 @@ class SettingsFragment : Fragment() {
                     if (latestVersion != null) {
                         if (compareVersions(latestVersion, currentVersion) > 0) {
                             // New version available
-                            binding.tvVersion.text = "发现新版本 $latestVersion"
+                            binding.tvVersion.text = "发现新版�?$latestVersion"
                             showUpdateDialog(latestVersion)
                         } else {
                             // Up to date
-                            binding.tvVersion.text = "已是最新版本 ($currentVersion)"
-                            Toast.makeText(context, "当前已是最新版本", Toast.LENGTH_SHORT).show()
+                            binding.tvVersion.text = "已是最新版�?($currentVersion)"
+                            Toast.makeText(context, "当前已是最新版�?, Toast.LENGTH_SHORT).show()
                         }
                     } else {
                         // Failed to check
                         binding.tvVersion.text = originalText
-                        Toast.makeText(context, "检查更新失败，请稍后再试", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "检查更新失败，请稍后再�?, Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     binding.btnCheckUpdate.isEnabled = true
                     binding.tvVersion.text = originalText
-                    Toast.makeText(context, "检查更新失败: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "检查更新失�? ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -97,7 +97,7 @@ class SettingsFragment : Fragment() {
 
     private suspend fun fetchLatestVersion(): String? = withContext(Dispatchers.IO) {
         try {
-            val url = URL("https://api.github.com/repos/trah01/Accnotify/releases/latest")
+            val url = URL("https://api.github.com/repos/trah01/abnotify/releases/latest")
             val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "GET"
             connection.connectTimeout = 10000
@@ -136,10 +136,10 @@ class SettingsFragment : Fragment() {
 
     private fun showUpdateDialog(latestVersion: String) {
         AlertDialog.Builder(requireContext())
-            .setTitle("发现新版本")
-            .setMessage("当前版本: ${BuildConfig.VERSION_NAME}\n最新版本: $latestVersion\n\n是否前往 GitHub 下载？")
+            .setTitle("发现新版�?)
+            .setMessage("当前版本: ${BuildConfig.VERSION_NAME}\n最新版�? $latestVersion\n\n是否前往 GitHub 下载�?)
             .setPositiveButton("前往下载") { _, _ ->
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/trah01/Accnotify/releases"))
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/trah01/abnotify/releases"))
                 startActivity(intent)
             }
             .setNegativeButton("取消", null)
@@ -159,7 +159,7 @@ class SettingsFragment : Fragment() {
             ).show()
 
             // Restart WebSocket service to apply changes
-            val intent = android.content.Intent(context, com.trah.accnotify.service.WebSocketService::class.java)
+            val intent = android.content.Intent(context, com.trah.abnotify.service.WebSocketService::class.java)
             context?.stopService(intent)
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 context?.startForegroundService(intent)
@@ -205,8 +205,8 @@ class SettingsFragment : Fragment() {
             // Delete
             itemBinding.btnDelete.setOnClickListener {
                 showCleanDialog(
-                    title = "删除服务器",
-                    message = "确定要删除 $url 吗？",
+                    title = "删除服务�?,
+                    message = "确定要删�?$url 吗？",
                     positiveText = "删除",
                     onPositive = {
                         keyManager.removeServer(url)
@@ -228,7 +228,7 @@ class SettingsFragment : Fragment() {
 
         showCleanDialog(
             title = "编辑服务器地址",
-            message = "请输入新的服务器地址：",
+            message = "请输入新的服务器地址�?,
             positiveText = "保存",
             customView = et,
             onPositive = {
@@ -243,7 +243,7 @@ class SettingsFragment : Fragment() {
                         keyManager.serverUrl = newUrl
                     }
                     setupServerList()
-                    Toast.makeText(context, "服务器地址已更新", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "服务器地址已更�?, Toast.LENGTH_SHORT).show()
                 }
             }
         )
@@ -257,8 +257,8 @@ class SettingsFragment : Fragment() {
             et.setPadding(32, 32, 32, 32)
 
             showCleanDialog(
-                title = "添加服务器",
-                message = "请输入服务器地址：",
+                title = "添加服务�?,
+                message = "请输入服务器地址�?,
                 positiveText = "添加",
                 customView = et,
                 onPositive = {
@@ -272,14 +272,14 @@ class SettingsFragment : Fragment() {
         }
 
         binding.linkGithub.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/trah01/Accnotify"))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/trah01/abnotify"))
             startActivity(intent)
         }
 
         binding.btnResetEncryption.setOnClickListener {
             showCleanDialog(
                 title = "重置加密密钥",
-                message = "这将生成全新的 E2E 公私钥对。\n\n旧消息将无法解密。重置后必须点击首页的\"同步服务器\"。",
+                message = "这将生成全新�?E2E 公私钥对。\n\n旧消息将无法解密。重置后必须点击首页的\"同步服务器\"�?,
                 positiveText = "重置",
                 onPositive = {
                     app.keyManager.regenerateAllKeys()
@@ -290,7 +290,7 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setupKeepAliveSettings() {
-        val helper = com.trah.accnotify.util.KeepAliveHelper
+        val helper = com.trah.abnotify.util.KeepAliveHelper
         val context = requireContext()
 
         binding.root.findViewById<TextView>(R.id.btnKeepAliveStatus).setOnClickListener {
@@ -328,14 +328,14 @@ class SettingsFragment : Fragment() {
 
     private fun showKeepAliveStatusDialog() {
         val context = requireContext()
-        val helper = com.trah.accnotify.util.KeepAliveHelper
+        val helper = com.trah.abnotify.util.KeepAliveHelper
 
         val summary = helper.getStatusSummary(context)
         val actions = helper.getRecommendedActions()
 
         val message = StringBuilder(summary)
         message.append("\n建议操作:\n")
-        actions.forEach { message.append("• $it\n") }
+        actions.forEach { message.append("�?$it\n") }
 
         AlertDialog.Builder(requireContext())
             .setTitle("保活状态及建议")

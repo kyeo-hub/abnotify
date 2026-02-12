@@ -29,7 +29,7 @@ func DefaultConfig() *Config {
 	return &Config{
 		Host:           "0.0.0.0",
 		Port:           8080,
-		DBPath:         "./data/accnotify.db",
+		DBPath:         "./data/abnotify.db",
 		WSPingInterval: 30,
 		WSPongTimeout:  60,
 		EnableHTTPS:    false,
@@ -40,30 +40,30 @@ func DefaultConfig() *Config {
 func LoadFromEnv() *Config {
 	cfg := DefaultConfig()
 
-	if host := os.Getenv("ACCNOTIFY_HOST"); host != "" {
+	if host := os.Getenv("ABNOTIFY_HOST"); host != "" {
 		cfg.Host = host
 	}
 
-	if port := os.Getenv("ACCNOTIFY_PORT"); port != "" {
+	if port := os.Getenv("ABNOTIFY_PORT"); port != "" {
 		if p, err := strconv.Atoi(port); err == nil {
 			cfg.Port = p
 		}
 	}
 
-	if dbPath := os.Getenv("ACCNOTIFY_DB_PATH"); dbPath != "" {
+	if dbPath := os.Getenv("ABNOTIFY_DB_PATH"); dbPath != "" {
 		cfg.DBPath = dbPath
 	}
 
-	if pingInterval := os.Getenv("ACCNOTIFY_WS_PING_INTERVAL"); pingInterval != "" {
+	if pingInterval := os.Getenv("ABNOTIFY_WS_PING_INTERVAL"); pingInterval != "" {
 		if p, err := strconv.Atoi(pingInterval); err == nil {
 			cfg.WSPingInterval = p
 		}
 	}
 
-	if os.Getenv("ACCNOTIFY_ENABLE_HTTPS") == "true" {
+	if os.Getenv("ABNOTIFY_ENABLE_HTTPS") == "true" {
 		cfg.EnableHTTPS = true
-		cfg.CertFile = os.Getenv("ACCNOTIFY_CERT_FILE")
-		cfg.KeyFile = os.Getenv("ACCNOTIFY_KEY_FILE")
+		cfg.CertFile = os.Getenv("ABNOTIFY_CERT_FILE")
+		cfg.KeyFile = os.Getenv("ABNOTIFY_KEY_FILE")
 	}
 
 	return cfg

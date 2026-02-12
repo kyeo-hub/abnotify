@@ -1,10 +1,10 @@
-package com.trah.accnotify.service
+package com.trah.abnotify.service
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import com.trah.accnotify.AccnotifyApp
+import com.trah.abnotify.AbnotifyApp
 
 class BootReceiver : BroadcastReceiver() {
 
@@ -12,7 +12,7 @@ class BootReceiver : BroadcastReceiver() {
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
             // Only start if device is registered
             try {
-                val app = AccnotifyApp.getInstance()
+                val app = AbnotifyApp.getInstance()
                 if (app.keyManager.isRegistered != true) {
                     return
                 }

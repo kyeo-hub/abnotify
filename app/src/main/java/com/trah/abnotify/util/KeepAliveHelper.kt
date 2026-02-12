@@ -1,4 +1,4 @@
-package com.trah.accnotify.util
+package com.trah.abnotify.util
 
 import android.app.Activity
 import android.app.AlarmManager
@@ -86,7 +86,7 @@ object KeepAliveHelper {
             Manufacturer.OPPO -> "OPPO"
             Manufacturer.VIVO -> "vivo/iQOO"
             Manufacturer.SAMSUNG -> "三星"
-            Manufacturer.ONEPLUS -> "一加"
+            Manufacturer.ONEPLUS -> "一�?
             Manufacturer.MEIZU -> "魅族"
             Manufacturer.REALME -> "Realme"
             Manufacturer.ASUS -> "华硕"
@@ -122,7 +122,7 @@ object KeepAliveHelper {
      * Check if accessibility service is enabled
      */
     fun isAccessibilityServiceEnabled(context: Context): Boolean {
-        val expectedComponentName = ComponentName(context, "com.trah.accnotify.service.KeepAliveAccessibilityService")
+        val expectedComponentName = ComponentName(context, "com.trah.abnotify.service.KeepAliveAccessibilityService")
         val enabledServices = Settings.Secure.getString(context.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
         return enabledServices?.contains(expectedComponentName.flattenToString()) == true
     }
@@ -152,7 +152,7 @@ object KeepAliveHelper {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true
         
         if (isIgnoringBatteryOptimizations(context)) {
-            Toast.makeText(context, "✓ 已忽略电池优化", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "�?已忽略电池优�?, Toast.LENGTH_SHORT).show()
             return true
         }
 
@@ -200,7 +200,7 @@ object KeepAliveHelper {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return true
         
         if (canScheduleExactAlarms(context)) {
-            Toast.makeText(context, "✓ 已允许精确闹钟", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "�?已允许精确闹�?, Toast.LENGTH_SHORT).show()
             return true
         }
 
@@ -516,11 +516,11 @@ object KeepAliveHelper {
         sb.append("设备: ${getManufacturerName()} ${Build.MODEL}\n")
         sb.append("Android ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})\n\n")
         
-        val batteryOpt = if (isIgnoringBatteryOptimizations(context)) "✓ 已忽略" else "✗ 未忽略"
+        val batteryOpt = if (isIgnoringBatteryOptimizations(context)) "�?已忽�? else "�?未忽�?
         sb.append("电池优化: $batteryOpt\n")
         
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val exactAlarm = if (canScheduleExactAlarms(context)) "✓ 已允许" else "✗ 未允许"
+            val exactAlarm = if (canScheduleExactAlarms(context)) "�?已允�? else "�?未允�?
             sb.append("精确闹钟: $exactAlarm\n")
         }
         
@@ -539,7 +539,7 @@ object KeepAliveHelper {
             Manufacturer.XIAOMI -> {
                 actions.add("开启自启动权限")
                 actions.add("锁定后台（任务卡片下拉锁定）")
-                actions.add("省电策略设为无限制")
+                actions.add("省电策略设为无限�?)
             }
             Manufacturer.HUAWEI -> {
                 actions.add("开启自启动权限")
@@ -547,21 +547,21 @@ object KeepAliveHelper {
                 actions.add("电池管理：手动管理，允许后台运行")
             }
             Manufacturer.OPPO, Manufacturer.ONEPLUS, Manufacturer.REALME -> {
-                actions.add("允许自启动")
+                actions.add("允许自启�?)
                 actions.add("允许后台运行")
                 actions.add("电池优化：无限制")
             }
             Manufacturer.VIVO -> {
                 actions.add("允许后台运行")
-                actions.add("允许自启动")
-                actions.add("耗电异常优化：关闭")
+                actions.add("允许自启�?)
+                actions.add("耗电异常优化：关�?)
             }
             Manufacturer.SAMSUNG -> {
                 actions.add("电池优化：不受监视的应用")
                 actions.add("绝不休眠应用")
             }
             else -> {
-                actions.add("允许自启动（如有）")
+                actions.add("允许自启动（如有�?)
                 actions.add("锁定后台")
             }
         }

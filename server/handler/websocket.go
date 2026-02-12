@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/gorilla/websocket"
-	"github.com/accnotify/server/model"
-	"github.com/accnotify/server/storage"
+	"github.com/abnotify/server/model"
+	"github.com/abnotify/server/storage"
 )
 
 const (

@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/accnotify/server/model"
+	"github.com/abnotify/server/model"
 	_ "github.com/mattn/go-sqlite3"
 )
 

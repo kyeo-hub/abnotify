@@ -1,4 +1,4 @@
-package com.trah.accnotify.ui
+package com.trah.abnotify.ui
 
 import android.app.AlertDialog
 import android.content.ClipData
@@ -15,10 +15,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.trah.accnotify.AccnotifyApp
-import com.trah.accnotify.databinding.FragmentMessagesBinding
-import com.trah.accnotify.data.Message
-import com.trah.accnotify.R
+import com.trah.abnotify.AbnotifyApp
+import com.trah.abnotify.databinding.FragmentMessagesBinding
+import com.trah.abnotify.data.Message
+import com.trah.abnotify.R
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -53,15 +53,15 @@ class MessagesFragment : Fragment() {
     private var allMessages: List<Message> = emptyList()
     
     /**
-     * 通过消息ID显示消息详情（从通知点击调用）
+     * 通过消息ID显示消息详情（从通知点击调用�?
      */
     fun showMessageById(messageId: String) {
-        // 如果消息列表已加载，直接查找并显示
+        // 如果消息列表已加载，直接查找并显�?
         val message = allMessages.find { it.messageId == messageId }
         if (message != null) {
             showMessageDetailDialog(message)
         } else {
-            // 消息列表还未加载，保存ID等待加载后显示
+            // 消息列表还未加载，保存ID等待加载后显�?
             pendingMessageId = messageId
         }
     }
@@ -104,7 +104,7 @@ class MessagesFragment : Fragment() {
         binding.recyclerView.visibility = View.GONE
         
         viewLifecycleOwner.lifecycleScope.launch {
-            AccnotifyApp.getInstance().database.messageDao()
+            AbnotifyApp.getInstance().database.messageDao()
                 .getAllMessages()
                 .collectLatest { messages ->
                     // Hide loading
@@ -127,7 +127,7 @@ class MessagesFragment : Fragment() {
     }
 
     /**
-     * 显示消息详情对话框
+     * 显示消息详情对话�?
      */
     private fun showMessageDetailDialog(message: Message) {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_message_detail, null)
@@ -140,14 +140,14 @@ class MessagesFragment : Fragment() {
 
         val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         
-        tvTitle.text = message.title ?: "Accnotify"
+        tvTitle.text = message.title ?: "abnotify"
         tvTime.text = dateFormat.format(message.timestamp)
         
-        // 格式化消息内容
+        // 格式化消息内�?
         val bodyText = formatMessageBody(message.body ?: "")
         tvBody.text = bodyText
         
-        // 设置滚动区域最大高度为屏幕高度的 50%
+        // 设置滚动区域最大高度为屏幕高度�?50%
         val displayMetrics = resources.displayMetrics
         val maxHeight = (displayMetrics.heightPixels * 0.5).toInt()
         scrollBody.post {
@@ -166,7 +166,7 @@ class MessagesFragment : Fragment() {
 
         btnCopy.setOnClickListener {
             copyToClipboard(message.body ?: "")
-            Toast.makeText(requireContext(), "已复制到剪贴板", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "已复制到剪贴�?, Toast.LENGTH_SHORT).show()
         }
 
         btnClose.setOnClickListener {
@@ -177,7 +177,7 @@ class MessagesFragment : Fragment() {
     }
 
     /**
-     * 格式化消息正文 - 尝试美化 JSON 或保持原样
+     * 格式化消息正�?- 尝试美化 JSON 或保持原�?
      */
     private fun formatMessageBody(body: String): String {
         // 尝试检测是否是 JSON 并格式化
@@ -209,11 +209,11 @@ class MessagesFragment : Fragment() {
     private fun showClearConfirmDialog() {
         showCleanDialog(
             title = "清空消息",
-            message = "确定清空所有消息记录吗？此操作不可恢复。",
+            message = "确定清空所有消息记录吗？此操作不可恢复�?,
             positiveText = "清空",
             onPositive = {
                 viewLifecycleOwner.lifecycleScope.launch {
-                    AccnotifyApp.getInstance().database.messageDao().deleteAll()
+                    AbnotifyApp.getInstance().database.messageDao().deleteAll()
                 }
             }
         )
@@ -297,7 +297,7 @@ class MessagesFragment : Fragment() {
             private val tvTime: TextView = itemView.findViewById(R.id.tvTime)
 
             fun bind(message: Message) {
-                tvTitle.text = message.title ?: "Accnotify"
+                tvTitle.text = message.title ?: "abnotify"
                 tvBody.text = message.body ?: ""
                 tvTime.text = dateFormat.format(message.timestamp)
                 

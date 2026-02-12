@@ -12,9 +12,9 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/accnotify/server/config"
-	"github.com/accnotify/server/handler"
-	"github.com/accnotify/server/storage"
+	"github.com/abnotify/server/config"
+	"github.com/abnotify/server/handler"
+	"github.com/abnotify/server/storage"
 )
 
 func main() {
@@ -81,7 +81,7 @@ func main() {
 
 	// Start server in goroutine
 	go func() {
-		log.Printf("Accnotify server starting on %s", addr)
+		log.Printf("abnotify server starting on %s", addr)
 		var err error
 		if cfg.EnableHTTPS {
 			err = srv.ListenAndServeTLS(cfg.CertFile, cfg.KeyFile)
@@ -126,7 +126,7 @@ func handleSimplePushParams(h *handler.PushHandler) gin.HandlerFunc {
 		var title, body string
 		if len(parts) == 1 {
 			// Only body provided
-			title = "Accnotify"
+			title = "Abnotify"
 			body = parts[0]
 		} else {
 			// Title and body provided

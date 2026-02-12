@@ -1,6 +1,6 @@
-# Accnotify
+# Abnotify
 
-Accnotify 是一款极简、纯净、安全的 Android 即时通知推送工具。它兼容 Bark 协议，采用创新的保活机制确保在各种 Android 系统（如 ColorOS、HyperOS 等）下都能稳定运行。
+Abnotify 是一款极简、纯净、安全的 Android 即时通知推送工具。它兼容 Bark 协议，采用创新的保活机制确保在各种 Android 系统（如 ColorOS、HyperOS 等）下都能稳定运行。
 
 ## 核心特性
 
@@ -27,8 +27,8 @@ docker-compose up -d
 ```bash
 cd server
 go mod download
-go build -o accnotify-server
-./accnotify-server
+go build -o abnotify-server
+./abnotify-server
 ```
 
 #### 额外说明
@@ -50,7 +50,7 @@ go build -o accnotify-server
 
 ### 2. 安装客户端
 
-1. 下载并安装 Accnotify APK。
+1. 下载并安装 Abnotify APK。
 2. 打开应用，输入您的服务器地址。
 3. **重要：** 进入"保活设置"，开启"辅助功能（保活）"和自启动权限。
 4. 复制生成的推送地址，即可开始发送消息。
@@ -62,7 +62,7 @@ go build -o accnotify-server
 ```bash
 curl -X POST "http://your-server:8080/push/your-device-key" \
      -H "Content-Type: application/json" \
-     -d '{"title":"Hello","body":"这是一条来自 Accnotify 的消息"}'
+     -d '{"title":"Hello","body":"这是一条来自 Abnotify 的消息"}'
 ```
 
 ### GET 请求（兼容 Bark）
@@ -191,11 +191,11 @@ Target URL: https://your-server.com/webhook/your-device-key/gitea
 
 为确保应用后台稳定运行，请完成以下设置：
 
-1. **辅助功能**：开启 Accnotify 辅助功能服务
-2. **电池优化**：将 Accnotify 加入电池优化白名单
-3. **自启动**：允许 Accnotify 开机自启动（部分 ROM 需要）
-4. **后台运行**：允许 Accnotify 后台活动（MIUI/HyperOS 需要）
-5. **通知权限**：允许 Accnotify 发送通知
+1. **辅助功能**：开启 Abnotify 辅助功能服务
+2. **电池优化**：将 Abnotify 加入电池优化白名单
+3. **自启动**：允许 Abnotify 开机自启动（部分 ROM 需要）
+4. **后台运行**：允许 Abnotify 后台活动（MIUI/HyperOS 需要）
+5. **通知权限**：允许 Abnotify 发送通知
 6. **精确闹钟**：允许精确闹钟权限（Android 12+）
 
 ## 注意事项
@@ -209,7 +209,7 @@ Target URL: https://your-server.com/webhook/your-device-key/gitea
 ## 项目结构
 
 ```
-Accnotify/
+Abnotify/
 ├── app/                  # Android 客户端
 │   ├── src/main/
 │   │   ├── java/        # Kotlin 源码

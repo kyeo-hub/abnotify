@@ -1,18 +1,18 @@
 version: '3.8'
 
 services:
-  accnotify:
-    image: trah01/accnotify-server:latest
-    container_name: accnotify-server
+  abnotify:
+    image: trah01/abnotify-server:latest
+    container_name: abnotify-server
     ports:
       - "8080:8080"
     volumes:
-      - accnotify-data:/app/data
+      - abnotify-data:/app/data
     environment:
-      - ACCNOTIFY_HOST=0.0.0.0
-      - ACCNOTIFY_PORT=8080
-      - ACCNOTIFY_DB_PATH=/app/data/accnotify.db
-      - ACCNOTIFY_WS_PING_INTERVAL=30
+      - ABNOTIFY_HOST=0.0.0.0
+      - ABNOTIFY_PORT=8080
+      - ABNOTIFY_DB_PATH=/app/data/abnotify.db
+      - ABNOTIFY_WS_PING_INTERVAL=30
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/health" ]
@@ -22,5 +22,5 @@ services:
       start_period: 5s
 
 volumes:
-  accnotify-data:
+  abnotify-data:
     driver: local

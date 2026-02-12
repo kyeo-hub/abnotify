@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Accnotify</string>
+    <string name="app_name">Abnotify</string>
     <string name="app_description">极简、纯净的即时通知推送</string>
     
     <!-- Main Activity -->
@@ -18,7 +18,7 @@
     <string name="settings">设置</string>
     <string name="server_settings">服务器设置</string>
     <string name="server_url">服务器地址</string>
-    <string name="server_url_summary">输入您的 Accnotify 服务器地址</string>
+    <string name="server_url_summary">输入您的 Abnotify 服务器地址</string>
     <string name="notification_settings">通知设置</string>
     <string name="notification_sound">通知提示音</string>
     <string name="notification_vibrate">振动</string>
@@ -37,11 +37,11 @@
     <!-- Notifications -->
     <string name="notification_channel_name">通知服务</string>
     <string name="notification_channel_description">WebSocket 连接保活</string>
-    <string name="service_notification_title">Accnotify 运行中</string>
+    <string name="service_notification_title">Abnotify 运行中</string>
     <string name="service_notification_text">点击查看详情</string>
     
     <!-- Accessibility Service -->
-    <string name="accessibility_description">用于维持 Accnotify 后台运行稳定性，开启后系统将不会轻易杀死本应用。</string>
+    <string name="accessibility_description">用于维持 Abnotify 后台运行稳定性，开启后系统将不会轻易杀死本应用。</string>
     <string name="accessibility_permission">辅助功能（保活）</string>
     <string name="accessibility_summary">开启辅助功能以增强后台运行稳定性</string>
 
@@ -53,9 +53,9 @@
     <string name="success">成功</string>
 
     <!-- Tutorial -->
-    <string name="tutorial_instructions"><![CDATA[什么是 Accnotify
+    <string name="tutorial_instructions"><![CDATA[什么是 Abnotify
 
-Accnotify 是一款基于 WebSocket 的安卓推送工具。
+Abnotify 是一款基于 WebSocket 的安卓推送工具。
 通过简单的 HTTP 请求，即可向手机发送实时通知。
 
 快速开始

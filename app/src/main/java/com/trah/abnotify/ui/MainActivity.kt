@@ -1,4 +1,4 @@
-package com.trah.accnotify.ui
+package com.trah.abnotify.ui
 
 import android.Manifest
 import android.content.Context
@@ -13,10 +13,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.trah.accnotify.AccnotifyApp
-import com.trah.accnotify.R
-import com.trah.accnotify.databinding.ActivityMainBinding
-import com.trah.accnotify.service.WebSocketService
+import com.trah.abnotify.AbnotifyApp
+import com.trah.abnotify.R
+import com.trah.abnotify.databinding.ActivityMainBinding
+import com.trah.abnotify.service.WebSocketService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,7 +29,7 @@ import okhttp3.RequestBody.Companion.toRequestBody
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val app by lazy { AccnotifyApp.getInstance() }
+    private val app by lazy { AbnotifyApp.getInstance() }
     
     private val homeFragment = HomeFragment()
     private val messagesFragment = MessagesFragment()
@@ -52,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         setupNavigation()
         checkNotificationPermission()
         
-        // 处理通知点击的 intent
+        // 处理通知点击�?intent
         handleNotificationIntent(intent)
     }
     
@@ -66,12 +66,12 @@ class MainActivity : AppCompatActivity() {
         val messageId = intent.getStringExtra("message_id")
         
         if (openMessages) {
-            // 切换到消息页面
+            // 切换到消息页�?
             binding.bottomNavigation.post {
                 binding.bottomNavigation.selectedItemId = R.id.nav_messages
             }
             
-            // 如果有 messageId，让 MessagesFragment 显示该消息的详情
+            // 如果�?messageId，让 MessagesFragment 显示该消息的详情
             if (!messageId.isNullOrEmpty()) {
                 messagesFragment.showMessageById(messageId)
             }
@@ -171,7 +171,7 @@ class MainActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         keyManager.isRegistered = true
-                        Toast.makeText(this@MainActivity, "注册成功！", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "注册成功�?, Toast.LENGTH_SHORT).show()
                         restartWebSocketService()
                     } else {
                         val errorBody = response.body?.string() ?: "未知错误"
@@ -184,7 +184,7 @@ class MainActivity : AppCompatActivity() {
                 }
             } catch (e: java.net.SocketTimeoutException) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@MainActivity, "连接超时，请检查网络", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MainActivity, "连接超时，请检查网�?, Toast.LENGTH_LONG).show()
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {

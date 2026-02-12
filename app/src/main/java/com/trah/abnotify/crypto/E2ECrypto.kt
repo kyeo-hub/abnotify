@@ -1,4 +1,4 @@
-package com.trah.accnotify.crypto
+package com.trah.abnotify.crypto
 
 import android.util.Base64
 import java.security.PrivateKey

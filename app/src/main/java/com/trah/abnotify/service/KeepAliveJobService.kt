@@ -1,4 +1,4 @@
-package com.trah.accnotify.service
+package com.trah.abnotify.service
 
 import android.app.job.JobInfo
 import android.app.job.JobParameters

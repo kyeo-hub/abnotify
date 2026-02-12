@@ -1,14 +1,14 @@
-package com.trah.accnotify
+package com.trah.abnotify
 
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import com.trah.accnotify.crypto.KeyManager
-import com.trah.accnotify.data.AppDatabase
+import com.trah.abnotify.crypto.KeyManager
+import com.trah.abnotify.data.AppDatabase
 
-class AccnotifyApp : Application() {
+class AbnotifyApp : Application() {
 
     lateinit var database: AppDatabase
         private set
@@ -43,8 +43,7 @@ class AccnotifyApp : Application() {
             ).apply {
                 description = getString(R.string.notification_channel_description)
                 setShowBadge(false)
-                lockscreenVisibility = android.app.Notification.VISIBILITY_SECRET  // 锁屏不显示
-            }
+                lockscreenVisibility = android.app.Notification.VISIBILITY_SECRET  // 锁屏不显�?            }
             notificationManager.createNotificationChannel(serviceChannel)
 
             // Message notification channel (high priority)
@@ -63,13 +62,13 @@ class AccnotifyApp : Application() {
     }
 
     companion object {
-        const val CHANNEL_SERVICE = "accnotify_service"
-        const val CHANNEL_MESSAGES = "accnotify_messages"
+        const val CHANNEL_SERVICE = "abnotify_service"
+        const val CHANNEL_MESSAGES = "abnotify_messages"
 
         @Volatile
-        private var instance: AccnotifyApp? = null
+        private var instance: AbnotifyApp? = null
 
-        fun getInstance(): AccnotifyApp {
+        fun getInstance(): AbnotifyApp {
             return instance ?: throw IllegalStateException("Application not initialized")
         }
     }

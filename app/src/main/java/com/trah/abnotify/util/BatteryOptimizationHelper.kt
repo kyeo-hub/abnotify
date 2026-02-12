@@ -1,4 +1,4 @@
-package com.trah.accnotify.util
+package com.trah.abnotify.util
 
 import android.content.Context
 import android.content.Intent

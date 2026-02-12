@@ -1,4 +1,4 @@
-package com.trah.accnotify.service
+package com.trah.abnotify.service
 
 import android.app.AlarmManager
 import android.app.Notification
@@ -18,12 +18,12 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import com.trah.accnotify.AccnotifyApp
-import com.trah.accnotify.R
-import com.trah.accnotify.crypto.E2ECrypto
-import com.trah.accnotify.data.Message
-import com.trah.accnotify.ui.MainActivity
-import com.trah.accnotify.util.NotificationHelper
+import com.trah.abnotify.AbnotifyApp
+import com.trah.abnotify.R
+import com.trah.abnotify.crypto.E2ECrypto
+import com.trah.abnotify.data.Message
+import com.trah.abnotify.ui.MainActivity
+import com.trah.abnotify.util.NotificationHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -95,7 +95,7 @@ class WebSocketService : Service() {
         Log.i(TAG, "Service onCreate")
 
         // Check if foreground notification should be shown
-        val app = application as AccnotifyApp
+        val app = application as AbnotifyApp
         isForegroundMode = app.keyManager.showForegroundNotification
 
         // Acquire connection WakeLock and WiFi Lock for stable connection
@@ -459,7 +459,7 @@ class WebSocketService : Service() {
             isConnecting = true
         }
 
-        val app = AccnotifyApp.getInstance()
+        val app = AbnotifyApp.getInstance()
         val keyManager = app.keyManager
         val deviceKey = keyManager.getDeviceKey()
         if (deviceKey == null) {
@@ -602,7 +602,7 @@ class WebSocketService : Service() {
 
     private fun handlePushMessage(json: JsonObject) {
         Log.i(TAG, "Handling push message: ${json.get("id")}")
-        val app = AccnotifyApp.getInstance()
+        val app = AbnotifyApp.getInstance()
         val messageId = json.get("id")?.asString ?: return
         val data = json.getAsJsonObject("data") ?: return
         Log.i(TAG, "Push data: title=${data.get("title")}, body=${data.get("body")}")
@@ -661,7 +661,7 @@ class WebSocketService : Service() {
         NotificationHelper.showNotification(
             context = this,
             messageId = messageId,
-            title = title ?: "Accnotify",
+            title = title ?: "abnotify",
             body = body ?: "",
             group = group,
             url = url
@@ -715,10 +715,10 @@ class WebSocketService : Service() {
         )
         
         // Simple status text - keep it minimal
-        val statusText = if (isConnected) "运行中" else "连接中..."
+        val statusText = if (isConnected) "运行�? else "连接�?.."
         
         // Build minimal notification
-        return NotificationCompat.Builder(this, AccnotifyApp.CHANNEL_SERVICE)
+        return NotificationCompat.Builder(this, AbnotifyApp.CHANNEL_SERVICE)
             .setContentTitle(getString(R.string.service_notification_title))
             .setContentText(statusText)
             .setSmallIcon(R.drawable.ic_notification)
@@ -727,7 +727,7 @@ class WebSocketService : Service() {
             .setPriority(NotificationCompat.PRIORITY_MIN)  // 最低优先级
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .setShowWhen(false)
-            .setVisibility(NotificationCompat.VISIBILITY_SECRET)  // 锁屏不显示
+            .setVisibility(NotificationCompat.VISIBILITY_SECRET)  // 锁屏不显�?
             .setSilent(true)  // 静音
             .build()
     }
@@ -773,12 +773,12 @@ class WebSocketService : Service() {
         private const val KEEP_ALIVE_REQUEST_CODE = 1001
         private const val RESTART_REQUEST_CODE = 1002
 
-        const val ACTION_CONNECT = "com.trah.accnotify.action.CONNECT"
-        const val ACTION_DISCONNECT = "com.trah.accnotify.action.DISCONNECT"
-        const val ACTION_SEND_ACK = "com.trah.accnotify.action.SEND_ACK"
-        const val ACTION_CONNECTION_STATUS = "com.trah.accnotify.action.CONNECTION_STATUS"
-        const val ACTION_KEEP_ALIVE = "com.trah.accnotify.action.KEEP_ALIVE"
-        const val ACTION_RESTART_SERVICE = "com.trah.accnotify.action.RESTART_SERVICE"
+        const val ACTION_CONNECT = "com.trah.abnotify.action.CONNECT"
+        const val ACTION_DISCONNECT = "com.trah.abnotify.action.DISCONNECT"
+        const val ACTION_SEND_ACK = "com.trah.abnotify.action.SEND_ACK"
+        const val ACTION_CONNECTION_STATUS = "com.trah.abnotify.action.CONNECTION_STATUS"
+        const val ACTION_KEEP_ALIVE = "com.trah.abnotify.action.KEEP_ALIVE"
+        const val ACTION_RESTART_SERVICE = "com.trah.abnotify.action.RESTART_SERVICE"
 
         const val EXTRA_MESSAGE_ID = "message_id"
         const val EXTRA_CONNECTED = "connected"
