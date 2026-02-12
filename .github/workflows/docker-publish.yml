@@ -12,7 +12,7 @@ on:
         default: 'latest'
 
 env:
-  DOCKER_IMAGE: trah01/abnotify-server
+  DOCKER_IMAGE: kyeo-hub/abnotify-server
 
 jobs:
   build-and-push:
@@ -61,7 +61,7 @@ jobs:
             org.opencontainers.image.title=Abnotify Server
             org.opencontainers.image.description=A minimalist, pure, and secure Android instant notification push tool server
             org.opencontainers.image.version=${{ steps.version.outputs.version }}
-            org.opencontainers.image.source=https://github.com/trah01/Abnotify
+            org.opencontainers.image.source=https://github.com/kyeo-hub/Abnotify
             org.opencontainers.image.licenses=MIT
 
       - name: Update Docker Hub description

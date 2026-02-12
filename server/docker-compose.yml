@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   abnotify:
-    image: trah01/abnotify-server:latest
+    image: kyeo-hub/abnotify-server:latest
     container_name: abnotify-server
     ports:
       - "8080:8080"

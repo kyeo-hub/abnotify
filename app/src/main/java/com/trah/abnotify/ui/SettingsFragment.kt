@@ -97,7 +97,7 @@ class SettingsFragment : Fragment() {
 
     private suspend fun fetchLatestVersion(): String? = withContext(Dispatchers.IO) {
         try {
-            val url = URL("https://api.github.com/repos/trah01/abnotify/releases/latest")
+            val url = URL("https://api.github.com/repos/kyeo-hub/abnotify/releases/latest")
             val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "GET"
             connection.connectTimeout = 10000
@@ -139,7 +139,7 @@ class SettingsFragment : Fragment() {
             .setTitle("发现新版�?)
             .setMessage("当前版本: ${BuildConfig.VERSION_NAME}\n最新版�? $latestVersion\n\n是否前往 GitHub 下载�?)
             .setPositiveButton("前往下载") { _, _ ->
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/trah01/abnotify/releases"))
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/kyeo-hub/abnotify/releases"))
                 startActivity(intent)
             }
             .setNegativeButton("取消", null)
@@ -272,7 +272,7 @@ class SettingsFragment : Fragment() {
         }
 
         binding.linkGithub.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/trah01/abnotify"))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/kyeo-hub/abnotify"))
             startActivity(intent)
         }
 
