@@ -1,4 +1,4 @@
-package com.trah.abnotify
+﻿package com.trah.abnotify
 
 import android.app.Application
 import android.app.NotificationChannel
@@ -43,7 +43,8 @@ class AbnotifyApp : Application() {
             ).apply {
                 description = getString(R.string.notification_channel_description)
                 setShowBadge(false)
-                lockscreenVisibility = android.app.Notification.VISIBILITY_SECRET  // 锁屏不显�?            }
+                lockscreenVisibility = android.app.Notification.VISIBILITY_SECRET  // 锁屏不显示
+            }
             notificationManager.createNotificationChannel(serviceChannel)
 
             // Message notification channel (high priority)

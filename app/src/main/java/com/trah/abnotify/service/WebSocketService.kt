@@ -1,4 +1,4 @@
-package com.trah.abnotify.service
+﻿package com.trah.abnotify.service
 
 import android.app.AlarmManager
 import android.app.Notification
@@ -661,7 +661,7 @@ class WebSocketService : Service() {
         NotificationHelper.showNotification(
             context = this,
             messageId = messageId,
-            title = title ?: "abnotify",
+            title = title ?: "Abnotify",
             body = body ?: "",
             group = group,
             url = url
@@ -715,7 +715,7 @@ class WebSocketService : Service() {
         )
         
         // Simple status text - keep it minimal
-        val statusText = if (isConnected) "运行�? else "连接�?.."
+        val statusText = if (isConnected) "运行中" else "连接中..."
         
         // Build minimal notification
         return NotificationCompat.Builder(this, AbnotifyApp.CHANNEL_SERVICE)
@@ -727,7 +727,7 @@ class WebSocketService : Service() {
             .setPriority(NotificationCompat.PRIORITY_MIN)  // 最低优先级
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .setShowWhen(false)
-            .setVisibility(NotificationCompat.VISIBILITY_SECRET)  // 锁屏不显�?
+            .setVisibility(NotificationCompat.VISIBILITY_SECRET)  // 锁屏不显示
             .setSilent(true)  // 静音
             .build()
     }

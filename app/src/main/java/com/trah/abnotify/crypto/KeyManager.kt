@@ -1,4 +1,4 @@
-package com.trah.abnotify.crypto
+﻿package com.trah.abnotify.crypto
 
 import android.content.Context
 import android.security.keystore.KeyGenParameterSpec

@@ -1,4 +1,4 @@
-package com.trah.abnotify.ui
+﻿package com.trah.abnotify.ui
 
 import android.app.AlertDialog
 import android.content.Intent
@@ -42,7 +42,6 @@ class SettingsFragment : Fragment() {
         setupServerList()
         setupActions()
         setupForegroundNotificationSwitch()
-        setupKeepAliveSettings()
         setupVersionInfo()
     }
 
@@ -59,7 +58,7 @@ class SettingsFragment : Fragment() {
     private fun checkForUpdate() {
         binding.btnCheckUpdate.isEnabled = false
         val originalText = binding.tvVersion.text
-        binding.tvVersion.text = "正在检查更�?.."
+        binding.tvVersion.text = "正在检查更新..."
 
         lifecycleScope.launch {
             try {
@@ -72,24 +71,24 @@ class SettingsFragment : Fragment() {
                     if (latestVersion != null) {
                         if (compareVersions(latestVersion, currentVersion) > 0) {
                             // New version available
-                            binding.tvVersion.text = "发现新版�?$latestVersion"
+                            binding.tvVersion.text = "发现新版本 $latestVersion"
                             showUpdateDialog(latestVersion)
                         } else {
                             // Up to date
-                            binding.tvVersion.text = "已是最新版�?($currentVersion)"
-                            Toast.makeText(context, "当前已是最新版�?, Toast.LENGTH_SHORT).show()
+                            binding.tvVersion.text = "已是最新版本 ($currentVersion)"
+                            Toast.makeText(context, "当前已是最新版本", Toast.LENGTH_SHORT).show()
                         }
                     } else {
                         // Failed to check
                         binding.tvVersion.text = originalText
-                        Toast.makeText(context, "检查更新失败，请稍后再�?, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "检查更新失败，请稍后再试", Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     binding.btnCheckUpdate.isEnabled = true
                     binding.tvVersion.text = originalText
-                    Toast.makeText(context, "检查更新失�? ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "检查更新失败: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -97,7 +96,7 @@ class SettingsFragment : Fragment() {
 
     private suspend fun fetchLatestVersion(): String? = withContext(Dispatchers.IO) {
         try {
-            val url = URL("https://api.github.com/repos/kyeo-hub/abnotify/releases/latest")
+            val url = URL("https://api.github.com/repos/trah01/Abnotify/releases/latest")
             val connection = url.openConnection() as HttpURLConnection
             connection.requestMethod = "GET"
             connection.connectTimeout = 10000
@@ -136,10 +135,10 @@ class SettingsFragment : Fragment() {
 
     private fun showUpdateDialog(latestVersion: String) {
         AlertDialog.Builder(requireContext())
-            .setTitle("发现新版�?)
-            .setMessage("当前版本: ${BuildConfig.VERSION_NAME}\n最新版�? $latestVersion\n\n是否前往 GitHub 下载�?)
+            .setTitle("发现新版本")
+            .setMessage("当前版本: ${BuildConfig.VERSION_NAME}\n最新版本: $latestVersion\n\n是否前往 GitHub 下载？")
             .setPositiveButton("前往下载") { _, _ ->
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/kyeo-hub/abnotify/releases"))
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/trah01/Abnotify/releases"))
                 startActivity(intent)
             }
             .setNegativeButton("取消", null)
@@ -205,8 +204,8 @@ class SettingsFragment : Fragment() {
             // Delete
             itemBinding.btnDelete.setOnClickListener {
                 showCleanDialog(
-                    title = "删除服务�?,
-                    message = "确定要删�?$url 吗？",
+                    title = "删除服务器",
+                    message = "确定要删除 $url 吗？",
                     positiveText = "删除",
                     onPositive = {
                         keyManager.removeServer(url)
@@ -228,7 +227,7 @@ class SettingsFragment : Fragment() {
 
         showCleanDialog(
             title = "编辑服务器地址",
-            message = "请输入新的服务器地址�?,
+            message = "请输入新的服务器地址：",
             positiveText = "保存",
             customView = et,
             onPositive = {
@@ -243,7 +242,7 @@ class SettingsFragment : Fragment() {
                         keyManager.serverUrl = newUrl
                     }
                     setupServerList()
-                    Toast.makeText(context, "服务器地址已更�?, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "服务器地址已更新", Toast.LENGTH_SHORT).show()
                 }
             }
         )
@@ -257,8 +256,8 @@ class SettingsFragment : Fragment() {
             et.setPadding(32, 32, 32, 32)
 
             showCleanDialog(
-                title = "添加服务�?,
-                message = "请输入服务器地址�?,
+                title = "添加服务器",
+                message = "请输入服务器地址：",
                 positiveText = "添加",
                 customView = et,
                 onPositive = {
@@ -272,14 +271,14 @@ class SettingsFragment : Fragment() {
         }
 
         binding.linkGithub.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/kyeo-hub/abnotify"))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/trah01/Abnotify"))
             startActivity(intent)
         }
 
         binding.btnResetEncryption.setOnClickListener {
             showCleanDialog(
                 title = "重置加密密钥",
-                message = "这将生成全新�?E2E 公私钥对。\n\n旧消息将无法解密。重置后必须点击首页的\"同步服务器\"�?,
+                message = "这将生成全新的 E2E 公私钥对。\n\n旧消息将无法解密。重置后必须点击首页的\"同步服务器\"。",
                 positiveText = "重置",
                 onPositive = {
                     app.keyManager.regenerateAllKeys()
@@ -287,61 +286,6 @@ class SettingsFragment : Fragment() {
                 }
             )
         }
-    }
-
-    private fun setupKeepAliveSettings() {
-        val helper = com.trah.abnotify.util.KeepAliveHelper
-        val context = requireContext()
-
-        binding.root.findViewById<TextView>(R.id.btnKeepAliveStatus).setOnClickListener {
-            showKeepAliveStatusDialog()
-        }
-
-        binding.root.findViewById<TextView>(R.id.btnBatteryOptimization).setOnClickListener {
-            helper.requestIgnoreBatteryOptimization(context)
-        }
-
-        binding.root.findViewById<TextView>(R.id.btnAutoStart).setOnClickListener {
-            helper.openAutoStartSettings(context)
-        }
-
-        binding.root.findViewById<TextView>(R.id.btnAccessibility).setOnClickListener {
-            helper.openAccessibilitySettings(context)
-        }
-
-        binding.root.findViewById<TextView>(R.id.btnBackgroundSettings).setOnClickListener {
-            helper.openBackgroundSettings(context)
-        }
-
-        binding.root.findViewById<TextView>(R.id.btnNotificationPermission).setOnClickListener {
-            helper.openNotificationSettings(context)
-        }
-
-        binding.root.findViewById<TextView>(R.id.btnExactAlarm).setOnClickListener {
-            helper.requestExactAlarmPermission(context)
-        }
-
-        binding.root.findViewById<TextView>(R.id.btnAppSettings).setOnClickListener {
-            helper.openAppSettings(context)
-        }
-    }
-
-    private fun showKeepAliveStatusDialog() {
-        val context = requireContext()
-        val helper = com.trah.abnotify.util.KeepAliveHelper
-
-        val summary = helper.getStatusSummary(context)
-        val actions = helper.getRecommendedActions()
-
-        val message = StringBuilder(summary)
-        message.append("\n建议操作:\n")
-        actions.forEach { message.append("�?$it\n") }
-
-        AlertDialog.Builder(requireContext())
-            .setTitle("保活状态及建议")
-            .setMessage(message.toString())
-            .setPositiveButton("确定", null)
-            .show()
     }
 
     private fun showCleanDialog(

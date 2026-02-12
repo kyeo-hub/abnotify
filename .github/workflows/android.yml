@@ -43,7 +43,10 @@ jobs:
         curl -L -o gradle/wrapper/gradle-wrapper.jar https://raw.githubusercontent.com/gradle/gradle/v8.5.0/gradle/wrapper/gradle-wrapper.jar
 
     - name: Build Debug APK
-      run: gradle assembleDebug --info 2>&1 | head -500
+      run: gradle assembleDebug
+
+    - name: Build Release APK (unsigned)
+      run: gradle assembleRelease
 
     - name: Build Release APK (unsigned)
       run: gradle assembleRelease

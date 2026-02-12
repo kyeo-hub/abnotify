@@ -1,4 +1,4 @@
-package com.trah.abnotify.service
+﻿package com.trah.abnotify.service
 
 import android.accessibilityservice.AccessibilityService
 import android.content.Intent

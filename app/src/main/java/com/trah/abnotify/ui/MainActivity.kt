@@ -1,4 +1,4 @@
-package com.trah.abnotify.ui
+﻿package com.trah.abnotify.ui
 
 import android.Manifest
 import android.content.Context
@@ -51,35 +51,6 @@ class MainActivity : AppCompatActivity() {
 
         setupNavigation()
         checkNotificationPermission()
-        
-        // 处理通知点击�?intent
-        handleNotificationIntent(intent)
-    }
-    
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        intent?.let { handleNotificationIntent(it) }
-    }
-    
-    private fun handleNotificationIntent(intent: Intent) {
-        val openMessages = intent.getBooleanExtra("open_messages", false)
-        val messageId = intent.getStringExtra("message_id")
-        
-        if (openMessages) {
-            // 切换到消息页�?
-            binding.bottomNavigation.post {
-                binding.bottomNavigation.selectedItemId = R.id.nav_messages
-            }
-            
-            // 如果�?messageId，让 MessagesFragment 显示该消息的详情
-            if (!messageId.isNullOrEmpty()) {
-                messagesFragment.showMessageById(messageId)
-            }
-            
-            // 清除 intent extras 防止重复处理
-            intent.removeExtra("open_messages")
-            intent.removeExtra("message_id")
-        }
     }
 
 
@@ -132,28 +103,12 @@ class MainActivity : AppCompatActivity() {
         val keyManager = app.keyManager
         val serverUrl = keyManager.serverUrl.trimEnd('/')
 
-        val deviceKey = keyManager.getDeviceKey()
-        if (deviceKey == null) {
-            Toast.makeText(this, "设备密钥未初始化，请重启应用", Toast.LENGTH_SHORT).show()
-            return
-        }
-        
-        val publicKey = keyManager.exportPublicKeyPEM()
-        if (publicKey == null) {
-            Toast.makeText(this, "加密密钥未初始化，请重启应用", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        // 显示加载提示
-        Toast.makeText(this, "正在注册...", Toast.LENGTH_SHORT).show()
+        val deviceKey = keyManager.getDeviceKey() ?: return
+        val publicKey = keyManager.exportPublicKeyPEM() ?: ""
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val client = OkHttpClient.Builder()
-                    .connectTimeout(10, java.util.concurrent.TimeUnit.SECONDS)
-                    .readTimeout(10, java.util.concurrent.TimeUnit.SECONDS)
-                    .build()
-                    
+                val client = OkHttpClient()
                 val requestBody = mapOf(
                     "device_key" to deviceKey,
                     "public_key" to publicKey,
@@ -171,24 +126,15 @@ class MainActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         keyManager.isRegistered = true
-                        Toast.makeText(this@MainActivity, "注册成功�?, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "注册成功！", Toast.LENGTH_SHORT).show()
                         restartWebSocketService()
                     } else {
-                        val errorBody = response.body?.string() ?: "未知错误"
-                        Toast.makeText(this@MainActivity, "注册失败: ${response.code} - $errorBody", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this@MainActivity, "注册失败: ${response.code}", Toast.LENGTH_SHORT).show()
                     }
-                }
-            } catch (e: java.net.UnknownHostException) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@MainActivity, "无法连接服务器，请检查网络或服务器地址", Toast.LENGTH_LONG).show()
-                }
-            } catch (e: java.net.SocketTimeoutException) {
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(this@MainActivity, "连接超时，请检查网�?, Toast.LENGTH_LONG).show()
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@MainActivity, "注册错误: ${e.message}", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MainActivity, "网络错误: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }

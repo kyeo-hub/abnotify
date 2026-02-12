@@ -1,4 +1,4 @@
-package com.trah.abnotify.service
+﻿package com.trah.abnotify.service
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -13,7 +13,7 @@ class BootReceiver : BroadcastReceiver() {
             // Only start if device is registered
             try {
                 val app = AbnotifyApp.getInstance()
-                if (app.keyManager.isRegistered != true) {
+                if (app?.keyManager?.isRegistered != true) {
                     return
                 }
             } catch (e: Exception) {

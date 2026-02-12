@@ -1,16 +1,12 @@
-package com.trah.abnotify.ui
+﻿package com.trah.abnotify.ui
 
 import android.app.AlertDialog
-import android.content.ClipData
-import android.content.ClipboardManager
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,10 +24,7 @@ class MessagesFragment : Fragment() {
 
     private var _binding: FragmentMessagesBinding? = null
     private val binding get() = _binding!!
-    private lateinit var adapter: MessageAdapter
-    
-    // 待显示的消息ID（从通知点击进入时使用）
-    private var pendingMessageId: String? = null
+    private val adapter = MessageAdapter()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = FragmentMessagesBinding.inflate(inflater, container, false)
@@ -40,7 +33,6 @@ class MessagesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = MessageAdapter { message -> showMessageDetailDialog(message) }
         setupUI()
         observeMessages()
     }
@@ -51,20 +43,6 @@ class MessagesFragment : Fragment() {
     }
 
     private var allMessages: List<Message> = emptyList()
-    
-    /**
-     * 通过消息ID显示消息详情（从通知点击调用�?
-     */
-    fun showMessageById(messageId: String) {
-        // 如果消息列表已加载，直接查找并显�?
-        val message = allMessages.find { it.messageId == messageId }
-        if (message != null) {
-            showMessageDetailDialog(message)
-        } else {
-            // 消息列表还未加载，保存ID等待加载后显�?
-            pendingMessageId = messageId
-        }
-    }
 
     private fun setupUI() {
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
@@ -113,103 +91,16 @@ class MessagesFragment : Fragment() {
                     
                     allMessages = messages
                     filterMessages(binding.etSearch.text?.toString() ?: "")
-                    
-                    // 检查是否有待显示的消息
-                    pendingMessageId?.let { msgId ->
-                        val message = messages.find { it.messageId == msgId }
-                        if (message != null) {
-                            pendingMessageId = null
-                            showMessageDetailDialog(message)
-                        }
-                    }
                 }
         }
     }
 
-    /**
-     * 显示消息详情对话�?
-     */
-    private fun showMessageDetailDialog(message: Message) {
-        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_message_detail, null)
-        val tvTitle = dialogView.findViewById<TextView>(R.id.dialogTitle)
-        val tvTime = dialogView.findViewById<TextView>(R.id.dialogTime)
-        val tvBody = dialogView.findViewById<TextView>(R.id.dialogBody)
-        val scrollBody = dialogView.findViewById<androidx.core.widget.NestedScrollView>(R.id.scrollBody)
-        val btnCopy = dialogView.findViewById<TextView>(R.id.btnCopy)
-        val btnClose = dialogView.findViewById<TextView>(R.id.btnClose)
 
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-        
-        tvTitle.text = message.title ?: "abnotify"
-        tvTime.text = dateFormat.format(message.timestamp)
-        
-        // 格式化消息内�?
-        val bodyText = formatMessageBody(message.body ?: "")
-        tvBody.text = bodyText
-        
-        // 设置滚动区域最大高度为屏幕高度�?50%
-        val displayMetrics = resources.displayMetrics
-        val maxHeight = (displayMetrics.heightPixels * 0.5).toInt()
-        scrollBody.post {
-            if (scrollBody.height > maxHeight) {
-                val params = scrollBody.layoutParams
-                params.height = maxHeight
-                scrollBody.layoutParams = params
-            }
-        }
-
-        val alertDialog = AlertDialog.Builder(requireContext())
-            .setView(dialogView)
-            .create()
-
-        alertDialog.window?.setBackgroundDrawableResource(android.R.color.transparent)
-
-        btnCopy.setOnClickListener {
-            copyToClipboard(message.body ?: "")
-            Toast.makeText(requireContext(), "已复制到剪贴�?, Toast.LENGTH_SHORT).show()
-        }
-
-        btnClose.setOnClickListener {
-            alertDialog.dismiss()
-        }
-
-        alertDialog.show()
-    }
-
-    /**
-     * 格式化消息正�?- 尝试美化 JSON 或保持原�?
-     */
-    private fun formatMessageBody(body: String): String {
-        // 尝试检测是否是 JSON 并格式化
-        val trimmed = body.trim()
-        if ((trimmed.startsWith("{") && trimmed.endsWith("}")) ||
-            (trimmed.startsWith("[") && trimmed.endsWith("]"))) {
-            return try {
-                val gson = com.google.gson.GsonBuilder()
-                    .setPrettyPrinting()
-                    .create()
-                val jsonElement = com.google.gson.JsonParser.parseString(trimmed)
-                gson.toJson(jsonElement)
-            } catch (e: Exception) {
-                body
-            }
-        }
-        return body
-    }
-
-    /**
-     * 复制内容到剪贴板
-     */
-    private fun copyToClipboard(text: String) {
-        val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        val clip = ClipData.newPlainText("message", text)
-        clipboard.setPrimaryClip(clip)
-    }
 
     private fun showClearConfirmDialog() {
         showCleanDialog(
             title = "清空消息",
-            message = "确定清空所有消息记录吗？此操作不可恢复�?,
+            message = "确定清空所有消息记录吗？此操作不可恢复。",
             positiveText = "清空",
             onPositive = {
                 viewLifecycleOwner.lifecycleScope.launch {
@@ -268,9 +159,7 @@ class MessagesFragment : Fragment() {
         alertDialog.show()
     }
 
-    private class MessageAdapter(
-        private val onItemClick: (Message) -> Unit
-    ) : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
+    private class MessageAdapter : RecyclerView.Adapter<MessageAdapter.ViewHolder>() {
         private var messages: List<Message> = emptyList()
         private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
 
@@ -297,15 +186,11 @@ class MessagesFragment : Fragment() {
             private val tvTime: TextView = itemView.findViewById(R.id.tvTime)
 
             fun bind(message: Message) {
-                tvTitle.text = message.title ?: "abnotify"
+                tvTitle.text = message.title ?: "Abnotify"
                 tvBody.text = message.body ?: ""
                 tvTime.text = dateFormat.format(message.timestamp)
-                
-                // 点击查看详情
-                itemView.setOnClickListener {
-                    onItemClick(message)
-                }
             }
         }
     }
 }
+

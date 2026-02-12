@@ -1,4 +1,4 @@
-package com.trah.abnotify.ui
+﻿package com.trah.abnotify.ui
 
 import android.content.BroadcastReceiver
 import android.content.ClipData
@@ -94,13 +94,13 @@ class HomeFragment : Fragment() {
 
         binding.btnRefreshKey.setOnClickListener {
             showCleanDialog(
-                title = "更换推送密�?,
-                message = "更换密钥后原有的推送链接将立即失效。\n\n注意：更换后必须点击上方的“注册设�?/ 同步连接”按钮，否则无法接收新消息！",
-                positiveText = "我知道了，更�?,
+                title = "更换推送密钥",
+                message = "更换密钥后原有的推送链接将立即失效。\n\n注意：更换后必须点击上方的“注册设备 / 同步连接”按钮，否则无法接收新消息！",
+                positiveText = "我知道了，更换",
                 onPositive = {
                     app.keyManager.regenerateDeviceKey()
                     updateDeviceInfo()
-                    Toast.makeText(context, "密钥已更换，请点击注册按�?, Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "密钥已更换，请点击注册按钮", Toast.LENGTH_LONG).show()
                 }
             )
         }
@@ -143,15 +143,15 @@ class HomeFragment : Fragment() {
 
     private fun showPrivacyDialog() {
         val message = """
-            1. 数据收集：Accnotify 不收集任何个人身份信息（�?IMEI、手机号等）�?
-            2. 消息安全：所有推送消息均采用 RSA 端到端加密。服务器仅作为加密数据的搬运工，无法解密您的内容�?
-            3. Push Key：它是您的唯一投递凭证，请妥善保管。一旦重置，旧链接将立即失效�?
-            4. 无障碍服务：本应用申请无障碍权限仅用于增强后台运行稳定性及自动处理通知，不读取您的私人数据�?
-            5. 免责声明：本软件为开源工具，请在中国法律允许范围内使用�?
+            1. 数据收集：Abnotify 不收集任何个人身份信息（如 IMEI、手机号等）。
+            2. 消息安全：所有推送消息均采用 RSA 端到端加密。服务器仅作为加密数据的搬运工，无法解密您的内容。
+            3. Push Key：它是您的唯一投递凭证，请妥善保管。一旦重置，旧链接将立即失效。
+            4. 无障碍服务：本应用申请无障碍权限仅用于增强后台运行稳定性及自动处理通知，不读取您的私人数据。
+            5. 免责声明：本软件为开源工具，请在中国法律允许范围内使用。
         """.trimIndent()
 
         showCleanDialog(
-            title = "隐私政策与服务协�?,
+            title = "隐私政策与服务协议",
             message = message,
             positiveText = "我已知晓"
         )
@@ -170,14 +170,14 @@ class HomeFragment : Fragment() {
         val disconnectedText = ContextCompat.getColor(requireContext(), R.color.status_clean_disconnected_text)
 
         if (connected) {
-            binding.tvStatus.text = "服务已连�?
+            binding.tvStatus.text = "服务已连接"
             binding.statusContainer.backgroundTintList = android.content.res.ColorStateList.valueOf(connectedColor)
             binding.tvStatus.setTextColor(connectedText)
             // Switch to connected Lottie animation
             binding.lottieStatus.setAnimation("anim_connected.json")
             binding.lottieStatus.playAnimation()
         } else {
-            binding.tvStatus.text = "服务未连�?
+            binding.tvStatus.text = "服务未连接"
             binding.statusContainer.backgroundTintList = android.content.res.ColorStateList.valueOf(disconnectedColor)
             binding.tvStatus.setTextColor(disconnectedText)
             // Switch to disconnected Lottie animation
@@ -191,7 +191,7 @@ class HomeFragment : Fragment() {
         val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText(label, text)
         clipboard.setPrimaryClip(clip)
-        Toast.makeText(context, "已复�?, Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "已复制", Toast.LENGTH_SHORT).show()
     }
 
     private fun registerConnectionReceiver() {
