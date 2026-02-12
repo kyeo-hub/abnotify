@@ -37,6 +37,11 @@ jobs:
       with:
         gradle-version: '8.5'
 
+    - name: Download Gradle Wrapper JAR
+      run: |
+        mkdir -p gradle/wrapper
+        curl -L -o gradle/wrapper/gradle-wrapper.jar https://raw.githubusercontent.com/gradle/gradle/v8.5.0/gradle/wrapper/gradle-wrapper.jar
+
     - name: Build Debug APK
       run: gradle assembleDebug --stacktrace
 
