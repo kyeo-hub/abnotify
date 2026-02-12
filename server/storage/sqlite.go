@@ -43,6 +43,8 @@ func (s *SQLiteStorage) initTables() error {
 		`CREATE TABLE IF NOT EXISTS devices (
 			id INTEGER PRIMARY KEY AUTOINCREMENT,
 			device_key TEXT UNIQUE NOT NULL,
+			device_type TEXT DEFAULT 'ios',
+			device_token TEXT,
 			public_key TEXT,
 			name TEXT,
 			created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -66,12 +68,14 @@ func (s *SQLiteStorage) initTables() error {
 		)`,
 		`CREATE INDEX IF NOT EXISTS idx_messages_device_id ON messages(device_id)`,
 		`CREATE INDEX IF NOT EXISTS idx_messages_created_at ON messages(created_at)`,
+		// Migration: Add new columns to existing tables
+		`ALTER TABLE devices ADD COLUMN device_type TEXT DEFAULT 'ios'`,
+		`ALTER TABLE devices ADD COLUMN device_token TEXT`,
 	}
 
 	for _, query := range queries {
-		if _, err := s.db.Exec(query); err != nil {
-			return err
-		}
+		// Ignore errors for ALTER TABLE (column may already exist)
+		s.db.Exec(query)
 	}
 
 	return nil
@@ -88,10 +92,10 @@ func (s *SQLiteStorage) Close() error {
 func (s *SQLiteStorage) GetDeviceByKey(deviceKey string) (*model.Device, error) {
 	device := &model.Device{}
 	err := s.db.QueryRow(
-		`SELECT id, device_key, public_key, name, created_at, last_seen 
+		`SELECT id, device_key, device_type, device_token, public_key, name, created_at, last_seen 
 		 FROM devices WHERE device_key = ?`,
 		deviceKey,
-	).Scan(&device.ID, &device.DeviceKey, &device.PublicKey, &device.Name, &device.CreatedAt, &device.LastSeen)
+	).Scan(&device.ID, &device.DeviceKey, &device.DeviceType, &device.DeviceToken, &device.PublicKey, &device.Name, &device.CreatedAt, &device.LastSeen)
 
 	if err == sql.ErrNoRows {
 		return nil, nil
@@ -105,9 +109,9 @@ func (s *SQLiteStorage) GetDeviceByKey(deviceKey string) (*model.Device, error) 
 // CreateDevice creates a new device
 func (s *SQLiteStorage) CreateDevice(device *model.Device) error {
 	result, err := s.db.Exec(
-		`INSERT INTO devices (device_key, public_key, name, created_at, last_seen) 
-		 VALUES (?, ?, ?, ?, ?)`,
-		device.DeviceKey, device.PublicKey, device.Name, time.Now(), time.Now(),
+		`INSERT INTO devices (device_key, device_type, device_token, public_key, name, created_at, last_seen) 
+		 VALUES (?, ?, ?, ?, ?, ?, ?)`,
+		device.DeviceKey, device.DeviceType, device.DeviceToken, device.PublicKey, device.Name, time.Now(), time.Now(),
 	)
 	if err != nil {
 		return err
@@ -137,6 +141,34 @@ func (s *SQLiteStorage) UpdateDeviceLastSeen(deviceKey string) error {
 		time.Now(), deviceKey,
 	)
 	return err
+}
+
+// UpdateDevice updates a device
+func (s *SQLiteStorage) UpdateDevice(device *model.Device) error {
+	_, err := s.db.Exec(
+		`UPDATE devices SET device_type = ?, device_token = ?, public_key = ?, name = ?, last_seen = ? WHERE device_key = ?`,
+		device.DeviceType, device.DeviceToken, device.PublicKey, device.Name, time.Now(), device.DeviceKey,
+	)
+	return err
+}
+
+// UpdateDeviceToken updates the APNs token for a device
+func (s *SQLiteStorage) UpdateDeviceToken(deviceKey, deviceToken string) error {
+	_, err := s.db.Exec(
+		`UPDATE devices SET device_token = ?, last_seen = ? WHERE device_key = ?`,
+		deviceToken, time.Now(), deviceKey,
+	)
+	return err
+}
+
+// CountDevices returns the total number of devices
+func (s *SQLiteStorage) CountDevices() (int, error) {
+	var count int
+	err := s.db.QueryRow(`SELECT COUNT(*) FROM devices`).Scan(&count)
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
 }
 
 // Message operations

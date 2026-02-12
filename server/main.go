@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/accnotify/server/apns"
 	"github.com/accnotify/server/config"
 	"github.com/accnotify/server/handler"
 	"github.com/accnotify/server/storage"
@@ -32,8 +33,22 @@ func main() {
 	hub := handler.NewHub(store)
 	go hub.Run()
 
+	// Initialize APNs client (if configured)
+	var apnsClient *apns.Client
+	if cfg.APNSKeyID != "" && cfg.APNSTeamID != "" && cfg.APNSPrivateKey != "" {
+		apnsClient, err = apns.NewClient(cfg.APNSKeyID, cfg.APNSTeamID, cfg.APNSPrivateKey, cfg.APNSProduction)
+		if err != nil {
+			log.Printf("Warning: Failed to initialize APNs client: %v", err)
+		} else {
+			log.Println("APNs client initialized successfully")
+		}
+	} else {
+		log.Println("APNs not configured, iOS push disabled")
+	}
+
 	// Initialize handlers
 	pushHandler := handler.NewPushHandler(store, hub)
+	barkHandler := handler.NewBarkHandler(store, hub, apnsClient)
 	wsHandler := handler.NewWSHandler(hub, store)
 	webhookHandler := handler.NewWebhookHandler(store, hub)
 
@@ -53,11 +68,30 @@ func main() {
 		c.Next()
 	})
 
-	// Routes
-	router.GET("/health", pushHandler.HandleHealth)
-	router.POST("/register", pushHandler.HandleRegister)
+	// Health check
+	router.GET("/health", barkHandler.HandleHealth)
+	router.GET("/healthz", func(c *gin.Context) { c.String(200, "ok") })
+	router.GET("/ping", func(c *gin.Context) { c.JSON(200, gin.H{"code": 200, "message": "pong", "timestamp": time.Now().Unix()}) })
+
+	// Register
+	router.POST("/register", barkHandler.HandleRegister)
+	router.GET("/register", barkHandler.HandleRegister)
+
+	// Info
+	router.GET("/info", barkHandler.HandleInfo)
+
+	// Push routes (Accnotify style)
 	router.POST("/push/:device_key", pushHandler.HandlePush)
 	router.GET("/push/:device_key/*params", handleSimplePushParams(pushHandler))
+
+	// Bark-compatible routes
+	router.POST("/:device_key", barkHandler.HandlePush)
+	router.GET("/:device_key", barkHandler.HandlePush)
+	// Use wildcard to handle variable path segments: /:device_key/:body, /:device_key/:title/:body, etc.
+	router.GET("/:device_key/*params", handleBarkParams(barkHandler))
+	router.POST("/:device_key/*params", handleBarkParams(barkHandler))
+
+	// WebSocket
 	router.GET("/ws", func(c *gin.Context) {
 		wsHandler.HandleConnect(c.Writer, c.Request)
 	})
@@ -72,6 +106,9 @@ func main() {
 		webhookGroup.POST("/gitea", webhookHandler.HandleGiteaWebhook)
 	}
 
+	// Root
+	router.GET("/", func(c *gin.Context) { c.String(200, "ok") })
+
 	// Create server
 	addr := fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)
 	srv := &http.Server{
@@ -82,6 +119,7 @@ func main() {
 	// Start server in goroutine
 	go func() {
 		log.Printf("Accnotify server starting on %s", addr)
+		log.Printf("Supporting both iOS (APNs) and Android (WebSocket) devices")
 		var err error
 		if cfg.EnableHTTPS {
 			err = srv.ListenAndServeTLS(cfg.CertFile, cfg.KeyFile)
@@ -136,6 +174,55 @@ func handleSimplePushParams(h *handler.PushHandler) gin.HandlerFunc {
 		
 		c.Params = append(c.Params, gin.Param{Key: "title", Value: title})
 		c.Params = append(c.Params, gin.Param{Key: "body", Value: body})
+		h.HandleSimplePush(c)
+	}
+}
+
+// handleBarkParams handles Bark-compatible routes with variable path segments
+// Supports: /:device_key/:body, /:device_key/:title/:body, /:device_key/:title/:subtitle/:body
+func handleBarkParams(h *handler.BarkHandler) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		params := c.Param("params")
+		// Remove leading slash
+		if len(params) > 0 && params[0] == '/' {
+			params = params[1:]
+		}
+		
+		if params == "" {
+			// No additional params, just /:device_key
+			h.HandlePush(c)
+			return
+		}
+		
+		// Split by /
+		parts := strings.Split(params, "/")
+		
+		// Set params based on number of segments
+		switch len(parts) {
+		case 1:
+			// /:device_key/:body
+			c.Params = append(c.Params, gin.Param{Key: "title", Value: ""})
+			c.Params = append(c.Params, gin.Param{Key: "body", Value: parts[0]})
+		case 2:
+			// /:device_key/:title/:body
+			c.Params = append(c.Params, gin.Param{Key: "title", Value: parts[0]})
+			c.Params = append(c.Params, gin.Param{Key: "body", Value: parts[1]})
+		case 3:
+			// /:device_key/:title/:subtitle/:body
+			c.Params = append(c.Params, gin.Param{Key: "title", Value: parts[0]})
+			c.Params = append(c.Params, gin.Param{Key: "subtitle", Value: parts[1]})
+			c.Params = append(c.Params, gin.Param{Key: "body", Value: parts[2]})
+		default:
+			// More than 3 parts, join remaining as body
+			c.Params = append(c.Params, gin.Param{Key: "title", Value: parts[0]})
+			if len(parts) > 2 {
+				c.Params = append(c.Params, gin.Param{Key: "subtitle", Value: parts[1]})
+				c.Params = append(c.Params, gin.Param{Key: "body", Value: strings.Join(parts[2:], "/")})
+			} else {
+				c.Params = append(c.Params, gin.Param{Key: "body", Value: strings.Join(parts[1:], "/")})
+			}
+		}
+		
 		h.HandleSimplePush(c)
 	}
 }

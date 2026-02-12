@@ -4,11 +4,26 @@ import (
 	"time"
 )
 
+// DeviceType represents device platform
+type DeviceType string
+
+const (
+	DeviceTypeIOS     DeviceType = "ios"
+	DeviceTypeAndroid DeviceType = "android"
+)
+
 // Device represents a registered device
 type Device struct {
-	ID        int64     `json:"id"`
-	DeviceKey string    `json:"device_key"`
-	PublicKey string    `json:"public_key,omitempty"`
+	ID         int64      `json:"id"`
+	DeviceKey  string     `json:"device_key"`
+	DeviceType DeviceType `json:"device_type"` // ios or android
+
+	// iOS device fields
+	DeviceToken string `json:"device_token,omitempty"` // APNs token
+
+	// Android device fields
+	PublicKey string `json:"public_key,omitempty"` // RSA public key
+
 	Name      string    `json:"name,omitempty"`
 	CreatedAt time.Time `json:"created_at"`
 	LastSeen  time.Time `json:"last_seen"`
@@ -33,13 +48,36 @@ type Message struct {
 
 // PushRequest represents an incoming push request
 type PushRequest struct {
-	Title            string `json:"title"`
-	Body             string `json:"body"`
-	Group            string `json:"group,omitempty"`
-	Icon             string `json:"icon,omitempty"`
-	URL              string `json:"url,omitempty"`
-	Sound            string `json:"sound,omitempty"`
-	Badge            int    `json:"badge,omitempty"`
+	// Basic fields
+	Title   string `json:"title"`
+	Body    string `json:"body"`
+	Group   string `json:"group,omitempty"`
+	Icon    string `json:"icon,omitempty"`
+	URL     string `json:"url,omitempty"`
+	Sound   string `json:"sound,omitempty"`
+	Badge   int    `json:"badge,omitempty"`
+	Level   string `json:"level,omitempty"`
+	Subtitle string `json:"subtitle,omitempty"`
+
+	// Bark extended fields
+	Call      bool   `json:"call,omitempty"`
+	IsArchive bool   `json:"isArchive,omitempty"`
+	Cipher    string `json:"ciphertext,omitempty"`
+	Volume    int    `json:"volume,omitempty"`
+	Copy      bool   `json:"copy,omitempty"`
+	AutoCopy  bool   `json:"autoCopy,omitempty"`
+	Action    string `json:"action,omitempty"`
+	IV        string `json:"iv,omitempty"`
+	Image     string `json:"image,omitempty"`
+	ID        string `json:"id,omitempty"`
+	Delete    bool   `json:"delete,omitempty"`
+	Markdown  string `json:"markdown,omitempty"`
+
+	// Device keys (for batch push)
+	DeviceKey  string   `json:"device_key,omitempty"`
+	DeviceKeys []string `json:"device_keys,omitempty"`
+
+	// Android encrypted content
 	EncryptedContent string `json:"encrypted_content,omitempty"`
 }
 
@@ -62,9 +100,16 @@ const (
 
 // RegisterRequest represents a device registration request
 type RegisterRequest struct {
-	DeviceKey string `json:"device_key"`
-	PublicKey string `json:"public_key"`
-	Name      string `json:"name,omitempty"`
+	DeviceKey  string     `json:"device_key"`
+	DeviceType DeviceType `json:"device_type,omitempty"` // ios or android, auto-detect if not provided
+
+	// iOS device
+	DeviceToken string `json:"device_token,omitempty"`
+
+	// Android device
+	PublicKey string `json:"public_key,omitempty"`
+
+	Name string `json:"name,omitempty"`
 }
 
 // PushResponse represents the response after pushing a message
@@ -72,6 +117,33 @@ type PushResponse struct {
 	Success   bool   `json:"success"`
 	MessageID string `json:"message_id,omitempty"`
 	Error     string `json:"error,omitempty"`
+}
+
+// BarkResponse represents Bark-compatible response format
+type BarkResponse struct {
+	Code      int64       `json:"code"`
+	Message   string      `json:"message"`
+	Timestamp int64       `json:"timestamp"`
+	Data      interface{} `json:"data,omitempty"`
+}
+
+// NewBarkResponse creates a successful Bark response
+func NewBarkResponse(data interface{}) *BarkResponse {
+	return &BarkResponse{
+		Code:      200,
+		Message:   "success",
+		Timestamp: time.Now().Unix(),
+		Data:      data,
+	}
+}
+
+// NewBarkError creates an error Bark response
+func NewBarkError(code int64, message string) *BarkResponse {
+	return &BarkResponse{
+		Code:      code,
+		Message:   message,
+		Timestamp: time.Now().Unix(),
+	}
 }
 
 // WebhookRequest represents a generic webhook request
