@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <!-- Base dark background -->
+    <!-- Gradient background - Modern deep blue to teal -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#0A1628" />
+            <gradient
+                android:type="linear"
+                android:angle="135"
+                android:startColor="#1A365D"
+                android:centerColor="#2C5282"
+                android:endColor="#319795" />
         </shape>
     </item>
-    <!-- Radial light from top center -->
+    <!-- Subtle radial glow from center -->
     <item>
         <shape android:shape="rectangle">
             <gradient
                 android:type="radial"
-                android:gradientRadius="180dp"
+                android:gradientRadius="200dp"
                 android:centerX="0.5"
-                android:centerY="0.0"
-                android:startColor="#3D5A80"
-                android:endColor="#0A1628" />
+                android:centerY="0.5"
+                android:startColor="#40FFFFFF"
+                android:endColor="#00FFFFFF" />
         </shape>
     </item>
 </layer-list>
