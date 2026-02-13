@@ -3,6 +3,7 @@ package config
 import (
 	"os"
 	"strconv"
+	"strings"
 )
 
 // Config holds application configuration
@@ -22,6 +23,12 @@ type Config struct {
 	EnableHTTPS bool
 	CertFile    string
 	KeyFile     string
+
+	// APNs settings (for iOS devices)
+	APNSKeyID      string
+	APNSTeamID     string
+	APNSPrivateKey string // PEM-encoded private key
+	APNSProduction bool   // true for production, false for development
 }
 
 // DefaultConfig returns default configuration
@@ -65,6 +72,13 @@ func LoadFromEnv() *Config {
 		cfg.CertFile = os.Getenv("ABNOTIFY_CERT_FILE")
 		cfg.KeyFile = os.Getenv("ABNOTIFY_KEY_FILE")
 	}
+
+	// APNs configuration
+	cfg.APNSKeyID = os.Getenv("APNS_KEY_ID")
+	cfg.APNSTeamID = os.Getenv("APNS_TEAM_ID")
+	// Handle \n escape sequences in private key (for environment variables)
+	cfg.APNSPrivateKey = strings.ReplaceAll(os.Getenv("APNS_PRIVATE_KEY"), "\\n", "\n")
+	cfg.APNSProduction = os.Getenv("APNS_PRODUCTION") != "false"
 
 	return cfg
 }
