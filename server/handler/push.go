@@ -214,6 +214,7 @@ func (h *PushHandler) HandleSimplePush(c *gin.Context) {
 	}
 
 	delivered := h.hub.SendToDevice(deviceKey, wsMsg)
+	log.Printf("PushHandler.SendToDevice: deviceKey=%s, delivered=%v, title=%s, body=%s", deviceKey, delivered, title, body)
 	if delivered {
 		h.storage.MarkMessageDelivered(messageID)
 	}

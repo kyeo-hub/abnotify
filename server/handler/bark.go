@@ -383,14 +383,19 @@ func (h *BarkHandler) pushToAndroid(device *model.Device, req *model.PushRequest
 		Type:      model.WSTypeMessage,
 		ID:        messageID,
 		Timestamp: time.Now().Unix(),
-	}
-
-	if encrypted != "" {
-		wsMsg.Data = map[string]interface{}{
+		Data: map[string]interface{}{
+			"title":             req.Title,
+			"body":              req.Body,
+			"group":             req.Group,
+			"icon":              req.Icon,
+			"url":               req.URL,
+			"sound":             req.Sound,
+			"badge":             req.Badge,
+			"level":             req.Level,
+			"call":              req.Call,
+			"isArchive":         req.IsArchive,
 			"encrypted_content": encrypted,
-		}
-	} else {
-		wsMsg.Data = data
+		},
 	}
 
 	// Send via WebSocket
