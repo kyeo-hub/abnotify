@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -196,6 +197,8 @@ func (h *BarkHandler) HandleSimplePush(c *gin.Context) {
 	deviceKey := c.Param("device_key")
 	title := c.Param("title")
 	body := c.Param("body")
+	
+	log.Printf("HandleSimplePush: deviceKey=%s, title=%s, body=%s", deviceKey, title, body)
 
 	// If only one param, treat it as body
 	if body == "" {
@@ -392,6 +395,7 @@ func (h *BarkHandler) pushToAndroid(device *model.Device, req *model.PushRequest
 
 	// Send via WebSocket
 	delivered := h.hub.SendToDevice(device.DeviceKey, wsMsg)
+	log.Printf("Push to Android device %s: delivered=%v, title=%s, body=%s", device.DeviceKey, delivered, req.Title, req.Body)
 
 	if delivered {
 		c.JSON(http.StatusOK, model.NewBarkResponse(nil))
