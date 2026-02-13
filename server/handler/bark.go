@@ -374,11 +374,17 @@ func (h *BarkHandler) pushToAndroid(device *model.Device, req *model.PushRequest
 	// Encrypt if device has public key
 	var encrypted string
 	if device.PublicKey != "" {
+		log.Printf("Device %s has public key, length=%d, attempting encryption", device.DeviceKey, len(device.PublicKey))
 		pubKey, err := h.crypto.ParsePublicKey(device.PublicKey)
 		if err == nil {
 			dataBytes, _ := json.Marshal(data)
 			encrypted, _ = h.crypto.EncryptMessage(pubKey, dataBytes)
+			log.Printf("Encryption successful for device %s, encrypted length=%d", device.DeviceKey, len(encrypted))
+		} else {
+			log.Printf("Failed to parse public key for device %s: %v", device.DeviceKey, err)
 		}
+	} else {
+		log.Printf("Device %s has no public key, sending unencrypted", device.DeviceKey)
 	}
 
 	// Create WebSocket message
