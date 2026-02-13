@@ -138,7 +138,7 @@ class SettingsFragment : Fragment() {
             .setTitle("发现新版本")
             .setMessage("当前版本: ${BuildConfig.VERSION_NAME}\n最新版本: $latestVersion\n\n是否前往 GitHub 下载？")
             .setPositiveButton("前往下载") { _, _ ->
-                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/trah01/Abnotify/releases"))
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/kyeo-hub/Abnotify/releases"))
                 startActivity(intent)
             }
             .setNegativeButton("取消", null)
@@ -271,7 +271,7 @@ class SettingsFragment : Fragment() {
         }
 
         binding.linkGithub.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/trah01/Abnotify"))
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/kyeo-hub/Abnotify"))
             startActivity(intent)
         }
 
