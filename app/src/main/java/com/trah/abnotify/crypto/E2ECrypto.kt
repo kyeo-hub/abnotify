@@ -3,8 +3,11 @@
 import android.util.Base64
 import android.util.Log
 import java.security.PrivateKey
+import java.security.spec.MGF1ParameterSpec
 import javax.crypto.Cipher
 import javax.crypto.spec.GCMParameterSpec
+import javax.crypto.spec.OAEPParameterSpec
+import javax.crypto.spec.PSource
 import javax.crypto.spec.SecretKeySpec
 
 /**
@@ -48,9 +51,18 @@ object E2ECrypto {
         Log.i(TAG, "Ciphertext length: ${ciphertext.size} bytes")
 
         // Decrypt AES key with RSA-OAEP
+        // Must explicitly specify OAEP parameters to match Go's rsa.EncryptOAEP(sha256.New(), ...)
         Log.i(TAG, "Decrypting AES key with RSA-OAEP-SHA256...")
-        val rsaCipher = Cipher.getInstance("RSA/ECB/OAEPWithSHA-256AndMGF1Padding")
-        rsaCipher.init(Cipher.DECRYPT_MODE, privateKey)
+        val rsaCipher = Cipher.getInstance("RSA/ECB/OAEPPadding")
+
+        // OAEP with SHA-256 for both main digest and MGF1 digest
+        val oaepParams = OAEPParameterSpec(
+            "SHA-256",           // Main digest
+            "MGF1",              // MGF algorithm
+            MGF1ParameterSpec.SHA256,  // MGF1 digest
+            PSource.PSpecified.DEFAULT  // Empty label (same as nil in Go)
+        )
+        rsaCipher.init(Cipher.DECRYPT_MODE, privateKey, oaepParams)
         val aesKey = rsaCipher.doFinal(encryptedAESKey)
         Log.i(TAG, "AES key decrypted, length: ${aesKey.size} bytes")
 

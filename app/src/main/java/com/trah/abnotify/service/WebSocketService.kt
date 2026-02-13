@@ -630,6 +630,12 @@ class WebSocketService : Service() {
                 Log.e(TAG, "Private key is null! Cannot decrypt.")
             } else {
                 Log.i(TAG, "Private key found, algorithm=${privateKey.algorithm}")
+                // Log public key fingerprint for debugging
+                val publicKeyPem = app.keyManager.exportPublicKeyPEM()
+                if (publicKeyPem != null) {
+                    val keyHash = publicKeyPem.hashCode()
+                    Log.i(TAG, "Current public key fingerprint (hashCode): $keyHash, length=${publicKeyPem.length}")
+                }
                 decryptedContent = E2ECrypto.tryDecrypt(encryptedContent, privateKey)
                 if (decryptedContent == null) {
                     Log.e(TAG, "Decryption failed! Possible key mismatch.")
