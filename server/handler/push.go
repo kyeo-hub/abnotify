@@ -2,6 +2,7 @@ package handler
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"time"
 
@@ -151,8 +152,10 @@ func (h *PushHandler) HandleSimplePush(c *gin.Context) {
 	// If only one param, treat it as body
 	if body == "" {
 		body = title
-		title = "abnotify"
+		title = "Abnotify"
 	}
+
+	log.Printf("PushHandler.HandleSimplePush: deviceKey=%s, title=%s, body=%s", deviceKey, title, body)
 
 	// Convert to POST request
 	c.Set("device_key", deviceKey)
