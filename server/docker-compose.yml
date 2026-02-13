@@ -2,17 +2,23 @@ version: '3.8'
 
 services:
   abnotify:
-    image: kyeo-hub/abnotify-server:latest
+    image: kyeooeyk/abnotify-server:latest
     container_name: abnotify-server
     ports:
       - "8080:8080"
     volumes:
       - abnotify-data:/app/data
     environment:
+      # 服务器配置
       - ABNOTIFY_HOST=0.0.0.0
       - ABNOTIFY_PORT=8080
       - ABNOTIFY_DB_PATH=/app/data/abnotify.db
       - ABNOTIFY_WS_PING_INTERVAL=30
+      # APNs 配置 (可选，用于 iOS 推送)
+      - APNS_KEY_ID=${APNS_KEY_ID:-}
+      - APNS_TEAM_ID=${APNS_TEAM_ID:-}
+      - APNS_PRODUCTION=${APNS_PRODUCTION:-true}
+      - APNS_PRIVATE_KEY=${APNS_PRIVATE_KEY:-}
     restart: unless-stopped
     healthcheck:
       test: [ "CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/health" ]
