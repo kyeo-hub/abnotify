@@ -1,38 +1,38 @@
 # Abnotify
 
-Abnotify ÊÇÒ»¿î¼«¼ò¡¢´¿¾»¡¢°²È«µÄ Android ¼´Ê±Í¨ÖªÍÆËÍ¹¤¾ß¡£Ëü¼æÈÝ Bark Ð­Òé£¬Ö§³Ö iOS (APNs) ºÍ Android (WebSocket) Ë«Æ½Ì¨ÍÆËÍ£¬²ÉÓÃ´´ÐÂµÄ±£»î»úÖÆÈ·±£ÔÚ¸÷ÖÖ Android ÏµÍ³ÏÂ¶¼ÄÜÎÈ¶¨ÔËÐÐ¡£
+Abnotify æ˜¯ä¸€æ¬¾æžç®€ã€çº¯å‡€ã€å®‰å…¨çš„ Android å³æ—¶é€šçŸ¥æŽ¨é€å·¥å…·ã€‚å®ƒå…¼å®¹ Bark åè®®ï¼Œæ”¯æŒ iOS (APNs) å’Œ Android (WebSocket) åŒå¹³å°æŽ¨é€ï¼Œé‡‡ç”¨åˆ›æ–°çš„ä¿æ´»æœºåˆ¶ç¡®ä¿åœ¨å„ç§ Android ç³»ç»Ÿä¸‹éƒ½èƒ½ç¨³å®šè¿è¡Œã€‚
 
-## ÖÂÐ»
+## è‡´è°¢
 
-±¾ÏîÄ¿ÊÇ»ùÓÚÒÔÏÂÓÅÐãÏîÄ¿¿ª·¢¶øÀ´£º
+æœ¬é¡¹ç›®æ˜¯åŸºäºŽä»¥ä¸‹ä¼˜ç§€é¡¹ç›®å¼€å‘è€Œæ¥ï¼š
 
-- **[Accnotify](https://github.com/trah01/Accnotify)** - ±¾ÏîÄ¿ Fork ×Ô Accnotify£¬±£ÁôÁËÆä Android ¿Í»§¶Ë¡¢WebSocket ÍÆËÍºÍ¶Ëµ½¶Ë¼ÓÃÜµÈºËÐÄ¹¦ÄÜ¡£
-- **[Bark](https://github.com/finb/bark)** - iOS ÍÆËÍÍ¨Öª¹¤¾ß£¬±¾ÏîÄ¿µÄ iOS ÍÆËÍ¹¦ÄÜ»ùÓÚ Bark Ð­ÒéÊµÏÖ¡£
-- **[bark-worker-server](https://github.com/sylingd/bark-worker-server)** - ±ßÔµº¯Êý°æ Bark ·þÎñÆ÷£¬±¾ÏîÄ¿·þÎñ¶ËµÄ APNs ÊµÏÖ²Î¿¼ÁË¸ÃÏîÄ¿¡£
+- **[Accnotify](https://github.com/trah01/Accnotify)** - æœ¬é¡¹ç›® Fork è‡ª Accnotifyï¼Œä¿ç•™äº†å…¶ Android å®¢æˆ·ç«¯ã€WebSocket æŽ¨é€å’Œç«¯åˆ°ç«¯åŠ å¯†ç­‰æ ¸å¿ƒåŠŸèƒ½ã€‚
+- **[Bark](https://github.com/finb/bark)** - iOS æŽ¨é€é€šçŸ¥å·¥å…·ï¼Œæœ¬é¡¹ç›®çš„ iOS æŽ¨é€åŠŸèƒ½åŸºäºŽ Bark åè®®å®žçŽ°ã€‚
+- **[bark-worker-server](https://github.com/sylingd/bark-worker-server)** - è¾¹ç¼˜å‡½æ•°ç‰ˆ Bark æœåŠ¡å™¨ï¼Œæœ¬é¡¹ç›®æœåŠ¡ç«¯çš„ APNs å®žçŽ°å‚è€ƒäº†è¯¥é¡¹ç›®ã€‚
 
-¸ÐÐ»ÒÔÉÏÏîÄ¿µÄ¿ª·¢ÕßÃÇµÄ¿ªÔ´¹±Ï×£¡
+æ„Ÿè°¢ä»¥ä¸Šé¡¹ç›®çš„å¼€å‘è€…ä»¬çš„å¼€æºè´¡çŒ®ï¼
 
-## ºËÐÄÌØÐÔ
+## æ ¸å¿ƒç‰¹æ€§
 
-- **Ë«Æ½Ì¨Ö§³Ö**£ºiOS Í¨¹ý APNs ÍÆËÍ£¬Android Í¨¹ý WebSocket ÍÆËÍ
-- **Bark ¼æÈÝ**£ºÖ§³Ö±ê×¼µÄ Bark ÍÆËÍ½Ó¿Ú£¬¿ÉÖ±½ÓÊ¹ÓÃÏÖÓÐµÄÍÆËÍ½Å±¾
-- **ÄÚÈÝ¼ÓÃÜ´«Êä**£ºAndroid ¶Ë²ÉÓÃ RSA+AES ¼ÓÃÜ´«Êä£¬±£»¤ÍÆËÍÄÚÈÝÒþË½
-- **³¬Ç¿±£»î**£ºÀûÓÃ Android ¸¨Öú¹¦ÄÜ×÷Îª±£»îÃªµã£¬ÅäºÏ¶ÀÁ¢½ø³ÌÊØ»¤
-- **Webhook Ö§³Ö**£ºÖ§³Ö GitHub¡¢GitLab¡¢Docker Hub¡¢Gitea µÈ Webhook Í¨Öª
-- **ÀëÏß´æ´¢**£ºÖ§³ÖÍÆËÍÀúÊ·¼ÇÂ¼£¬·½±ãËæÊ±²éÔÄ
+- **åŒå¹³å°æ”¯æŒ**ï¼šiOS é€šè¿‡ APNs æŽ¨é€ï¼ŒAndroid é€šè¿‡ WebSocket æŽ¨é€
+- **Bark å…¼å®¹**ï¼šæ”¯æŒæ ‡å‡†çš„ Bark æŽ¨é€æŽ¥å£ï¼Œå¯ç›´æŽ¥ä½¿ç”¨çŽ°æœ‰çš„æŽ¨é€è„šæœ¬
+- **å†…å®¹åŠ å¯†ä¼ è¾“**ï¼šAndroid ç«¯é‡‡ç”¨ RSA+AES åŠ å¯†ä¼ è¾“ï¼Œä¿æŠ¤æŽ¨é€å†…å®¹éšç§
+- **è¶…å¼ºä¿æ´»**ï¼šåˆ©ç”¨ Android è¾…åŠ©åŠŸèƒ½ä½œä¸ºä¿æ´»é”šç‚¹ï¼Œé…åˆç‹¬ç«‹è¿›ç¨‹å®ˆæŠ¤
+- **Webhook æ”¯æŒ**ï¼šæ”¯æŒ GitHubã€GitLabã€Docker Hubã€Gitea ç­‰ Webhook é€šçŸ¥
+- **ç¦»çº¿å­˜å‚¨**ï¼šæ”¯æŒæŽ¨é€åŽ†å²è®°å½•ï¼Œæ–¹ä¾¿éšæ—¶æŸ¥é˜…
 
-## ¿ìËÙ¿ªÊ¼
+## å¿«é€Ÿå¼€å§‹
 
-### 1. ²¿Êð·þÎñÆ÷
+### 1. éƒ¨ç½²æœåŠ¡å™¨
 
-Ê¹ÓÃ Docker ¿ìËÙ²¿Êð£º
+ä½¿ç”¨ Docker å¿«é€Ÿéƒ¨ç½²ï¼š
 
 ```bash
 cd server
 docker-compose up -d
 ```
 
-»òÊÖ¶¯¹¹½¨£º
+æˆ–æ‰‹åŠ¨æž„å»ºï¼š
 
 ```bash
 cd server
@@ -41,86 +41,86 @@ go build -o abnotify-server
 ./abnotify-server
 ```
 
-### 2. °²×°¿Í»§¶Ë
+### 2. å®‰è£…å®¢æˆ·ç«¯
 
-**Android£º**
-1. ÏÂÔØ²¢°²×° Abnotify APK
-2. ´ò¿ªÓ¦ÓÃ£¬ÊäÈë·þÎñÆ÷µØÖ·
-3. ¿ªÆô±£»îÉèÖÃÖÐµÄ¸¨Öú¹¦ÄÜºÍ×ÔÆô¶¯È¨ÏÞ
-4. ¸´ÖÆÍÆËÍµØÖ·¼´¿ÉÊ¹ÓÃ
+**Androidï¼š**
+1. ä¸‹è½½å¹¶å®‰è£… Abnotify APK
+2. æ‰“å¼€åº”ç”¨ï¼Œè¾“å…¥æœåŠ¡å™¨åœ°å€
+3. å¼€å¯ä¿æ´»è®¾ç½®ä¸­çš„è¾…åŠ©åŠŸèƒ½å’Œè‡ªå¯åŠ¨æƒé™
+4. å¤åˆ¶æŽ¨é€åœ°å€å³å¯ä½¿ç”¨
 
-**iOS£º**
-1. ÔÚ App Store ÏÂÔØ Bark ¿Í»§¶Ë
-2. ½«·þÎñÆ÷µØÖ·ÌîÈë Bark ÉèÖÃÖÐ
-3. ¼´¿ÉÊ¹ÓÃ Bark ÍÆËÍµ½ÄúµÄ·þÎñÆ÷
+**iOSï¼š**
+1. åœ¨ App Store ä¸‹è½½ Bark å®¢æˆ·ç«¯
+2. å°†æœåŠ¡å™¨åœ°å€å¡«å…¥ Bark è®¾ç½®ä¸­
+3. å³å¯ä½¿ç”¨ Bark æŽ¨é€åˆ°æ‚¨çš„æœåŠ¡å™¨
 
-## ÍÆËÍÊ¾Àý
+## æŽ¨é€ç¤ºä¾‹
 
-### »ù±¾ÍÆËÍ
+### åŸºæœ¬æŽ¨é€
 
 ```bash
 curl -X POST "http://your-server:8080/push/your-device-key" \
      -H "Content-Type: application/json" \
-     -d '{"title":"Hello","body":"ÕâÊÇÒ»ÌõÀ´×Ô Abnotify µÄÏûÏ¢"}'
+     -d '{"title":"Hello","body":"è¿™æ˜¯ä¸€æ¡æ¥è‡ª Abnotify çš„æ¶ˆæ¯"}'
 ```
 
-### Bark ¼æÈÝ¸ñÊ½
+### Bark å…¼å®¹æ ¼å¼
 
 ```bash
-# GET ÇëÇó
-curl "http://your-server:8080/DEVICE_KEY/±êÌâ/ÄÚÈÝ"
+# GET è¯·æ±‚
+curl "http://your-server:8080/DEVICE_KEY/æ ‡é¢˜/å†…å®¹"
 
-# ´øÍ¼Æ¬
-curl "http://your-server:8080/DEVICE_KEY/±êÌâ/ÄÚÈÝ?image=https://example.com/image.jpg"
+# å¸¦å›¾ç‰‡
+curl "http://your-server:8080/DEVICE_KEY/æ ‡é¢˜/å†…å®¹?image=https://example.com/image.jpg"
 
-# ´ø½Ç±ê
-curl "http://your-server:8080/DEVICE_KEY/±êÌâ/ÄÚÈÝ?badge=1"
+# å¸¦è§’æ ‡
+curl "http://your-server:8080/DEVICE_KEY/æ ‡é¢˜/å†…å®¹?badge=1"
 ```
 
-## »·¾³±äÁ¿ÅäÖÃ
+## çŽ¯å¢ƒå˜é‡é…ç½®
 
-| ±äÁ¿Ãû | ËµÃ÷ | Ä¬ÈÏÖµ |
+| å˜é‡å | è¯´æ˜Ž | é»˜è®¤å€¼ |
 |--------|------|--------|
-| `ABNOTIFY_HOST` | ¼àÌýµØÖ· | `0.0.0.0` |
-| `ABNOTIFY_PORT` | ¼àÌý¶Ë¿Ú | `8080` |
-| `ABNOTIFY_DB_PATH` | Êý¾Ý¿âÂ·¾¶ | `./data/abnotify.db` |
+| `ABNOTIFY_HOST` | ç›‘å¬åœ°å€ | `0.0.0.0` |
+| `ABNOTIFY_PORT` | ç›‘å¬ç«¯å£ | `8080` |
+| `ABNOTIFY_DB_PATH` | æ•°æ®åº“è·¯å¾„ | `./data/abnotify.db` |
 | `APNS_KEY_ID` | APNs Key ID | - |
 | `APNS_TEAM_ID` | APNs Team ID | - |
-| `APNS_PRIVATE_KEY` | APNs Ë½Ô¿ (PEM) | - |
-| `APNS_PRODUCTION` | Ê¹ÓÃÉú²ú»·¾³ | `true` |
+| `APNS_PRIVATE_KEY` | APNs ç§é’¥ (PEM) | - |
+| `APNS_PRODUCTION` | ä½¿ç”¨ç”Ÿäº§çŽ¯å¢ƒ | `true` |
 
-## ±£»îËµÃ÷
+## ä¿æ´»è¯´æ˜Ž
 
-ÎªÈ·±£Ó¦ÓÃºóÌ¨ÎÈ¶¨ÔËÐÐ£¬ÇëÍê³ÉÒÔÏÂÉèÖÃ£º
+ä¸ºç¡®ä¿åº”ç”¨åŽå°ç¨³å®šè¿è¡Œï¼Œè¯·å®Œæˆä»¥ä¸‹è®¾ç½®ï¼š
 
-1. **¸¨Öú¹¦ÄÜ**£º¿ªÆô Abnotify ¸¨Öú¹¦ÄÜ·þÎñ
-2. **µç³ØÓÅ»¯**£º½« Abnotify ¼ÓÈëµç³ØÓÅ»¯°×Ãûµ¥
-3. **×ÔÆô¶¯**£ºÔÊÐí Abnotify ¿ª»ú×ÔÆô¶¯£¨²¿·Ö ROM ÐèÒª£©
-4. **ºóÌ¨ÔËÐÐ**£ºÔÊÐí Abnotify ºóÌ¨»î¶¯£¨MIUI/HyperOS ÐèÒª£©
-5. **Í¨ÖªÈ¨ÏÞ**£ºÔÊÐí Abnotify ·¢ËÍÍ¨Öª
+1. **è¾…åŠ©åŠŸèƒ½**ï¼šå¼€å¯ Abnotify è¾…åŠ©åŠŸèƒ½æœåŠ¡
+2. **ç”µæ± ä¼˜åŒ–**ï¼šå°† Abnotify åŠ å…¥ç”µæ± ä¼˜åŒ–ç™½åå•
+3. **è‡ªå¯åŠ¨**ï¼šå…è®¸ Abnotify å¼€æœºè‡ªå¯åŠ¨ï¼ˆéƒ¨åˆ† ROM éœ€è¦ï¼‰
+4. **åŽå°è¿è¡Œ**ï¼šå…è®¸ Abnotify åŽå°æ´»åŠ¨ï¼ˆMIUI/HyperOS éœ€è¦ï¼‰
+5. **é€šçŸ¥æƒé™**ï¼šå…è®¸ Abnotify å‘é€é€šçŸ¥
 
-## ÏîÄ¿½á¹¹
+## é¡¹ç›®ç»“æž„
 
 ```
 Abnotify/
-©À©¤©¤ app/                  # Android ¿Í»§¶Ë
-©¦   ©À©¤©¤ src/main/
-©¦   ©¦   ©À©¤©¤ java/        # Kotlin Ô´Âë
-©¦   ©¦   ©¸©¤©¤ res/         # ×ÊÔ´ÎÄ¼þ
-©¦   ©¸©¤©¤ build.gradle.kts
-©¸©¤©¤ server/              # Go ·þÎñÆ÷
-    ©À©¤©¤ handler/         # ÇëÇó´¦ÀíÆ÷
-    ©À©¤©¤ apns/           # APNs ¿Í»§¶Ë
-    ©À©¤©¤ model/          # Êý¾ÝÄ£ÐÍ
-    ©À©¤©¤ storage/        # Êý¾Ý¿â´æ´¢
-    ©¸©¤©¤ main.go         # ·þÎñÆ÷Èë¿Ú
+â”œâ”€â”€ app/                  # Android å®¢æˆ·ç«¯
+â”‚   â”œâ”€â”€ src/main/
+â”‚   â”‚   â”œâ”€â”€ java/        # Kotlin æºç 
+â”‚   â”‚   â””â”€â”€ res/         # èµ„æºæ–‡ä»¶
+â”‚   â””â”€â”€ build.gradle.kts
+â””â”€â”€ server/              # Go æœåŠ¡å™¨
+    â”œâ”€â”€ handler/         # è¯·æ±‚å¤„ç†å™¨
+    â”œâ”€â”€ apns/           # APNs å®¢æˆ·ç«¯
+    â”œâ”€â”€ model/          # æ•°æ®æ¨¡åž‹
+    â”œâ”€â”€ storage/        # æ•°æ®åº“å­˜å‚¨
+    â””â”€â”€ main.go         # æœåŠ¡å™¨å…¥å£
 ```
 
-## Ïà¹ØÁ´½Ó
+## ç›¸å…³é“¾æŽ¥
 
 - GitHub: https://github.com/kyeo-hub/Abnotify
-- ÎÊÌâ·´À¡: https://github.com/kyeo-hub/Abnotify/issues
+- é—®é¢˜åé¦ˆ: https://github.com/kyeo-hub/Abnotify/issues
 
-## Ðí¿ÉÖ¤
+## è®¸å¯è¯
 
-±¾ÏîÄ¿¼Ì³ÐÔ­ÏîÄ¿µÄ¿ªÔ´Ðí¿ÉÖ¤¡£
+æœ¬é¡¹ç›®ç»§æ‰¿åŽŸé¡¹ç›®çš„å¼€æºè®¸å¯è¯ã€‚

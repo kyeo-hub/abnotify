@@ -40,7 +40,7 @@ captures/
 .idea/
 *.ipr
 
-# Keystore files
+# Keystore files (local only - use GitHub Secrets for CI)
 *.jks
 *.keystore
 
