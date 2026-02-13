@@ -200,8 +200,8 @@ func handleBarkParams(h *handler.BarkHandler) gin.HandlerFunc {
 		// Set params based on number of segments
 		switch len(parts) {
 		case 1:
-			// /:device_key/:body
-			c.Params = append(c.Params, gin.Param{Key: "title", Value: ""})
+			// /:device_key/:body - use default title like /push/:key/... does
+			c.Params = append(c.Params, gin.Param{Key: "title", Value: "Abnotify"})
 			c.Params = append(c.Params, gin.Param{Key: "body", Value: parts[0]})
 		case 2:
 			// /:device_key/:title/:body
