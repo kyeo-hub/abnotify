@@ -104,3 +104,6 @@ docs/internal/
 config.local.*
 *.secret.*
 secrets/
+
+# Reference only - not part of this project
+bark-worker-server/
