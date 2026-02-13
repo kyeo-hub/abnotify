@@ -49,6 +49,8 @@ func (h *BarkHandler) HandleRegister(c *gin.Context) {
 		}
 		req.PublicKey = c.Query("public_key")
 	}
+
+	log.Printf("HandleRegister: deviceKey=%s, publicKey length=%d, hasDeviceToken=%v", req.DeviceKey, len(req.PublicKey), req.DeviceToken != "")
 	
 	// Also try query parameters if not set from JSON
 	if req.DeviceKey == "" {
@@ -93,6 +95,7 @@ func (h *BarkHandler) HandleRegister(c *gin.Context) {
 			device.DeviceToken = req.DeviceToken
 		}
 		if req.PublicKey != "" {
+			log.Printf("Updating public key for device %s, old length=%d, new length=%d", req.DeviceKey, len(device.PublicKey), len(req.PublicKey))
 			device.PublicKey = req.PublicKey
 		}
 		if err := h.storage.UpdateDevice(device); err != nil {
