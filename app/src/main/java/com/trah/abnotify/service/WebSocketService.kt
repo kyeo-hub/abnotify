@@ -624,8 +624,19 @@ class WebSocketService : Service() {
         // Try to decrypt if encrypted
         var decryptedContent: String? = null
         if (!encryptedContent.isNullOrEmpty()) {
+            Log.i(TAG, "Attempting to decrypt encrypted content, length=${encryptedContent.length}")
             val privateKey = app.keyManager.getPrivateKey()
-            decryptedContent = E2ECrypto.tryDecrypt(encryptedContent, privateKey)
+            if (privateKey == null) {
+                Log.e(TAG, "Private key is null! Cannot decrypt.")
+            } else {
+                Log.i(TAG, "Private key found, algorithm=${privateKey.algorithm}")
+                decryptedContent = E2ECrypto.tryDecrypt(encryptedContent, privateKey)
+                if (decryptedContent == null) {
+                    Log.e(TAG, "Decryption failed! Possible key mismatch.")
+                } else {
+                    Log.i(TAG, "Decryption successful, content length=${decryptedContent.length}")
+                }
+            }
 
             // Parse decrypted content
             if (decryptedContent != null) {
