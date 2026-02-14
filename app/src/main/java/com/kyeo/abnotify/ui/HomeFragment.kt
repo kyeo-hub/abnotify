@@ -113,7 +113,13 @@ class HomeFragment : Fragment() {
         }
 
         binding.cardAccessibility.setOnClickListener {
-            startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+            try {
+                val intent = Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(context, "无法打开无障碍设置", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.cardAutoStart.setOnClickListener {
@@ -121,6 +127,7 @@ class HomeFragment : Fragment() {
             try {
                 val intent = Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                 intent.data = android.net.Uri.parse("package:" + requireContext().packageName)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
             } catch (e: Exception) {
                 // Fallback to battery optimization settings
