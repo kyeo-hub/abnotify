@@ -94,13 +94,13 @@ class HomeFragment : Fragment() {
 
         binding.btnRefreshKey.setOnClickListener {
             showCleanDialog(
-                title = "¸ü»»ÍÆËÍÃÜÔ¿",
-                message = "¸ü»»ÃÜÔ¿ºóÔ­ÓÐµÄÍÆËÍÁ´½Ó½«Á¢¼´Ê§Ð§¡£\n\n×¢Òâ£º¸ü»»ºó±ØÐëµã»÷ÉÏ·½µÄ¡°×¢²áÉè±¸ / Í¬²½Á¬½Ó¡±°´Å¥£¬·ñÔòÎÞ·¨½ÓÊÕÐÂÏûÏ¢£¡",
-                positiveText = "ÎÒÖªµÀÁË£¬¸ü»»",
+                title = "æ›´æ¢æŽ¨é€å¯†é’¥",
+                message = "æ›´æ¢å¯†é’¥åŽåŽŸæœ‰çš„æŽ¨é€é“¾æŽ¥å°†ç«‹å³å¤±æ•ˆã€‚\n\næ³¨æ„ï¼šæ›´æ¢åŽå¿…é¡»ç‚¹å‡»ä¸Šæ–¹çš„â€œæ³¨å†Œè®¾å¤‡ / åŒæ­¥è¿žæŽ¥â€æŒ‰é’®ï¼Œå¦åˆ™æ— æ³•æŽ¥æ”¶æ–°æ¶ˆæ¯ï¼",
+                positiveText = "æˆ‘çŸ¥é“äº†ï¼Œæ›´æ¢",
                 onPositive = {
                     app.keyManager.regenerateDeviceKey()
                     updateDeviceInfo()
-                    Toast.makeText(context, "ÃÜÔ¿ÒÑ¸ü»»£¬Çëµã»÷×¢²á°´Å¥", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "å¯†é’¥å·²æ›´æ¢ï¼Œè¯·ç‚¹å‡»æ³¨å†ŒæŒ‰é’®", Toast.LENGTH_LONG).show()
                 }
             )
         }
@@ -143,17 +143,17 @@ class HomeFragment : Fragment() {
 
     private fun showPrivacyDialog() {
         val message = """
-            1. Êý¾ÝÊÕ¼¯£ºAbnotify ²»ÊÕ¼¯ÈÎºÎ¸öÈËÉí·ÝÐÅÏ¢£¨Èç IMEI¡¢ÊÖ»úºÅµÈ£©¡£
-            2. ÏûÏ¢°²È«£ºËùÓÐÍÆËÍÏûÏ¢¾ù²ÉÓÃ RSA ¶Ëµ½¶Ë¼ÓÃÜ¡£·þÎñÆ÷½ö×÷Îª¼ÓÃÜÊý¾ÝµÄ°áÔË¹¤£¬ÎÞ·¨½âÃÜÄúµÄÄÚÈÝ¡£
-            3. Push Key£ºËüÊÇÄúµÄÎ¨Ò»Í¶µÝÆ¾Ö¤£¬ÇëÍ×ÉÆ±£¹Ü¡£Ò»µ©ÖØÖÃ£¬¾ÉÁ´½Ó½«Á¢¼´Ê§Ð§¡£
-            4. ÎÞÕÏ°­·þÎñ£º±¾Ó¦ÓÃÉêÇëÎÞÕÏ°­È¨ÏÞ½öÓÃÓÚÔöÇ¿ºóÌ¨ÔËÐÐÎÈ¶¨ÐÔ¼°×Ô¶¯´¦ÀíÍ¨Öª£¬²»¶ÁÈ¡ÄúµÄË½ÈËÊý¾Ý¡£
-            5. ÃâÔðÉùÃ÷£º±¾Èí¼þÎª¿ªÔ´¹¤¾ß£¬ÇëÔÚÖÐ¹ú·¨ÂÉÔÊÐí·¶Î§ÄÚÊ¹ÓÃ¡£
+            1. æ•°æ®æ”¶é›†ï¼šAbnotify ä¸æ”¶é›†ä»»ä½•ä¸ªäººèº«ä»½ä¿¡æ¯ï¼ˆå¦‚ IMEIã€æ‰‹æœºå·ç­‰ï¼‰ã€‚
+            2. æ¶ˆæ¯å®‰å…¨ï¼šæ‰€æœ‰æŽ¨é€æ¶ˆæ¯å‡é‡‡ç”¨ RSA ç«¯åˆ°ç«¯åŠ å¯†ã€‚æœåŠ¡å™¨ä»…ä½œä¸ºåŠ å¯†æ•°æ®çš„æ¬è¿å·¥ï¼Œæ— æ³•è§£å¯†æ‚¨çš„å†…å®¹ã€‚
+            3. Push Keyï¼šå®ƒæ˜¯æ‚¨çš„å”¯ä¸€æŠ•é€’å‡­è¯ï¼Œè¯·å¦¥å–„ä¿ç®¡ã€‚ä¸€æ—¦é‡ç½®ï¼Œæ—§é“¾æŽ¥å°†ç«‹å³å¤±æ•ˆã€‚
+            4. æ— éšœç¢æœåŠ¡ï¼šæœ¬åº”ç”¨ç”³è¯·æ— éšœç¢æƒé™ä»…ç”¨äºŽå¢žå¼ºåŽå°è¿è¡Œç¨³å®šæ€§åŠè‡ªåŠ¨å¤„ç†é€šçŸ¥ï¼Œä¸è¯»å–æ‚¨çš„ç§äººæ•°æ®ã€‚
+            5. å…è´£å£°æ˜Žï¼šæœ¬è½¯ä»¶ä¸ºå¼€æºå·¥å…·ï¼Œè¯·åœ¨ä¸­å›½æ³•å¾‹å…è®¸èŒƒå›´å†…ä½¿ç”¨ã€‚
         """.trimIndent()
 
         showCleanDialog(
-            title = "ÒþË½Õþ²ßÓë·þÎñÐ­Òé",
+            title = "éšç§æ”¿ç­–ä¸ŽæœåŠ¡åè®®",
             message = message,
-            positiveText = "ÎÒÒÑÖªÏþ"
+            positiveText = "æˆ‘å·²çŸ¥æ™“"
         )
     }
 
@@ -170,14 +170,14 @@ class HomeFragment : Fragment() {
         val disconnectedText = ContextCompat.getColor(requireContext(), R.color.status_clean_disconnected_text)
 
         if (connected) {
-            binding.tvStatus.text = "·þÎñÒÑÁ¬½Ó"
+            binding.tvStatus.text = "æœåŠ¡å·²è¿žæŽ¥"
             binding.statusContainer.backgroundTintList = android.content.res.ColorStateList.valueOf(connectedColor)
             binding.tvStatus.setTextColor(connectedText)
             // Switch to connected Lottie animation
             binding.lottieStatus.setAnimation("anim_connected.json")
             binding.lottieStatus.playAnimation()
         } else {
-            binding.tvStatus.text = "·þÎñÎ´Á¬½Ó"
+            binding.tvStatus.text = "æœåŠ¡æœªè¿žæŽ¥"
             binding.statusContainer.backgroundTintList = android.content.res.ColorStateList.valueOf(disconnectedColor)
             binding.tvStatus.setTextColor(disconnectedText)
             // Switch to disconnected Lottie animation
@@ -191,7 +191,7 @@ class HomeFragment : Fragment() {
         val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clip = ClipData.newPlainText(label, text)
         clipboard.setPrimaryClip(clip)
-        Toast.makeText(context, "ÒÑ¸´ÖÆ", Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, "å·²å¤åˆ¶", Toast.LENGTH_SHORT).show()
     }
 
     private fun registerConnectionReceiver() {
@@ -209,7 +209,7 @@ class HomeFragment : Fragment() {
         title: String,
         message: String,
         positiveText: String = "OK",
-        negativeText: String? = "È¡Ïû",
+        negativeText: String? = "å–æ¶ˆ",
         customView: View? = null,
         onPositive: (() -> Unit)? = null
     ) {

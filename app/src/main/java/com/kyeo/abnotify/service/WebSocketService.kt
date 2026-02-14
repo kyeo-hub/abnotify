@@ -693,7 +693,7 @@ class WebSocketService : Service() {
         )
         
         // Simple status text - keep it minimal
-        val statusText = if (isConnected) "ÔËĞĞÖĞ" else "Á¬½ÓÖĞ..."
+        val statusText = if (isConnected) "è¿è¡Œä¸­" else "è¿æ¥ä¸­..."
         
         // Build minimal notification
         return NotificationCompat.Builder(this, AbnotifyApp.CHANNEL_SERVICE)
@@ -702,11 +702,11 @@ class WebSocketService : Service() {
             .setSmallIcon(R.drawable.ic_notification)
             .setContentIntent(pendingIntent)
             .setOngoing(true)
-            .setPriority(NotificationCompat.PRIORITY_MIN)  // ×îµÍÓÅÏÈ¼¶
+            .setPriority(NotificationCompat.PRIORITY_MIN)  // æœ€ä½ä¼˜å…ˆçº§
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .setShowWhen(false)
-            .setVisibility(NotificationCompat.VISIBILITY_SECRET)  // ËøÆÁ²»ÏÔÊ¾
-            .setSilent(true)  // ¾²Òô
+            .setVisibility(NotificationCompat.VISIBILITY_SECRET)  // é”å±ä¸æ˜¾ç¤º
+            .setSilent(true)  // é™éŸ³
             .build()
     }
     

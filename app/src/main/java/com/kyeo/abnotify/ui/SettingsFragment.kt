@@ -47,7 +47,7 @@ class SettingsFragment : Fragment() {
 
     private fun setupVersionInfo() {
         // Set current version
-        binding.tvVersion.text = "µ±Ç°°æ±¾ ${BuildConfig.VERSION_NAME}"
+        binding.tvVersion.text = "å½“å‰ç‰ˆæœ¬ ${BuildConfig.VERSION_NAME}"
 
         // Check for update click
         binding.btnCheckUpdate.setOnClickListener {
@@ -58,7 +58,7 @@ class SettingsFragment : Fragment() {
     private fun checkForUpdate() {
         binding.btnCheckUpdate.isEnabled = false
         val originalText = binding.tvVersion.text
-        binding.tvVersion.text = "ÕýÔÚ¼ì²é¸üÐÂ..."
+        binding.tvVersion.text = "æ­£åœ¨æ£€æŸ¥æ›´æ–°..."
 
         lifecycleScope.launch {
             try {
@@ -71,24 +71,24 @@ class SettingsFragment : Fragment() {
                     if (latestVersion != null) {
                         if (compareVersions(latestVersion, currentVersion) > 0) {
                             // New version available
-                            binding.tvVersion.text = "·¢ÏÖÐÂ°æ±¾ $latestVersion"
+                            binding.tvVersion.text = "å‘çŽ°æ–°ç‰ˆæœ¬ $latestVersion"
                             showUpdateDialog(latestVersion)
                         } else {
                             // Up to date
-                            binding.tvVersion.text = "ÒÑÊÇ×îÐÂ°æ±¾ ($currentVersion)"
-                            Toast.makeText(context, "µ±Ç°ÒÑÊÇ×îÐÂ°æ±¾", Toast.LENGTH_SHORT).show()
+                            binding.tvVersion.text = "å·²æ˜¯æœ€æ–°ç‰ˆæœ¬ ($currentVersion)"
+                            Toast.makeText(context, "å½“å‰å·²æ˜¯æœ€æ–°ç‰ˆæœ¬", Toast.LENGTH_SHORT).show()
                         }
                     } else {
                         // Failed to check
                         binding.tvVersion.text = originalText
-                        Toast.makeText(context, "¼ì²é¸üÐÂÊ§°Ü£¬ÇëÉÔºóÔÙÊÔ", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "æ£€æŸ¥æ›´æ–°å¤±è´¥ï¼Œè¯·ç¨åŽå†è¯•", Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     binding.btnCheckUpdate.isEnabled = true
                     binding.tvVersion.text = originalText
-                    Toast.makeText(context, "¼ì²é¸üÐÂÊ§°Ü: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "æ£€æŸ¥æ›´æ–°å¤±è´¥: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -135,13 +135,13 @@ class SettingsFragment : Fragment() {
 
     private fun showUpdateDialog(latestVersion: String) {
         AlertDialog.Builder(requireContext())
-            .setTitle("·¢ÏÖÐÂ°æ±¾")
-            .setMessage("µ±Ç°°æ±¾: ${BuildConfig.VERSION_NAME}\n×îÐÂ°æ±¾: $latestVersion\n\nÊÇ·ñÇ°Íù GitHub ÏÂÔØ£¿")
-            .setPositiveButton("Ç°ÍùÏÂÔØ") { _, _ ->
+            .setTitle("å‘çŽ°æ–°ç‰ˆæœ¬")
+            .setMessage("å½“å‰ç‰ˆæœ¬: ${BuildConfig.VERSION_NAME}\næœ€æ–°ç‰ˆæœ¬: $latestVersion\n\næ˜¯å¦å‰å¾€ GitHub ä¸‹è½½ï¼Ÿ")
+            .setPositiveButton("å‰å¾€ä¸‹è½½") { _, _ ->
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/kyeo-hub/Abnotify/releases"))
                 startActivity(intent)
             }
-            .setNegativeButton("È¡Ïû", null)
+            .setNegativeButton("å–æ¶ˆ", null)
             .show()
     }
 
@@ -153,7 +153,7 @@ class SettingsFragment : Fragment() {
             app.keyManager.showForegroundNotification = isChecked
             Toast.makeText(
                 context,
-                if (isChecked) "ÒÑ¿ªÆôÇ°Ì¨Í¨Öª" else "ÒÑ¹Ø±ÕÇ°Ì¨Í¨Öª£¬ÐèÖØÆô·þÎñÉúÐ§",
+                if (isChecked) "å·²å¼€å¯å‰å°é€šçŸ¥" else "å·²å…³é—­å‰å°é€šçŸ¥ï¼Œéœ€é‡å¯æœåŠ¡ç”Ÿæ•ˆ",
                 Toast.LENGTH_SHORT
             ).show()
 
@@ -192,7 +192,7 @@ class SettingsFragment : Fragment() {
             // Click to select
             itemBinding.root.setOnClickListener {
                 keyManager.serverUrl = url
-                Toast.makeText(context, "ÒÑÇÐ»»·þÎñÆ÷", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "å·²åˆ‡æ¢æœåŠ¡å™¨", Toast.LENGTH_SHORT).show()
                 setupServerList() // Refresh UI
             }
 
@@ -204,9 +204,9 @@ class SettingsFragment : Fragment() {
             // Delete
             itemBinding.btnDelete.setOnClickListener {
                 showCleanDialog(
-                    title = "É¾³ý·þÎñÆ÷",
-                    message = "È·¶¨ÒªÉ¾³ý $url Âð£¿",
-                    positiveText = "É¾³ý",
+                    title = "åˆ é™¤æœåŠ¡å™¨",
+                    message = "ç¡®å®šè¦åˆ é™¤ $url å—ï¼Ÿ",
+                    positiveText = "åˆ é™¤",
                     onPositive = {
                         keyManager.removeServer(url)
                         setupServerList()
@@ -226,9 +226,9 @@ class SettingsFragment : Fragment() {
         et.setPadding(32, 32, 32, 32)
 
         showCleanDialog(
-            title = "±à¼­·þÎñÆ÷µØÖ·",
-            message = "ÇëÊäÈëÐÂµÄ·þÎñÆ÷µØÖ·£º",
-            positiveText = "±£´æ",
+            title = "ç¼–è¾‘æœåŠ¡å™¨åœ°å€",
+            message = "è¯·è¾“å…¥æ–°çš„æœåŠ¡å™¨åœ°å€ï¼š",
+            positiveText = "ä¿å­˜",
             customView = et,
             onPositive = {
                 val newUrl = et.text.toString().trim().trimEnd('/')
@@ -242,7 +242,7 @@ class SettingsFragment : Fragment() {
                         keyManager.serverUrl = newUrl
                     }
                     setupServerList()
-                    Toast.makeText(context, "·þÎñÆ÷µØÖ·ÒÑ¸üÐÂ", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "æœåŠ¡å™¨åœ°å€å·²æ›´æ–°", Toast.LENGTH_SHORT).show()
                 }
             }
         )
@@ -256,9 +256,9 @@ class SettingsFragment : Fragment() {
             et.setPadding(32, 32, 32, 32)
 
             showCleanDialog(
-                title = "Ìí¼Ó·þÎñÆ÷",
-                message = "ÇëÊäÈë·þÎñÆ÷µØÖ·£º",
-                positiveText = "Ìí¼Ó",
+                title = "æ·»åŠ æœåŠ¡å™¨",
+                message = "è¯·è¾“å…¥æœåŠ¡å™¨åœ°å€ï¼š",
+                positiveText = "æ·»åŠ ",
                 customView = et,
                 onPositive = {
                     val newUrl = et.text.toString().trim().trimEnd('/')
@@ -281,8 +281,8 @@ class SettingsFragment : Fragment() {
     private fun showCleanDialog(
         title: String,
         message: String,
-        positiveText: String = "È·¶¨",
-        negativeText: String? = "È¡Ïû",
+        positiveText: String = "ç¡®å®š",
+        negativeText: String? = "å–æ¶ˆ",
         customView: View? = null,
         onPositive: (() -> Unit)? = null
     ) {

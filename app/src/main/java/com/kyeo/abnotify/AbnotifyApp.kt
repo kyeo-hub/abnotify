@@ -39,21 +39,21 @@ class AbnotifyApp : Application() {
             val serviceChannel = NotificationChannel(
                 CHANNEL_SERVICE,
                 getString(R.string.notification_channel_name),
-                NotificationManager.IMPORTANCE_MIN  // ×îµÍÓÅÏÈ¼¶£¬¾¡Á¿²»´òÈÅÓÃ»§
+                NotificationManager.IMPORTANCE_MIN  // æœ€ä½ä¼˜å…ˆçº§ï¼Œå°½é‡ä¸æ‰“æ‰°ç”¨æˆ·
             ).apply {
                 description = getString(R.string.notification_channel_description)
                 setShowBadge(false)
-                lockscreenVisibility = android.app.Notification.VISIBILITY_SECRET  // ËøÆÁ²»ÏÔÊ¾
+                lockscreenVisibility = android.app.Notification.VISIBILITY_SECRET  // é”å±ä¸æ˜¾ç¤º
             }
             notificationManager.createNotificationChannel(serviceChannel)
 
             // Message notification channel (high priority)
             val messageChannel = NotificationChannel(
                 CHANNEL_MESSAGES,
-                "ÏûÏ¢Í¨Öª",
+                "æ¶ˆæ¯é€šçŸ¥",
                 NotificationManager.IMPORTANCE_MAX
             ).apply {
-                description = "ÍÆËÍÏûÏ¢Í¨Öª"
+                description = "æ¨é€æ¶ˆæ¯é€šçŸ¥"
                 enableVibration(true)
                 enableLights(true)
                 lockscreenVisibility = android.app.Notification.VISIBILITY_PUBLIC

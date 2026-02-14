@@ -21,30 +21,30 @@ class TutorialActivity : AppCompatActivity() {
     private var isGetRequest = false
 
     private val examples = listOf(
-        "Ñ¡ÔñÊ¾ÀıÄ£°å...",
-        "GET ÇëÇóÊ¾Àı",
-        "POST ¼òµ¥ÏûÏ¢",
-        "POST ´ø±êÌâÏûÏ¢",
-        "POST ¶àĞĞÏûÏ¢"
+        "é€‰æ‹©ç¤ºä¾‹æ¨¡æ¿...",
+        "GET è¯·æ±‚ç¤ºä¾‹",
+        "POST ç®€å•æ¶ˆæ¯",
+        "POST å¸¦æ ‡é¢˜æ¶ˆæ¯",
+        "POST å¤šè¡Œæ¶ˆæ¯"
     )
 
     // Map to track which examples are GET requests
-    private val getRequestExamples = setOf("GET ÇëÇóÊ¾Àı")
+    private val getRequestExamples = setOf("GET è¯·æ±‚ç¤ºä¾‹")
 
     private fun getExampleMessage(exampleName: String): String {
         val pushUrl = getPushUrl()
         return when (exampleName) {
-            "GET ÇëÇóÊ¾Àı" -> "${pushUrl}/²âÊÔ±êÌâ/ÕâÊÇÒ»Ìõ²âÊÔÏûÏ¢"
-            "POST ¼òµ¥ÏûÏ¢" -> """{
-  "body": "ÕâÊÇÒ»Ìõ¼òµ¥µÄÍÆËÍÏûÏ¢"
+            "GET è¯·æ±‚ç¤ºä¾‹" -> "${pushUrl}/æµ‹è¯•æ ‡é¢˜/è¿™æ˜¯ä¸€æ¡æµ‹è¯•æ¶ˆæ¯"
+            "POST ç®€å•æ¶ˆæ¯" -> """{
+  "body": "è¿™æ˜¯ä¸€æ¡ç®€å•çš„æ¨é€æ¶ˆæ¯"
 }"""
-            "POST ´ø±êÌâÏûÏ¢" -> """{
-  "title": "·şÎñÆ÷¸æ¾¯",
-  "body": "CPU Ê¹ÓÃÂÊÒÑ´ï 95%"
+            "POST å¸¦æ ‡é¢˜æ¶ˆæ¯" -> """{
+  "title": "æœåŠ¡å™¨å‘Šè­¦",
+  "body": "CPU ä½¿ç”¨ç‡å·²è¾¾ 95%"
 }"""
-            "POST ¶àĞĞÏûÏ¢" -> """{
-  "title": "ÈÎÎñÍê³É",
-  "body": "±¸·İÈÎÎñÒÑÍê³É\nºÄÊ±: 5·ÖÖÓ\n´óĞ¡: 1.2GB"
+            "POST å¤šè¡Œæ¶ˆæ¯" -> """{
+  "title": "ä»»åŠ¡å®Œæˆ",
+  "body": "å¤‡ä»½ä»»åŠ¡å·²å®Œæˆ\nè€—æ—¶: 5åˆ†é’Ÿ\nå¤§å°: 1.2GB"
 }"""
             else -> ""
         }
@@ -82,7 +82,7 @@ class TutorialActivity : AppCompatActivity() {
                     binding.etMessage.setText(message)
 
                     // Update button text based on request type
-                    binding.btnSendTest.text = if (isGetRequest) "·¢ËÍ GET ÇëÇó" else "·¢ËÍ POST ÇëÇó"
+                    binding.btnSendTest.text = if (isGetRequest) "å‘é€ GET è¯·æ±‚" else "å‘é€ POST è¯·æ±‚"
                 }
             }
 
@@ -107,60 +107,60 @@ class TutorialActivity : AppCompatActivity() {
         val pushUrl = getPushUrl()
         
         val markdown = """
-## Ê²Ã´ÊÇ Abnotify
+## ä»€ä¹ˆæ˜¯ Abnotify
 
-Abnotify ÊÇÒ»¿î»ùÓÚ **WebSocket** µÄ°²×¿ÍÆËÍ¹¤¾ß¡£Í¨¹ı¼òµ¥µÄ HTTP ÇëÇó£¬¼´¿ÉÏòÊÖ»ú·¢ËÍÊµÊ±Í¨Öª¡£
-
----
-
-## ¿ìËÙ¿ªÊ¼
-
-1. ¸´ÖÆÊ×Ò³µÄ **Push URL**
-2. Ïò¸ÃµØÖ··¢ËÍ HTTP ÇëÇó
-3. ÊÖ»ú¼´Ê±ÊÕµ½ÍÆËÍÍ¨Öª
+Abnotify æ˜¯ä¸€æ¬¾åŸºäº **WebSocket** çš„å®‰å“æ¨é€å·¥å…·ã€‚é€šè¿‡ç®€å•çš„ HTTP è¯·æ±‚ï¼Œå³å¯å‘æ‰‹æœºå‘é€å®æ—¶é€šçŸ¥ã€‚
 
 ---
 
-## ÇëÇó²ÎÊı
+## å¿«é€Ÿå¼€å§‹
 
-- `title` - Í¨Öª±êÌâ£¨¿ÉÑ¡£©
-- `body` - Í¨ÖªÄÚÈİ£¨**±ØÌî**£©
+1. å¤åˆ¶é¦–é¡µçš„ **Push URL**
+2. å‘è¯¥åœ°å€å‘é€ HTTP è¯·æ±‚
+3. æ‰‹æœºå³æ—¶æ”¶åˆ°æ¨é€é€šçŸ¥
 
 ---
 
-## ÇëÇó·½Ê½
+## è¯·æ±‚å‚æ•°
 
-**GET ÇëÇó£¨²»¼ÓÃÜ£¬½ö²âÊÔÓÃ£©**
+- `title` - é€šçŸ¥æ ‡é¢˜ï¼ˆå¯é€‰ï¼‰
+- `body` - é€šçŸ¥å†…å®¹ï¼ˆ**å¿…å¡«**ï¼‰
+
+---
+
+## è¯·æ±‚æ–¹å¼
+
+**GET è¯·æ±‚ï¼ˆä¸åŠ å¯†ï¼Œä»…æµ‹è¯•ç”¨ï¼‰**
 ```
-${pushUrl}/±êÌâ/ÄÚÈİ
+${pushUrl}/æ ‡é¢˜/å†…å®¹
 ```
 
-**POST ÇëÇó£¨RSA ¼ÓÃÜ£©**
+**POST è¯·æ±‚ï¼ˆRSA åŠ å¯†ï¼‰**
 ```
 POST ${pushUrl}
 Content-Type: application/json
 
-{"title": "±êÌâ", "body": "ÄÚÈİ"}
+{"title": "æ ‡é¢˜", "body": "å†…å®¹"}
 ```
 
 ---
 
-## °²È«ËµÃ÷
+## å®‰å…¨è¯´æ˜
 
-- **POST ÇëÇó**£ºRSA ¶Ëµ½¶Ë¼ÓÃÜ
-- **GET ÇëÇó**£ºÃ÷ÎÄ´«Êä£¬½öÓÃÓÚ²âÊÔ
-- Push Key ÊÇÎ¨Ò»Æ¾Ö¤£¬ÇëÍ×ÉÆ±£¹Ü
-- ÖØÖÃÃÜÔ¿ºó£¬¾ÉÁ´½ÓÁ¢¼´Ê§Ğ§
+- **POST è¯·æ±‚**ï¼šRSA ç«¯åˆ°ç«¯åŠ å¯†
+- **GET è¯·æ±‚**ï¼šæ˜æ–‡ä¼ è¾“ï¼Œä»…ç”¨äºæµ‹è¯•
+- Push Key æ˜¯å”¯ä¸€å‡­è¯ï¼Œè¯·å¦¥å–„ä¿ç®¡
+- é‡ç½®å¯†é’¥åï¼Œæ—§é“¾æ¥ç«‹å³å¤±æ•ˆ
 
 ---
 
-## Ó¦ÓÃ³¡¾°
+## åº”ç”¨åœºæ™¯
 
-- ·şÎñÆ÷¼à¿Ø¸æ¾¯
-- CI/CD ¹¹½¨Í¨Öª
-- ×Ô¶¯»¯½Å±¾Í¨Öª
-- IoT Éè±¸×´Ì¬ÍÆËÍ
-- ¶¨Ê±ÈÎÎñÌáĞÑ
+- æœåŠ¡å™¨ç›‘æ§å‘Šè­¦
+- CI/CD æ„å»ºé€šçŸ¥
+- è‡ªåŠ¨åŒ–è„šæœ¬é€šçŸ¥
+- IoT è®¾å¤‡çŠ¶æ€æ¨é€
+- å®šæ—¶ä»»åŠ¡æé†’
         """.trimIndent()
 
         
@@ -172,12 +172,12 @@ Content-Type: application/json
     private fun sendTestPush() {
         val message = binding.etMessage.text.toString().trim()
         if (message.isEmpty()) {
-            Toast.makeText(this, "ÇëÊäÈëÏûÏ¢ÄÚÈİ", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "è¯·è¾“å…¥æ¶ˆæ¯å†…å®¹", Toast.LENGTH_SHORT).show()
             return
         }
 
         binding.btnSendTest.isEnabled = false
-        binding.btnSendTest.text = "·¢ËÍÖĞ..."
+        binding.btnSendTest.text = "å‘é€ä¸­..."
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
@@ -211,20 +211,20 @@ Content-Type: application/json
 
                 withContext(Dispatchers.Main) {
                     binding.btnSendTest.isEnabled = true
-                    binding.btnSendTest.text = if (isGetRequest) "·¢ËÍ GET ÇëÇó" else "·¢ËÍ POST ÇëÇó"
+                    binding.btnSendTest.text = if (isGetRequest) "å‘é€ GET è¯·æ±‚" else "å‘é€ POST è¯·æ±‚"
 
                     if (responseCode in 200..299) {
-                        Toast.makeText(this@TutorialActivity, "ÍÆËÍ³É¹¦£¡Çë²é¿´Í¨Öª", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@TutorialActivity, "æ¨é€æˆåŠŸï¼è¯·æŸ¥çœ‹é€šçŸ¥", Toast.LENGTH_SHORT).show()
                     } else {
-                        Toast.makeText(this@TutorialActivity, "ÍÆËÍÊ§°Ü: HTTP $responseCode", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@TutorialActivity, "æ¨é€å¤±è´¥: HTTP $responseCode", Toast.LENGTH_SHORT).show()
                     }
                 }
 
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     binding.btnSendTest.isEnabled = true
-                    binding.btnSendTest.text = if (isGetRequest) "·¢ËÍ GET ÇëÇó" else "·¢ËÍ POST ÇëÇó"
-                    Toast.makeText(this@TutorialActivity, "·¢ËÍÊ§°Ü: ${e.message}", Toast.LENGTH_SHORT).show()
+                    binding.btnSendTest.text = if (isGetRequest) "å‘é€ GET è¯·æ±‚" else "å‘é€ POST è¯·æ±‚"
+                    Toast.makeText(this@TutorialActivity, "å‘é€å¤±è´¥: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }

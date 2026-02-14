@@ -99,9 +99,9 @@ class MessagesFragment : Fragment() {
 
     private fun showClearConfirmDialog() {
         showCleanDialog(
-            title = "Çå¿ÕÏûÏ¢",
-            message = "È·¶¨Çå¿ÕËùÓÐÏûÏ¢¼ÇÂ¼Âð£¿´Ë²Ù×÷²»¿É»Ö¸´¡£",
-            positiveText = "Çå¿Õ",
+            title = "æ¸…ç©ºæ¶ˆæ¯",
+            message = "ç¡®å®šæ¸…ç©ºæ‰€æœ‰æ¶ˆæ¯è®°å½•å—ï¼Ÿæ­¤æ“ä½œä¸å¯æ¢å¤ã€‚",
+            positiveText = "æ¸…ç©º",
             onPositive = {
                 viewLifecycleOwner.lifecycleScope.launch {
                     AbnotifyApp.getInstance().database.messageDao().deleteAll()
@@ -113,8 +113,8 @@ class MessagesFragment : Fragment() {
     private fun showCleanDialog(
         title: String,
         message: String,
-        positiveText: String = "È·¶¨",
-        negativeText: String? = "È¡Ïû",
+        positiveText: String = "ç¡®å®š",
+        negativeText: String? = "å–æ¶ˆ",
         customView: View? = null,
         onPositive: (() -> Unit)? = null
     ) {

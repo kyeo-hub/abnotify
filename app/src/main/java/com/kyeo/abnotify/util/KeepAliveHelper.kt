@@ -81,17 +81,17 @@ object KeepAliveHelper {
      */
     fun getManufacturerName(): String {
         return when (getManufacturer()) {
-            Manufacturer.XIAOMI -> "Ğ¡Ã×/Redmi"
-            Manufacturer.HUAWEI -> "»ªÎª/ÈÙÒ«"
+            Manufacturer.XIAOMI -> "å°ç±³/Redmi"
+            Manufacturer.HUAWEI -> "åä¸º/è£è€€"
             Manufacturer.OPPO -> "OPPO"
             Manufacturer.VIVO -> "vivo/iQOO"
-            Manufacturer.SAMSUNG -> "ÈıĞÇ"
-            Manufacturer.ONEPLUS -> "Ò»¼Ó"
-            Manufacturer.MEIZU -> "÷È×å"
+            Manufacturer.SAMSUNG -> "ä¸‰æ˜Ÿ"
+            Manufacturer.ONEPLUS -> "ä¸€åŠ "
+            Manufacturer.MEIZU -> "é­…æ—"
             Manufacturer.REALME -> "Realme"
-            Manufacturer.ASUS -> "»ªË¶"
-            Manufacturer.LENOVO -> "ÁªÏë"
-            Manufacturer.SONY -> "Ë÷Äá"
+            Manufacturer.ASUS -> "åç¡•"
+            Manufacturer.LENOVO -> "è”æƒ³"
+            Manufacturer.SONY -> "ç´¢å°¼"
             Manufacturer.LG -> "LG"
             Manufacturer.GOOGLE -> "Google Pixel"
             Manufacturer.OTHER -> Build.MANUFACTURER
@@ -152,7 +152,7 @@ object KeepAliveHelper {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true
         
         if (isIgnoringBatteryOptimizations(context)) {
-            Toast.makeText(context, "? ÒÑºöÂÔµç³ØÓÅ»¯", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "? å·²å¿½ç•¥ç”µæ± ä¼˜åŒ–", Toast.LENGTH_SHORT).show()
             return true
         }
 
@@ -200,7 +200,7 @@ object KeepAliveHelper {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return true
         
         if (canScheduleExactAlarms(context)) {
-            Toast.makeText(context, "? ÒÑÔÊĞí¾«È·ÄÖÖÓ", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "? å·²å…è®¸ç²¾ç¡®é—¹é’Ÿ", Toast.LENGTH_SHORT).show()
             return true
         }
 
@@ -232,7 +232,7 @@ object KeepAliveHelper {
         }
         
         // Fallback to app settings
-        Toast.makeText(context, "ÇëÔÚÓ¦ÓÃÉèÖÃÖĞÆôÓÃ×ÔÆô¶¯È¨ÏŞ", Toast.LENGTH_LONG).show()
+        Toast.makeText(context, "è¯·åœ¨åº”ç”¨è®¾ç½®ä¸­å¯ç”¨è‡ªå¯åŠ¨æƒé™", Toast.LENGTH_LONG).show()
         return openAppSettings(context)
     }
 
@@ -513,15 +513,15 @@ object KeepAliveHelper {
     fun getStatusSummary(context: Context): String {
         val sb = StringBuilder()
         
-        sb.append("Éè±¸: ${getManufacturerName()} ${Build.MODEL}\n")
+        sb.append("è®¾å¤‡: ${getManufacturerName()} ${Build.MODEL}\n")
         sb.append("Android ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})\n\n")
         
-        val batteryOpt = if (isIgnoringBatteryOptimizations(context)) "? ÒÑºöÂÔ" else "? Î´ºöÂÔ"
-        sb.append("µç³ØÓÅ»¯: $batteryOpt\n")
+        val batteryOpt = if (isIgnoringBatteryOptimizations(context)) "? å·²å¿½ç•¥" else "? æœªå¿½ç•¥"
+        sb.append("ç”µæ± ä¼˜åŒ–: $batteryOpt\n")
         
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val exactAlarm = if (canScheduleExactAlarms(context)) "? ÒÑÔÊĞí" else "? Î´ÔÊĞí"
-            sb.append("¾«È·ÄÖÖÓ: $exactAlarm\n")
+            val exactAlarm = if (canScheduleExactAlarms(context)) "? å·²å…è®¸" else "? æœªå…è®¸"
+            sb.append("ç²¾ç¡®é—¹é’Ÿ: $exactAlarm\n")
         }
         
         return sb.toString()
@@ -533,41 +533,41 @@ object KeepAliveHelper {
     fun getRecommendedActions(): List<String> {
         val actions = mutableListOf<String>()
         
-        actions.add("¹Ø±Õµç³ØÓÅ»¯")
+        actions.add("å…³é—­ç”µæ± ä¼˜åŒ–")
         
         when (getManufacturer()) {
             Manufacturer.XIAOMI -> {
-                actions.add("¿ªÆô×ÔÆô¶¯È¨ÏŞ")
-                actions.add("Ëø¶¨ºóÌ¨£¨ÈÎÎñ¿¨Æ¬ÏÂÀ­Ëø¶¨£©")
-                actions.add("Ê¡µç²ßÂÔÉèÎªÎŞÏŞÖÆ")
+                actions.add("å¼€å¯è‡ªå¯åŠ¨æƒé™")
+                actions.add("é”å®šåå°ï¼ˆä»»åŠ¡å¡ç‰‡ä¸‹æ‹‰é”å®šï¼‰")
+                actions.add("çœç”µç­–ç•¥è®¾ä¸ºæ— é™åˆ¶")
             }
             Manufacturer.HUAWEI -> {
-                actions.add("¿ªÆô×ÔÆô¶¯È¨ÏŞ")
-                actions.add("¹ØÁªÆô¶¯£ºÔÊĞí±»ÆäËûÓ¦ÓÃÆô¶¯")
-                actions.add("µç³Ø¹ÜÀí£ºÊÖ¶¯¹ÜÀí£¬ÔÊĞíºóÌ¨ÔËĞĞ")
+                actions.add("å¼€å¯è‡ªå¯åŠ¨æƒé™")
+                actions.add("å…³è”å¯åŠ¨ï¼šå…è®¸è¢«å…¶ä»–åº”ç”¨å¯åŠ¨")
+                actions.add("ç”µæ± ç®¡ç†ï¼šæ‰‹åŠ¨ç®¡ç†ï¼Œå…è®¸åå°è¿è¡Œ")
             }
             Manufacturer.OPPO, Manufacturer.ONEPLUS, Manufacturer.REALME -> {
-                actions.add("ÔÊĞí×ÔÆô¶¯")
-                actions.add("ÔÊĞíºóÌ¨ÔËĞĞ")
-                actions.add("µç³ØÓÅ»¯£ºÎŞÏŞÖÆ")
+                actions.add("å…è®¸è‡ªå¯åŠ¨")
+                actions.add("å…è®¸åå°è¿è¡Œ")
+                actions.add("ç”µæ± ä¼˜åŒ–ï¼šæ— é™åˆ¶")
             }
             Manufacturer.VIVO -> {
-                actions.add("ÔÊĞíºóÌ¨ÔËĞĞ")
-                actions.add("ÔÊĞí×ÔÆô¶¯")
-                actions.add("ºÄµçÒì³£ÓÅ»¯£º¹Ø±Õ")
+                actions.add("å…è®¸åå°è¿è¡Œ")
+                actions.add("å…è®¸è‡ªå¯åŠ¨")
+                actions.add("è€—ç”µå¼‚å¸¸ä¼˜åŒ–ï¼šå…³é—­")
             }
             Manufacturer.SAMSUNG -> {
-                actions.add("µç³ØÓÅ»¯£º²»ÊÜ¼àÊÓµÄÓ¦ÓÃ")
-                actions.add("¾ø²»ĞİÃßÓ¦ÓÃ")
+                actions.add("ç”µæ± ä¼˜åŒ–ï¼šä¸å—ç›‘è§†çš„åº”ç”¨")
+                actions.add("ç»ä¸ä¼‘çœ åº”ç”¨")
             }
             else -> {
-                actions.add("ÔÊĞí×ÔÆô¶¯£¨ÈçÓĞ£©")
-                actions.add("Ëø¶¨ºóÌ¨")
+                actions.add("å…è®¸è‡ªå¯åŠ¨ï¼ˆå¦‚æœ‰ï¼‰")
+                actions.add("é”å®šåå°")
             }
         }
         
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            actions.add("ÔÊĞí¾«È·ÄÖÖÓ")
+            actions.add("å…è®¸ç²¾ç¡®é—¹é’Ÿ")
         }
         
         return actions

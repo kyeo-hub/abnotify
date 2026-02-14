@@ -124,15 +124,15 @@ class MainActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         keyManager.isRegistered = true
-                        Toast.makeText(this@MainActivity, "×¢²á³É¹¦£¡", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "æ³¨å†ŒæˆåŠŸï¼", Toast.LENGTH_SHORT).show()
                         restartWebSocketService()
                     } else {
-                        Toast.makeText(this@MainActivity, "×¢²áÊ§°Ü: ${response.code}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "æ³¨å†Œå¤±è´¥: ${response.code}", Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@MainActivity, "ÍøÂç´íÎó: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "ç½‘ç»œé”™è¯¯: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }
