@@ -104,14 +104,12 @@ class MainActivity : AppCompatActivity() {
         val serverUrl = keyManager.serverUrl.trimEnd('/')
 
         val deviceKey = keyManager.getDeviceKey() ?: return
-        val publicKey = keyManager.exportPublicKeyPEM() ?: ""
 
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val client = OkHttpClient()
                 val requestBody = mapOf(
                     "device_key" to deviceKey,
-                    "public_key" to publicKey,
                     "name" to Build.MODEL
                 )
                 val gson = com.google.gson.Gson()

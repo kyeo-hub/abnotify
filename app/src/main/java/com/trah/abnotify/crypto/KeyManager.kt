@@ -1,21 +1,13 @@
 ﻿package com.trah.abnotify.crypto
 
 import android.content.Context
-import android.security.keystore.KeyGenParameterSpec
-import android.security.keystore.KeyProperties
 import android.util.Base64
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import java.security.KeyPair
-import java.security.KeyPairGenerator
-import java.security.KeyStore
-import java.security.PrivateKey
-import java.security.PublicKey
 import java.security.SecureRandom
 
 class KeyManager(private val context: Context) {
 
-    private val keyStore: KeyStore = KeyStore.getInstance(ANDROID_KEYSTORE).apply { load(null) }
     private val prefs by lazy { createEncryptedPrefs() }
 
     private fun createEncryptedPrefs() = EncryptedSharedPreferences.create(
@@ -29,75 +21,12 @@ class KeyManager(private val context: Context) {
     )
 
     /**
-     * Ensure RSA key pair and device key exist
+     * Ensure device key exists
      */
     fun ensureKeysExist() {
-        if (!keyStore.containsAlias(RSA_KEY_ALIAS)) {
-            generateRSAKeyPair()
-        }
         if (getDeviceKey() == null) {
             generateDeviceKey()
         }
-    }
-
-    /**
-     * Generate RSA-2048 key pair stored in Android Keystore
-     */
-    private fun generateRSAKeyPair() {
-        val keyPairGenerator = KeyPairGenerator.getInstance(
-            KeyProperties.KEY_ALGORITHM_RSA,
-            ANDROID_KEYSTORE
-        )
-
-        val spec = KeyGenParameterSpec.Builder(
-            RSA_KEY_ALIAS,
-            KeyProperties.PURPOSE_DECRYPT or KeyProperties.PURPOSE_ENCRYPT
-        )
-            .setKeySize(2048)
-            .setDigests(KeyProperties.DIGEST_SHA256)
-            .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_OAEP)
-            .build()
-
-        keyPairGenerator.initialize(spec)
-        keyPairGenerator.generateKeyPair()
-    }
-
-    /**
-     * Get the RSA key pair
-     */
-    fun getKeyPair(): KeyPair? {
-        return try {
-            val privateKey = keyStore.getKey(RSA_KEY_ALIAS, null) as? PrivateKey ?: return null
-            val publicKey = keyStore.getCertificate(RSA_KEY_ALIAS)?.publicKey ?: return null
-            KeyPair(publicKey, privateKey)
-        } catch (e: Exception) {
-            null
-        }
-    }
-
-    /**
-     * Get the private key for decryption
-     */
-    fun getPrivateKey(): PrivateKey? {
-        return keyStore.getKey(RSA_KEY_ALIAS, null) as? PrivateKey
-    }
-
-    /**
-     * Get the public key
-     */
-    fun getPublicKey(): PublicKey? {
-        return keyStore.getCertificate(RSA_KEY_ALIAS)?.publicKey
-    }
-
-    /**
-     * Export public key in PEM format
-     */
-    fun exportPublicKeyPEM(): String? {
-        val publicKey = getPublicKey() ?: return null
-        val encoded = Base64.encodeToString(publicKey.encoded, Base64.NO_WRAP)
-        return "-----BEGIN PUBLIC KEY-----\n" +
-                encoded.chunked(64).joinToString("\n") +
-                "\n-----END PUBLIC KEY-----"
     }
 
     /**
@@ -119,28 +48,11 @@ class KeyManager(private val context: Context) {
     }
 
     /**
-     * Regenerate device key only (e.g., if compromised)
+     * Regenerate device key
      */
     fun regenerateDeviceKey(): String {
         isRegistered = false // Need to re-register
         return generateDeviceKey()
-    }
-
-    /**
-     * Regenerate both device key and RSA key pair (full reset)
-     */
-    fun regenerateAllKeys(): String {
-        // Delete old RSA key
-        if (keyStore.containsAlias(RSA_KEY_ALIAS)) {
-            keyStore.deleteEntry(RSA_KEY_ALIAS)
-        }
-        // Generate new RSA key pair
-        generateRSAKeyPair()
-        // Generate new device key
-        val newDeviceKey = generateDeviceKey()
-        // Reset registration status
-        isRegistered = false
-        return newDeviceKey
     }
 
     /**
@@ -193,8 +105,6 @@ class KeyManager(private val context: Context) {
         set(value) = prefs.edit().putBoolean(PREF_SHOW_FOREGROUND_NOTIFICATION, value).apply()
 
     companion object {
-        private const val ANDROID_KEYSTORE = "AndroidKeyStore"
-        private const val RSA_KEY_ALIAS = "abnotify_rsa_key"
         private const val PREFS_NAME = "abnotify_secure_prefs"
         private const val PREF_DEVICE_KEY = "device_key"
         private const val PREF_SERVER_URL = "server_url"

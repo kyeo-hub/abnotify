@@ -20,7 +20,6 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.trah.abnotify.AbnotifyApp
 import com.trah.abnotify.R
-import com.trah.abnotify.crypto.E2ECrypto
 import com.trah.abnotify.data.Message
 import com.trah.abnotify.ui.MainActivity
 import com.trah.abnotify.util.NotificationHelper
@@ -606,55 +605,19 @@ class WebSocketService : Service() {
         val messageId = json.get("id")?.asString ?: return
         val data = json.getAsJsonObject("data") ?: return
         Log.i(TAG, "Push data: title=${data.get("title")}, body=${data.get("body")}")
-        
+
         // Update last message time and count for notification display
         lastMessageTime = System.currentTimeMillis()
         messageCount++
         updateForegroundNotification()
 
-        var title = data.get("title")?.asString
-        var body = data.get("body")?.asString
+        val title = data.get("title")?.asString
+        val body = data.get("body")?.asString
         val group = data.get("group")?.asString
         val icon = data.get("icon")?.asString
         val url = data.get("url")?.asString
         val sound = data.get("sound")?.asString
         val badge = data.get("badge")?.asInt ?: 0
-        val encryptedContent = data.get("encrypted_content")?.asString
-
-        // Try to decrypt if encrypted
-        var decryptedContent: String? = null
-        if (!encryptedContent.isNullOrEmpty()) {
-            Log.i(TAG, "Attempting to decrypt encrypted content, length=${encryptedContent.length}")
-            val privateKey = app.keyManager.getPrivateKey()
-            if (privateKey == null) {
-                Log.e(TAG, "Private key is null! Cannot decrypt.")
-            } else {
-                Log.i(TAG, "Private key found, algorithm=${privateKey.algorithm}")
-                // Log public key fingerprint for debugging
-                val publicKeyPem = app.keyManager.exportPublicKeyPEM()
-                if (publicKeyPem != null) {
-                    val keyHash = publicKeyPem.hashCode()
-                    Log.i(TAG, "Current public key fingerprint (hashCode): $keyHash, length=${publicKeyPem.length}")
-                }
-                decryptedContent = E2ECrypto.tryDecrypt(encryptedContent, privateKey)
-                if (decryptedContent == null) {
-                    Log.e(TAG, "Decryption failed! Possible key mismatch.")
-                } else {
-                    Log.i(TAG, "Decryption successful, content length=${decryptedContent.length}")
-                }
-            }
-
-            // Parse decrypted content
-            if (decryptedContent != null) {
-                try {
-                    val decrypted = gson.fromJson(decryptedContent, JsonObject::class.java)
-                    title = decrypted.get("title")?.asString ?: title
-                    body = decrypted.get("body")?.asString ?: body
-                } catch (e: Exception) {
-                    Log.e(TAG, "Error parsing decrypted content", e)
-                }
-            }
-        }
 
         // Save to database
         scope.launch {
@@ -667,8 +630,6 @@ class WebSocketService : Service() {
                 url = url,
                 sound = sound,
                 badge = badge,
-                encryptedContent = encryptedContent,
-                decryptedContent = decryptedContent,
                 timestamp = Date()
             )
             app.database.messageDao().insert(message)
@@ -676,7 +637,6 @@ class WebSocketService : Service() {
 
         // Show notification
         NotificationHelper.showNotification(
-            context = this,
             messageId = messageId,
             title = title?.takeIf { it.isNotEmpty() } ?: "Abnotify",
             body = body ?: "",

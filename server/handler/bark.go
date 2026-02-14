@@ -11,7 +11,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	"github.com/abnotify/server/apns"
-	"github.com/abnotify/server/crypto"
 	"github.com/abnotify/server/model"
 	"github.com/abnotify/server/storage"
 )
@@ -20,7 +19,6 @@ import (
 type BarkHandler struct {
 	storage    *storage.SQLiteStorage
 	hub        *Hub
-	crypto     *crypto.Crypto
 	apnsClient *apns.Client
 }
 
@@ -29,7 +27,6 @@ func NewBarkHandler(storage *storage.SQLiteStorage, hub *Hub, apnsClient *apns.C
 	return &BarkHandler{
 		storage:    storage,
 		hub:        hub,
-		crypto:     crypto.NewCrypto(),
 		apnsClient: apnsClient,
 	}
 }
@@ -47,11 +44,10 @@ func (h *BarkHandler) HandleRegister(c *gin.Context) {
 		if req.DeviceToken == "" {
 			req.DeviceToken = c.Query("devicetoken")
 		}
-		req.PublicKey = c.Query("public_key")
 	}
 
-	log.Printf("HandleRegister: deviceKey=%s, publicKey length=%d, hasDeviceToken=%v", req.DeviceKey, len(req.PublicKey), req.DeviceToken != "")
-	
+	log.Printf("HandleRegister: deviceKey=%s, hasDeviceToken=%v", req.DeviceKey, req.DeviceToken != "")
+
 	// Also try query parameters if not set from JSON
 	if req.DeviceKey == "" {
 		req.DeviceKey = c.Query("device_key")
@@ -65,19 +61,13 @@ func (h *BarkHandler) HandleRegister(c *gin.Context) {
 			req.DeviceToken = c.Query("devicetoken")
 		}
 	}
-	if req.PublicKey == "" {
-		req.PublicKey = c.Query("public_key")
-	}
 
 	// Auto-detect device type
 	if req.DeviceType == "" {
 		if req.DeviceToken != "" {
 			req.DeviceType = model.DeviceTypeIOS
-		} else if req.PublicKey != "" {
-			req.DeviceType = model.DeviceTypeAndroid
 		} else {
-			c.JSON(http.StatusBadRequest, model.NewBarkError(400, "device_token or public_key is required"))
-			return
+			req.DeviceType = model.DeviceTypeAndroid
 		}
 	}
 
@@ -93,10 +83,6 @@ func (h *BarkHandler) HandleRegister(c *gin.Context) {
 		device.DeviceType = req.DeviceType
 		if req.DeviceToken != "" {
 			device.DeviceToken = req.DeviceToken
-		}
-		if req.PublicKey != "" {
-			log.Printf("Updating public key for device %s, old length=%d, new length=%d", req.DeviceKey, len(device.PublicKey), len(req.PublicKey))
-			device.PublicKey = req.PublicKey
 		}
 		if err := h.storage.UpdateDevice(device); err != nil {
 			c.JSON(http.StatusInternalServerError, model.NewBarkError(500, "failed to update device"))
@@ -117,11 +103,10 @@ func (h *BarkHandler) HandleRegister(c *gin.Context) {
 	}
 
 	newDevice := &model.Device{
-		DeviceKey:  req.DeviceKey,
-		DeviceType: req.DeviceType,
+		DeviceKey:   req.DeviceKey,
+		DeviceType:  req.DeviceType,
 		DeviceToken: req.DeviceToken,
-		PublicKey:  req.PublicKey,
-		Name:       req.Name,
+		Name:        req.Name,
 	}
 
 	if err := h.storage.CreateDevice(newDevice); err != nil {
@@ -357,53 +342,22 @@ func (h *BarkHandler) pushToIOS(device *model.Device, req *model.PushRequest, me
 
 // pushToAndroid pushes message to Android device via WebSocket
 func (h *BarkHandler) pushToAndroid(device *model.Device, req *model.PushRequest, messageID string, c *gin.Context) {
-	// Build message data
-	data := map[string]interface{}{
-		"title":     req.Title,
-		"body":      req.Body,
-		"group":     req.Group,
-		"icon":      req.Icon,
-		"url":       req.URL,
-		"sound":     req.Sound,
-		"badge":     req.Badge,
-		"level":     req.Level,
-		"call":      req.Call,
-		"isArchive": req.IsArchive,
-	}
-
-	// Encrypt if device has public key
-	var encrypted string
-	if device.PublicKey != "" {
-		log.Printf("Device %s has public key, length=%d, attempting encryption", device.DeviceKey, len(device.PublicKey))
-		pubKey, err := h.crypto.ParsePublicKey(device.PublicKey)
-		if err == nil {
-			dataBytes, _ := json.Marshal(data)
-			encrypted, _ = h.crypto.EncryptMessage(pubKey, dataBytes)
-			log.Printf("Encryption successful for device %s, encrypted length=%d", device.DeviceKey, len(encrypted))
-		} else {
-			log.Printf("Failed to parse public key for device %s: %v", device.DeviceKey, err)
-		}
-	} else {
-		log.Printf("Device %s has no public key, sending unencrypted", device.DeviceKey)
-	}
-
 	// Create WebSocket message
 	wsMsg := &model.WSMessage{
 		Type:      model.WSTypeMessage,
 		ID:        messageID,
 		Timestamp: time.Now().Unix(),
 		Data: map[string]interface{}{
-			"title":             req.Title,
-			"body":              req.Body,
-			"group":             req.Group,
-			"icon":              req.Icon,
-			"url":               req.URL,
-			"sound":             req.Sound,
-			"badge":             req.Badge,
-			"level":             req.Level,
-			"call":              req.Call,
-			"isArchive":         req.IsArchive,
-			"encrypted_content": encrypted,
+			"title":     req.Title,
+			"body":      req.Body,
+			"group":     req.Group,
+			"icon":      req.Icon,
+			"url":       req.URL,
+			"sound":     req.Sound,
+			"badge":     req.Badge,
+			"level":     req.Level,
+			"call":      req.Call,
+			"isArchive": req.IsArchive,
 		},
 	}
 
@@ -416,16 +370,15 @@ func (h *BarkHandler) pushToAndroid(device *model.Device, req *model.PushRequest
 	} else {
 		// Device offline, save message
 		msg := &model.Message{
-			DeviceID:         device.ID,
-			MessageID:        messageID,
-			Title:            req.Title,
-			Body:             req.Body,
-			Group:            req.Group,
-			Icon:             req.Icon,
-			URL:              req.URL,
-			Sound:            req.Sound,
-			Badge:            req.Badge,
-			EncryptedPayload: []byte(encrypted),
+			DeviceID:  device.ID,
+			MessageID: messageID,
+			Title:     req.Title,
+			Body:      req.Body,
+			Group:     req.Group,
+			Icon:      req.Icon,
+			URL:       req.URL,
+			Sound:     req.Sound,
+			Badge:     req.Badge,
 		}
 		h.storage.CreateMessage(msg)
 		c.JSON(http.StatusOK, model.NewBarkResponse(nil))

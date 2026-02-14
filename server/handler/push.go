@@ -8,7 +8,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
-	"github.com/abnotify/server/crypto"
 	"github.com/abnotify/server/model"
 	"github.com/abnotify/server/storage"
 )
@@ -17,7 +16,6 @@ import (
 type PushHandler struct {
 	storage *storage.SQLiteStorage
 	hub     *Hub
-	crypto  *crypto.Crypto
 }
 
 // NewPushHandler creates a new push handler
@@ -25,7 +23,6 @@ func NewPushHandler(storage *storage.SQLiteStorage, hub *Hub) *PushHandler {
 	return &PushHandler{
 		storage: storage,
 		hub:     hub,
-		crypto:  crypto.NewCrypto(),
 	}
 }
 
@@ -83,27 +80,6 @@ func (h *PushHandler) HandlePush(c *gin.Context) {
 		Badge:     req.Badge,
 	}
 
-	// Encrypt if device has public key (E2E mode)
-	var encryptedContent string
-	if device.PublicKey != "" {
-		publicKey, err := h.crypto.ParsePublicKey(device.PublicKey)
-		if err == nil {
-			// Create payload to encrypt
-			payload := map[string]interface{}{
-				"title": req.Title,
-				"body":  req.Body,
-				"group": req.Group,
-				"icon":  req.Icon,
-				"url":   req.URL,
-				"sound": req.Sound,
-				"badge": req.Badge,
-			}
-			payloadBytes, _ := json.Marshal(payload)
-			encryptedContent, _ = h.crypto.EncryptMessage(publicKey, payloadBytes)
-			msg.EncryptedPayload = []byte(encryptedContent)
-		}
-	}
-
 	// Store message
 	if err := h.storage.CreateMessage(msg); err != nil {
 		c.JSON(http.StatusInternalServerError, model.PushResponse{
@@ -119,14 +95,13 @@ func (h *PushHandler) HandlePush(c *gin.Context) {
 		ID:        messageID,
 		Timestamp: time.Now().Unix(),
 		Data: map[string]interface{}{
-			"title":             req.Title,
-			"body":              req.Body,
-			"group":             req.Group,
-			"icon":              req.Icon,
-			"url":               req.URL,
-			"sound":             req.Sound,
-			"badge":             req.Badge,
-			"encrypted_content": encryptedContent,
+			"title": req.Title,
+			"body":  req.Body,
+			"group": req.Group,
+			"icon":  req.Icon,
+			"url":   req.URL,
+			"sound": req.Sound,
+			"badge": req.Badge,
 		},
 	}
 
@@ -179,21 +154,6 @@ func (h *PushHandler) HandleSimplePush(c *gin.Context) {
 		Body:      body,
 	}
 
-	// Encrypt if device has public key
-	var encryptedContent string
-	if device.PublicKey != "" {
-		publicKey, err := h.crypto.ParsePublicKey(device.PublicKey)
-		if err == nil {
-			payload := map[string]interface{}{
-				"title": title,
-				"body":  body,
-			}
-			payloadBytes, _ := json.Marshal(payload)
-			encryptedContent, _ = h.crypto.EncryptMessage(publicKey, payloadBytes)
-			msg.EncryptedPayload = []byte(encryptedContent)
-		}
-	}
-
 	if err := h.storage.CreateMessage(msg); err != nil {
 		c.JSON(http.StatusInternalServerError, model.PushResponse{
 			Success: false,
@@ -207,9 +167,8 @@ func (h *PushHandler) HandleSimplePush(c *gin.Context) {
 		ID:        messageID,
 		Timestamp: time.Now().Unix(),
 		Data: map[string]interface{}{
-			"title":             title,
-			"body":              body,
-			"encrypted_content": encryptedContent,
+			"title": title,
+			"body":  body,
 		},
 	}
 
