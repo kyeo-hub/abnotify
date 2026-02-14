@@ -1,4 +1,4 @@
-﻿package com.trah.abnotify.crypto
+package com.kyeo.abnotify.crypto
 
 import android.content.Context
 import android.util.Base64

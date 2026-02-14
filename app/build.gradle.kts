@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.trah.abnotify"
+    namespace = "com.kyeo.abnotify"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.trah.abnotify"
+        applicationId = "com.kyeo.abnotify"
         minSdk = 26
         targetSdk = 34
         versionCode = 2

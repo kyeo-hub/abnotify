@@ -1,4 +1,4 @@
-﻿package com.trah.abnotify.util
+package com.kyeo.abnotify.util
 
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -6,9 +6,9 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.core.app.NotificationCompat
-import com.trah.abnotify.AbnotifyApp
-import com.trah.abnotify.R
-import com.trah.abnotify.ui.MainActivity
+import com.kyeo.abnotify.AbnotifyApp
+import com.kyeo.abnotify.R
+import com.kyeo.abnotify.ui.MainActivity
 import java.util.concurrent.atomic.AtomicInteger
 
 object NotificationHelper {

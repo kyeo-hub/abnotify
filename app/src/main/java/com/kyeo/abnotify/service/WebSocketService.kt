@@ -1,4 +1,4 @@
-Ôªøpackage com.trah.abnotify.service
+package com.kyeo.abnotify.service
 
 import android.app.AlarmManager
 import android.app.Notification
@@ -18,11 +18,11 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import com.trah.abnotify.AbnotifyApp
-import com.trah.abnotify.R
-import com.trah.abnotify.data.Message
-import com.trah.abnotify.ui.MainActivity
-import com.trah.abnotify.util.NotificationHelper
+import com.kyeo.abnotify.AbnotifyApp
+import com.kyeo.abnotify.R
+import com.kyeo.abnotify.data.Message
+import com.kyeo.abnotify.ui.MainActivity
+import com.kyeo.abnotify.util.NotificationHelper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -693,7 +693,7 @@ class WebSocketService : Service() {
         )
         
         // Simple status text - keep it minimal
-        val statusText = if (isConnected) "ËøêË°å‰∏≠" else "ËøûÊé•‰∏≠..."
+        val statusText = if (isConnected) "‘À––÷–" else "¡¨Ω”÷–..."
         
         // Build minimal notification
         return NotificationCompat.Builder(this, AbnotifyApp.CHANNEL_SERVICE)
@@ -702,11 +702,11 @@ class WebSocketService : Service() {
             .setSmallIcon(R.drawable.ic_notification)
             .setContentIntent(pendingIntent)
             .setOngoing(true)
-            .setPriority(NotificationCompat.PRIORITY_MIN)  // ÊúÄ‰Ωé‰ºòÂÖàÁ∫ß
+            .setPriority(NotificationCompat.PRIORITY_MIN)  // ◊ÓµÕ”≈œ»º∂
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .setShowWhen(false)
-            .setVisibility(NotificationCompat.VISIBILITY_SECRET)  // ÈîÅÂ±è‰∏çÊòæÁ§∫
-            .setSilent(true)  // ÈùôÈü≥
+            .setVisibility(NotificationCompat.VISIBILITY_SECRET)  // À¯∆¡≤ªœ‘ æ
+            .setSilent(true)  // æ≤“Ù
             .build()
     }
     

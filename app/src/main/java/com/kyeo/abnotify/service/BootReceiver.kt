@@ -1,10 +1,10 @@
-﻿package com.trah.abnotify.service
+package com.kyeo.abnotify.service
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import com.trah.abnotify.AbnotifyApp
+import com.kyeo.abnotify.AbnotifyApp
 
 class BootReceiver : BroadcastReceiver() {
 

@@ -6,7 +6,7 @@
 #   http://developer.android.com/guide/developing/tools/proguard.html
 
 # Keep Room entities and DAOs
--keep class com.trah.abnotify.data.** { *; }
+-keep class com.kyeo.abnotify.data.** { *; }
 -keep class * extends androidx.room.RoomDatabase
 -keep @androidx.room.Entity class *
 -keepclassmembers class * extends androidx.room.RoomDatabase {

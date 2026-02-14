@@ -1,12 +1,12 @@
-ï»¿package com.trah.abnotify
+package com.kyeo.abnotify
 
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import com.trah.abnotify.crypto.KeyManager
-import com.trah.abnotify.data.AppDatabase
+import com.kyeo.abnotify.crypto.KeyManager
+import com.kyeo.abnotify.data.AppDatabase
 
 class AbnotifyApp : Application() {
 
@@ -39,21 +39,21 @@ class AbnotifyApp : Application() {
             val serviceChannel = NotificationChannel(
                 CHANNEL_SERVICE,
                 getString(R.string.notification_channel_name),
-                NotificationManager.IMPORTANCE_MIN  // æœ€ä½ä¼˜å…ˆçº§ï¼Œå°½é‡ä¸æ‰“æ‰°ç”¨æˆ·
+                NotificationManager.IMPORTANCE_MIN  // ×îµÍÓÅÏÈ¼¶£¬¾¡Á¿²»´òÈÅÓÃ»§
             ).apply {
                 description = getString(R.string.notification_channel_description)
                 setShowBadge(false)
-                lockscreenVisibility = android.app.Notification.VISIBILITY_SECRET  // é”å±ä¸æ˜¾ç¤º
+                lockscreenVisibility = android.app.Notification.VISIBILITY_SECRET  // ËøÆÁ²»ÏÔÊ¾
             }
             notificationManager.createNotificationChannel(serviceChannel)
 
             // Message notification channel (high priority)
             val messageChannel = NotificationChannel(
                 CHANNEL_MESSAGES,
-                "æ¶ˆæ¯é€šçŸ¥",
+                "ÏûÏ¢Í¨Öª",
                 NotificationManager.IMPORTANCE_MAX
             ).apply {
-                description = "æ¨é€æ¶ˆæ¯é€šçŸ¥"
+                description = "ÍÆËÍÏûÏ¢Í¨Öª"
                 enableVibration(true)
                 enableLights(true)
                 lockscreenVisibility = android.app.Notification.VISIBILITY_PUBLIC

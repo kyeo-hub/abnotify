@@ -1,4 +1,4 @@
-Ôªøpackage com.trah.abnotify.ui
+package com.kyeo.abnotify.ui
 
 import android.Manifest
 import android.content.Context
@@ -13,10 +13,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.trah.abnotify.AbnotifyApp
-import com.trah.abnotify.R
-import com.trah.abnotify.databinding.ActivityMainBinding
-import com.trah.abnotify.service.WebSocketService
+import com.kyeo.abnotify.AbnotifyApp
+import com.kyeo.abnotify.R
+import com.kyeo.abnotify.databinding.ActivityMainBinding
+import com.kyeo.abnotify.service.WebSocketService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -124,15 +124,15 @@ class MainActivity : AppCompatActivity() {
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         keyManager.isRegistered = true
-                        Toast.makeText(this@MainActivity, "Ê≥®ÂÜåÊàêÂäüÔºÅ", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "◊¢≤·≥…π¶£°", Toast.LENGTH_SHORT).show()
                         restartWebSocketService()
                     } else {
-                        Toast.makeText(this@MainActivity, "Ê≥®ÂÜåÂ§±Ë¥•: ${response.code}", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "◊¢≤· ß∞‹: ${response.code}", Toast.LENGTH_SHORT).show()
                     }
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@MainActivity, "ÁΩëÁªúÈîôËØØ: ${e.message}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "Õ¯¬Á¥ÌŒÛ: ${e.message}", Toast.LENGTH_SHORT).show()
                 }
             }
         }

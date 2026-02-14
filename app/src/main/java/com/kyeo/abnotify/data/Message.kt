@@ -1,4 +1,4 @@
-﻿package com.trah.abnotify.data
+package com.kyeo.abnotify.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

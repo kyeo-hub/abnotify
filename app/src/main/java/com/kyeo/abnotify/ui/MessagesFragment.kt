@@ -1,4 +1,4 @@
-ï»¿package com.trah.abnotify.ui
+package com.kyeo.abnotify.ui
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -11,10 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.trah.abnotify.AbnotifyApp
-import com.trah.abnotify.databinding.FragmentMessagesBinding
-import com.trah.abnotify.data.Message
-import com.trah.abnotify.R
+import com.kyeo.abnotify.AbnotifyApp
+import com.kyeo.abnotify.databinding.FragmentMessagesBinding
+import com.kyeo.abnotify.data.Message
+import com.kyeo.abnotify.R
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -99,9 +99,9 @@ class MessagesFragment : Fragment() {
 
     private fun showClearConfirmDialog() {
         showCleanDialog(
-            title = "æ¸…ç©ºæ¶ˆæ¯",
-            message = "ç¡®å®šæ¸…ç©ºæ‰€æœ‰æ¶ˆæ¯è®°å½•å—ï¼Ÿæ­¤æ“ä½œä¸å¯æ¢å¤ã€‚",
-            positiveText = "æ¸…ç©º",
+            title = "Çå¿ÕÏûÏ¢",
+            message = "È·¶¨Çå¿ÕËùÓÐÏûÏ¢¼ÇÂ¼Âð£¿´Ë²Ù×÷²»¿É»Ö¸´¡£",
+            positiveText = "Çå¿Õ",
             onPositive = {
                 viewLifecycleOwner.lifecycleScope.launch {
                     AbnotifyApp.getInstance().database.messageDao().deleteAll()
@@ -113,8 +113,8 @@ class MessagesFragment : Fragment() {
     private fun showCleanDialog(
         title: String,
         message: String,
-        positiveText: String = "ç¡®å®š",
-        negativeText: String? = "å–æ¶ˆ",
+        positiveText: String = "È·¶¨",
+        negativeText: String? = "È¡Ïû",
         customView: View? = null,
         onPositive: (() -> Unit)? = null
     ) {
