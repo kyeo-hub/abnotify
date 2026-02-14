@@ -751,12 +751,12 @@ class WebSocketService : Service() {
         private const val KEEP_ALIVE_REQUEST_CODE = 1001
         private const val RESTART_REQUEST_CODE = 1002
 
-        const val ACTION_CONNECT = "com.trah.abnotify.action.CONNECT"
-        const val ACTION_DISCONNECT = "com.trah.abnotify.action.DISCONNECT"
-        const val ACTION_SEND_ACK = "com.trah.abnotify.action.SEND_ACK"
-        const val ACTION_CONNECTION_STATUS = "com.trah.abnotify.action.CONNECTION_STATUS"
-        const val ACTION_KEEP_ALIVE = "com.trah.abnotify.action.KEEP_ALIVE"
-        const val ACTION_RESTART_SERVICE = "com.trah.abnotify.action.RESTART_SERVICE"
+        const val ACTION_CONNECT = "com.kyeo.abnotify.action.CONNECT"
+        const val ACTION_DISCONNECT = "com.kyeo.abnotify.action.DISCONNECT"
+        const val ACTION_SEND_ACK = "com.kyeo.abnotify.action.SEND_ACK"
+        const val ACTION_CONNECTION_STATUS = "com.kyeo.abnotify.action.CONNECTION_STATUS"
+        const val ACTION_KEEP_ALIVE = "com.kyeo.abnotify.action.KEEP_ALIVE"
+        const val ACTION_RESTART_SERVICE = "com.kyeo.abnotify.action.RESTART_SERVICE"
 
         const val EXTRA_MESSAGE_ID = "message_id"
         const val EXTRA_CONNECTED = "connected"

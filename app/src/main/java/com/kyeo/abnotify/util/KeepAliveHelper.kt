@@ -122,7 +122,7 @@ object KeepAliveHelper {
      * Check if accessibility service is enabled
      */
     fun isAccessibilityServiceEnabled(context: Context): Boolean {
-        val expectedComponentName = ComponentName(context, "com.trah.abnotify.service.KeepAliveAccessibilityService")
+        val expectedComponentName = ComponentName(context, "com.kyeo.abnotify.service.KeepAliveAccessibilityService")
         val enabledServices = Settings.Secure.getString(context.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
         return enabledServices?.contains(expectedComponentName.flattenToString()) == true
     }

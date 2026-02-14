@@ -158,7 +158,7 @@ class SettingsFragment : Fragment() {
             ).show()
 
             // Restart WebSocket service to apply changes
-            val intent = android.content.Intent(context, com.trah.abnotify.service.WebSocketService::class.java)
+            val intent = android.content.Intent(context, com.kyeo.abnotify.service.WebSocketService::class.java)
             context?.stopService(intent)
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 context?.startForegroundService(intent)
