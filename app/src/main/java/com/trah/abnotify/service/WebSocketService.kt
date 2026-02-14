@@ -637,6 +637,7 @@ class WebSocketService : Service() {
 
         // Show notification
         NotificationHelper.showNotification(
+            context = this,
             messageId = messageId,
             title = title?.takeIf { it.isNotEmpty() } ?: "Abnotify",
             body = body ?: "",

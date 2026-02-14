@@ -275,17 +275,7 @@ class SettingsFragment : Fragment() {
             startActivity(intent)
         }
 
-        binding.btnResetEncryption.setOnClickListener {
-            showCleanDialog(
-                title = "重置加密密钥",
-                message = "这将生成全新的 E2E 公私钥对。\n\n旧消息将无法解密。重置后必须点击首页的\"同步服务器\"。",
-                positiveText = "重置",
-                onPositive = {
-                    app.keyManager.regenerateAllKeys()
-                    Toast.makeText(context, "密钥已重置，请务必同步服务器", Toast.LENGTH_LONG).show()
-                }
-            )
-        }
+
     }
 
     private fun showCleanDialog(
