@@ -281,6 +281,14 @@ class SettingsFragment : Fragment() {
             KeepAliveHelper.openNotificationSettings(requireContext())
         }
 
+        binding.btnExactAlarm.setOnClickListener {
+            KeepAliveHelper.requestExactAlarmPermission(requireContext())
+        }
+
+        binding.btnAppSettings.setOnClickListener {
+            KeepAliveHelper.openAppSettings(requireContext())
+        }
+
         binding.btnAddServer.setOnClickListener {
             val et = EditText(requireContext())
             et.setHint("https://xx.com")
