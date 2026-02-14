@@ -12,10 +12,10 @@ class BootReceiver : BroadcastReceiver() {
         if (intent.action == Intent.ACTION_BOOT_COMPLETED) {
             // Only start if device is registered
             try {
-                val app = AbnotifyApp.getInstance()
-                if (app?.keyManager?.isRegistered != true) {
-                    return
-                }
+            val app = AbnotifyApp.getInstance()
+            if (!app.keyManager.isRegistered) {
+                return
+            }
             } catch (e: Exception) {
                 return
             }
