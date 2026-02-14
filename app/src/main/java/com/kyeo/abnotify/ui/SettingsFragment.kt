@@ -20,6 +20,7 @@ import com.kyeo.abnotify.BuildConfig
 import com.kyeo.abnotify.R
 import com.kyeo.abnotify.databinding.FragmentSettingsBinding
 import com.kyeo.abnotify.databinding.ItemServerBinding
+import com.kyeo.abnotify.util.KeepAliveHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -249,6 +250,37 @@ class SettingsFragment : Fragment() {
     }
 
     private fun setupActions() {
+        // Keep alive settings
+        binding.btnKeepAliveStatus.setOnClickListener {
+            val status = KeepAliveHelper.getStatusSummary(requireContext())
+            val recommended = KeepAliveHelper.getRecommendedActions().joinToString("\n• ", "• ")
+            showCleanDialog(
+                title = "保活状态",
+                message = "$status\n建议操作:\n$recommended",
+                positiveText = "知道了"
+            )
+        }
+
+        binding.btnBatteryOptimization.setOnClickListener {
+            KeepAliveHelper.requestIgnoreBatteryOptimization(requireContext())
+        }
+
+        binding.btnAutoStart.setOnClickListener {
+            KeepAliveHelper.openAutoStartSettings(requireContext())
+        }
+
+        binding.btnAccessibility.setOnClickListener {
+            KeepAliveHelper.openAccessibilitySettings(requireContext())
+        }
+
+        binding.btnBackgroundSettings.setOnClickListener {
+            KeepAliveHelper.openBackgroundSettings(requireContext())
+        }
+
+        binding.btnNotificationPermission.setOnClickListener {
+            KeepAliveHelper.openNotificationSettings(requireContext())
+        }
+
         binding.btnAddServer.setOnClickListener {
             val et = EditText(requireContext())
             et.setHint("https://xx.com")

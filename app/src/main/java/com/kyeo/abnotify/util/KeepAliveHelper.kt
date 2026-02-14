@@ -152,7 +152,7 @@ object KeepAliveHelper {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return true
         
         if (isIgnoringBatteryOptimizations(context)) {
-            Toast.makeText(context, "? 已忽略电池优化", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "[OK] 已忽略电池优化", Toast.LENGTH_SHORT).show()
             return true
         }
 
@@ -200,7 +200,7 @@ object KeepAliveHelper {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return true
         
         if (canScheduleExactAlarms(context)) {
-            Toast.makeText(context, "? 已允许精确闹钟", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "[OK] 已允许精确闹钟", Toast.LENGTH_SHORT).show()
             return true
         }
 
@@ -516,11 +516,11 @@ object KeepAliveHelper {
         sb.append("设备: ${getManufacturerName()} ${Build.MODEL}\n")
         sb.append("Android ${Build.VERSION.RELEASE} (API ${Build.VERSION.SDK_INT})\n\n")
         
-        val batteryOpt = if (isIgnoringBatteryOptimizations(context)) "? 已忽略" else "? 未忽略"
+        val batteryOpt = if (isIgnoringBatteryOptimizations(context)) "[OK] 已忽略" else "[X] 未忽略"
         sb.append("电池优化: $batteryOpt\n")
         
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val exactAlarm = if (canScheduleExactAlarms(context)) "? 已允许" else "? 未允许"
+            val exactAlarm = if (canScheduleExactAlarms(context)) "[OK] 已允许" else "[X] 未允许"
             sb.append("精确闹钟: $exactAlarm\n")
         }
         
