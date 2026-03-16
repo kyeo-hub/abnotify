@@ -143,30 +143,65 @@ func (h *BarkHandler) HandlePush(c *gin.Context) {
 		return
 	}
 
-	// Parse request
+	// Parse request - support JSON, form-data, and query parameters
 	var req model.PushRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		// Try query parameters
+		// JSON binding failed, try form-data and query parameters
+		c.Bind(&req)
+	}
+	// Also check query parameters
+	if req.Title == "" {
 		req.Title = c.Query("title")
+	}
+	if req.Body == "" {
 		req.Body = c.Query("body")
+	}
+	if req.Subtitle == "" {
 		req.Subtitle = c.Query("subtitle")
+	}
+	if req.Group == "" {
 		req.Group = c.Query("group")
+	}
+	if req.Sound == "" {
 		req.Sound = c.Query("sound")
-		req.URL = c.Query("url")
-		req.Icon = c.Query("icon")
-		req.Image = c.Query("image")
-		req.Level = c.Query("level")
-	}
-	// Also check query params if not set from JSON
-	if req.Image == "" {
-		req.Image = c.Query("image")
-	}
-	if req.Icon == "" {
-		req.Icon = c.Query("icon")
 	}
 	if req.URL == "" {
 		req.URL = c.Query("url")
 	}
+	if req.Icon == "" {
+		req.Icon = c.Query("icon")
+	}
+	if req.Image == "" {
+		req.Image = c.Query("image")
+	}
+	if req.Level == "" {
+		req.Level = c.Query("level")
+	}
+	
+	// SMS Forwarder compatibility: check alternative field names for body
+	// Common field names: body, content, msg, message, text, desp, description
+	if req.Body == "" {
+		if req.Content != "" {
+			req.Body = req.Content
+		} else if req.Msg != "" {
+			req.Body = req.Msg
+		} else if req.Message != "" {
+			req.Body = req.Message
+		} else if req.Text != "" {
+			req.Body = req.Text
+		} else if req.Desp != "" {
+			req.Body = req.Desp
+		} else if req.Description != "" {
+			req.Body = req.Description
+		}
+	}
+	// Default title if empty
+	if req.Title == "" {
+		req.Title = "Abnotify"
+	}
+	
+	log.Printf("BarkHandler.HandlePush: deviceKey=%s, Title='%s', Body='%s', Content='%s', Msg='%s'", 
+		deviceKey, req.Title, req.Body, req.Content, req.Msg)
 
 	// Generate message ID
 	messageID := uuid.New().String()
