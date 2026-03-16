@@ -53,14 +53,16 @@ func (h *PushHandler) HandlePush(c *gin.Context) {
 		return
 	}
 
-	// Parse request
+	// Parse request - support both JSON and form-data (for SMS Forwarder compatibility)
 	var req model.PushRequest
+	// Try JSON first
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, model.PushResponse{
-			Success: false,
-			Error:   "Invalid request body",
-		})
-		return
+		// Fall back to form-data binding
+		c.Bind(&req)
+	}
+	// SMS Forwarder uses "content" instead of "body", handle compatibility
+	if req.Body == "" && req.Content != "" {
+		req.Body = req.Content
 	}
 
 	// Generate message ID

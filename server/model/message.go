@@ -49,36 +49,39 @@ type Message struct {
 // PushRequest represents an incoming push request
 type PushRequest struct {
 	// Basic fields
-	Title   string `json:"title"`
-	Body    string `json:"body"`
-	Group   string `json:"group,omitempty"`
-	Icon    string `json:"icon,omitempty"`
-	URL     string `json:"url,omitempty"`
-	Sound   string `json:"sound,omitempty"`
-	Badge   int    `json:"badge,omitempty"`
-	Level   string `json:"level,omitempty"`
-	Subtitle string `json:"subtitle,omitempty"`
+	Title   string `json:"title" form:"title"`
+	Body    string `json:"body" form:"body"`
+	Group   string `json:"group,omitempty" form:"group,omitempty"`
+	Icon    string `json:"icon,omitempty" form:"icon,omitempty"`
+	URL     string `json:"url,omitempty" form:"url,omitempty"`
+	Sound   string `json:"sound,omitempty" form:"sound,omitempty"`
+	Badge   int    `json:"badge,omitempty" form:"badge,omitempty"`
+	Level   string `json:"level,omitempty" form:"level,omitempty"`
+	Subtitle string `json:"subtitle,omitempty" form:"subtitle,omitempty"`
+
+	// For SMS Forwarder compatibility (uses "content" instead of "body")
+	Content string `json:"content" form:"content"`
 
 	// Bark extended fields
-	Call      bool   `json:"call,omitempty"`
-	IsArchive bool   `json:"isArchive,omitempty"`
-	Cipher    string `json:"ciphertext,omitempty"`
-	Volume    int    `json:"volume,omitempty"`
-	Copy      bool   `json:"copy,omitempty"`
-	AutoCopy  bool   `json:"autoCopy,omitempty"`
-	Action    string `json:"action,omitempty"`
-	IV        string `json:"iv,omitempty"`
-	Image     string `json:"image,omitempty"`
-	ID        string `json:"id,omitempty"`
-	Delete    bool   `json:"delete,omitempty"`
-	Markdown  string `json:"markdown,omitempty"`
+	Call      bool   `json:"call,omitempty" form:"call,omitempty"`
+	IsArchive bool   `json:"isArchive,omitempty" form:"isArchive,omitempty"`
+	Cipher    string `json:"ciphertext,omitempty" form:"ciphertext,omitempty"`
+	Volume    int    `json:"volume,omitempty" form:"volume,omitempty"`
+	Copy      bool   `json:"copy,omitempty" form:"copy,omitempty"`
+	AutoCopy  bool   `json:"autoCopy,omitempty" form:"autoCopy,omitempty"`
+	Action    string `json:"action,omitempty" form:"action,omitempty"`
+	IV        string `json:"iv,omitempty" form:"iv,omitempty"`
+	Image     string `json:"image,omitempty" form:"image,omitempty"`
+	ID        string `json:"id,omitempty" form:"id,omitempty"`
+	Delete    bool   `json:"delete,omitempty" form:"delete,omitempty"`
+	Markdown  string `json:"markdown,omitempty" form:"markdown,omitempty"`
 
 	// Device keys (for batch push)
-	DeviceKey  string   `json:"device_key,omitempty"`
-	DeviceKeys []string `json:"device_keys,omitempty"`
+	DeviceKey  string   `json:"device_key,omitempty" form:"device_key,omitempty"`
+	DeviceKeys []string `json:"device_keys,omitempty" form:"device_keys,omitempty"`
 
 	// Android encrypted content
-	EncryptedContent string `json:"encrypted_content,omitempty"`
+	EncryptedContent string `json:"encrypted_content,omitempty" form:"encrypted_content,omitempty"`
 }
 
 // WSMessage represents a WebSocket message
