@@ -60,10 +60,32 @@ func (h *PushHandler) HandlePush(c *gin.Context) {
 		// Fall back to form-data binding
 		c.Bind(&req)
 	}
-	// SMS Forwarder uses "content" instead of "body", handle compatibility
-	if req.Body == "" && req.Content != "" {
-		req.Body = req.Content
+	// Log received request for debugging
+	log.Printf("HandlePush received: deviceKey=%s, Title='%s', Body='%s', Content='%s', Msg='%s', Message='%s', Text='%s'", 
+		deviceKey, req.Title, req.Body, req.Content, req.Msg, req.Message, req.Text)
+	
+	// SMS Forwarder compatibility: check alternative field names for body
+	// Common field names: body, content, msg, message, text, desp, description
+	if req.Body == "" {
+		if req.Content != "" {
+			req.Body = req.Content
+		} else if req.Msg != "" {
+			req.Body = req.Msg
+		} else if req.Message != "" {
+			req.Body = req.Message
+		} else if req.Text != "" {
+			req.Body = req.Text
+		} else if req.Desp != "" {
+			req.Body = req.Desp
+		} else if req.Description != "" {
+			req.Body = req.Description
+		}
 	}
+	// Default title if empty
+	if req.Title == "" {
+		req.Title = "Abnotify"
+	}
+	log.Printf("HandlePush processed: Title='%s', Body='%s'", req.Title, req.Body)
 
 	// Generate message ID
 	messageID := uuid.New().String()

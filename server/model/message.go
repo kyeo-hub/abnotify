@@ -62,6 +62,13 @@ type PushRequest struct {
 	// For SMS Forwarder compatibility (uses "content" instead of "body")
 	Content string `json:"content" form:"content"`
 
+	// Alternative body field names (SMS Forwarder / ServerChan / PushDeer etc.)
+	Msg         string `json:"msg" form:"msg"`
+	Message     string `json:"message" form:"message"`
+	Text        string `json:"text" form:"text"`
+	Desp        string `json:"desp" form:"desp"`
+	Description string `json:"description" form:"description"`
+
 	// Bark extended fields
 	Call      bool   `json:"call,omitempty" form:"call,omitempty"`
 	IsArchive bool   `json:"isArchive,omitempty" form:"isArchive,omitempty"`
