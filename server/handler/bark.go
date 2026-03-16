@@ -202,14 +202,17 @@ func (h *BarkHandler) HandlePush(c *gin.Context) {
 	
 	log.Printf("BarkHandler.HandlePush: deviceKey=%s, Title='%s', Body='%s', Content='%s', Msg='%s'", 
 		deviceKey, req.Title, req.Body, req.Content, req.Msg)
+	log.Printf("BarkHandler.HandlePush: deviceType=%s, hasAPNs=%v", device.DeviceType, h.apnsClient != nil)
 
 	// Generate message ID
 	messageID := uuid.New().String()
 
 	// Push based on device type
 	if device.DeviceType == model.DeviceTypeIOS {
+		log.Printf("BarkHandler.HandlePush: pushing to iOS")
 		h.pushToIOS(device, &req, messageID, c)
 	} else {
+		log.Printf("BarkHandler.HandlePush: pushing to Android (deviceType=%s)", device.DeviceType)
 		h.pushToAndroid(device, &req, messageID, c)
 	}
 }
@@ -295,7 +298,9 @@ func (h *BarkHandler) HandleSimplePush(c *gin.Context) {
 // pushToIOS pushes message to iOS device via APNs
 func (h *BarkHandler) pushToIOS(device *model.Device, req *model.PushRequest, messageID string, c *gin.Context) {
 	if h.apnsClient == nil {
-		c.JSON(http.StatusInternalServerError, model.NewBarkError(500, "APNs client not configured"))
+		// APNs not configured, fall back to WebSocket (for Android devices registered with iOS type)
+		log.Printf("pushToIOS: APNs not configured, falling back to WebSocket push")
+		h.pushToAndroid(device, req, messageID, c)
 		return
 	}
 
